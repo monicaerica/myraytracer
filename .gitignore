@@ -1,3 +1,5 @@
 /.gradle
 *.jar
-/build/kotlin/compileKotlin/
+/build/kotlin/compileKotlin
+*.class
+

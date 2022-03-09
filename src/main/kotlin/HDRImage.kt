@@ -10,6 +10,7 @@ data class HDRImage (
     }
 
     fun GetPixel(x: Int, y: Int): Color{
+        assert(ValidCoordinates(x, y))
         val pos: Int = x * this.width + y
         val pixel: Color = this.pixels[pos]
         return pixel

@@ -6,11 +6,24 @@ data class HDRImage (
     fun ValidCoordinates(x: Int, y: Int): Boolean{
         return ((x>=0 && x<= this.width) && (y>=0 && y<= this.height))
     }
-    //get pixel: obtain the 1 dimensional position of a pixel from a tuple (x, y)
+
+    //pixel_offset() obtain the 1 dimensional position of a pixel from a tuple (x, y)
+    fun pixel_offset(x: Int, y: Int): Int{
+        return (y * this.width + x)
+    }
+
+    //get pixel(): obtain the pixel instance in the (x, y) position of the image
     fun GetPixel(x: Int, y: Int): Color{
         assert(ValidCoordinates(x, y))
-        val pos: Int = x * this.width + y
+        val pos = pixel_offset(x, y)
         val pixel: Color = this.pixels[pos]
         return pixel
+    }
+
+    //set pixel(): sets the pixel instance in the (x, y) position of the image
+    fun SetPixel(x: Int, y: Int, color: Color): Unit{
+        assert(ValidCoordinates(x, y))
+        val pos = pixel_offset(x, y)
+        this.pixels[pos] = color
     }
 }

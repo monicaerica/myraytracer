@@ -12,4 +12,23 @@ internal class HDRImageTest {
         assertEquals(false, nonval)
 
     }
+
+    @Test
+    fun GetPixel(){
+        val colors = arrayOf<Color>(Color(1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 0f), Color(1.0f, 0f, 0f), Color(0f, 0f, 0f))
+        val image = HDRImage(2, 2, colors)
+        val pixel_color = image.GetPixel(0, 0)
+        assertEquals(Color(1.0f, 1.0f, 1.0f), pixel_color)
+        assertNotEquals(Color(0f, 1.0f, 1.0f), pixel_color)
+    }
+
+    @Test
+    fun SetPixel(){
+        val colors = arrayOf<Color>(Color(1.0f, 1.0f, 1.0f), Color(1.0f, 1.0f, 0f), Color(1.0f, 0f, 0f), Color(0f, 0f, 0f))
+        var image = HDRImage(2, 2, colors)
+        image.SetPixel(0, 0, Color(0f, 1.0f, 0f))
+        val pixel_color = image.GetPixel(0, 0)
+        assertEquals(Color(0f, 1.0f, 0f), pixel_color)
+        assertNotEquals(Color(0f, 1.0f, 1.0f), pixel_color)
+    }
 }

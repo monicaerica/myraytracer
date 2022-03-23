@@ -1,3 +1,7 @@
+import java.io.*
+import java.nio.*
+import InvalidPfmFileFormat
+
 data class HDRImage (
     val width: Int,
     val height: Int,
@@ -25,5 +29,16 @@ data class HDRImage (
         assert(ValidCoordinates(x, y))
         val pos = pixel_offset(x, y)
         this.pixels[pos] = color
+    }
+
+    private fun StreamToFloat(stream: InputStream, endianness: ByteOrder = ByteOrder.BIG_ENDIAN ): Float{
+        try {
+            val buffer = ByteBuffer.wrap(stream.readNBytes(4))
+            buffer.order(endianness)
+            return buffer.float
+        }
+            catch(e: java.nio.BufferUnderflowException) {
+            throw InvalidPfmFileFormat("Not enough bytes left")
+        }
     }
 }

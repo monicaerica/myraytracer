@@ -1,3 +1,5 @@
+import java.io.InputStream
+
 data class HDRImage (
     val width: Int,
     val height: Int,
@@ -26,4 +28,14 @@ data class HDRImage (
         val pos = pixel_offset(x, y)
         this.pixels[pos] = color
     }
+
+    fun ReadLine(inStream: InputStream): String{
+        val buff = ByteArray(50)
+        for (i in buff.indices){
+            
+        }
+    }
+
+
+
 }

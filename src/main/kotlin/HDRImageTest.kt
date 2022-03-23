@@ -31,4 +31,13 @@ internal class HDRImageTest {
         assertEquals(Color(0f, 1.0f, 0f), pixel_color)
         assertNotEquals(Color(0f, 1.0f, 1.0f), pixel_color)
     }
+
+    @Test
+    fun pixel_offset(){
+        val image = HDRImage(4, 4)
+        val testpos: Int = image.pixel_offset(3, 2)
+        val position: Int = 11
+        assertEquals(position, testpos)
+
+    }
 }

@@ -2,4 +2,5 @@
 *.jar
 /build/kotlin/compileKotlin
 *.class
-
+*.xml
+*.bin

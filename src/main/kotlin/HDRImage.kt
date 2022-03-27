@@ -1,4 +1,9 @@
+import java.nio.charset.StandardCharsets
 import java.io.InputStream
+import java.io.*
+import java.nio.*
+import InvalidPfmFileFormat
+import javax.imageio.ImageIO
 
 data class HDRImage (
     val width: Int,
@@ -29,12 +34,43 @@ data class HDRImage (
         this.pixels[pos] = color
     }
 
-    fun ReadLine(inStream: InputStream): String{
-        val buff = ByteArray(50)
-        for (i in buff.indices){
-            
+    /**
+     * This function reads from an input up to a linefeed character and writes to a string the line
+     * @param: insTream: The stream to be read as an input
+     */
+
+    private fun ReadLine(inStream: InputStream): String {
+            val buff = ByteArray(50)
+            var j: Int = 0
+            for (i in buff.indices) {
+                val b = inStream.read()
+                if (b == '\n'.code) {
+                    val j = i
+                    break
+                }
+                else
+                    buff[i] = b.toByte()
+            }
+            return String(buff, offset = 0, j, charset = StandardCharsets.US_ASCII)
+    }
+
+    /**
+     * This function reads data from a stream 4 bits at a time and converts to a float based on the endianess
+     * @param: InputStream:
+     * @param: endianess: defines the byte order: big or little endian based on number +/11.0
+     *
+     */
+    private fun StreamToFloat(stream: InputStream, endianness: ByteOrder = ByteOrder.BIG_ENDIAN ): Float{
+        try {
+            val buffer = ByteBuffer.wrap(stream.readNBytes(4))
+            buffer.order(endianness)
+            return buffer.float
+        }
+            catch(e: java.nio.BufferUnderflowException) {
+            throw InvalidPfmFileFormat("Not enough bytes left")
         }
     }
+
 
 
 

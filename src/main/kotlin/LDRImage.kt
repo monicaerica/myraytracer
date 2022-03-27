@@ -1,2 +1,3 @@
-class LDRImage {
+class LDRImage () {
+
 }

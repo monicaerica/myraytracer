@@ -82,7 +82,7 @@ data class HDRImage (
     /**
      * This function reads data from a stream 4 bits at a time and converts to a float based on the endianess
      * @param: InputStream:
-     * @param: endianess: defines the byte order: big or little endian based on number +/11.0
+     * @param: endianess: defines the byte order: big or little endian based on number +/-1.0
      *
      */
     private fun StreamToFloat(stream: InputStream, endianness: ByteOrder = ByteOrder.BIG_ENDIAN ): Float{
@@ -124,8 +124,15 @@ data class HDRImage (
                 writeFloatToStream(outStream, color.b, endianness)
             }
         }
+    }
 
-
+    /**
+     * Saves a .pfm file, as a filename enter the name, the extension is added automatically
+     */
+    fun SavePFM(filename: String){
+        FileOutputStream(filename+".pfm").use {outStream ->
+            WritePFM(outStream)
+        }
     }
 
 

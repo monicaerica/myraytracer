@@ -96,6 +96,38 @@ data class HDRImage (
         }
     }
 
+    fun writeFloatToStream(stream: OutputStream, value: Float, order: ByteOrder){
+        val bytes = ByteBuffer.allocate(4).putFloat(value).array()
+        //reverse the byte order if little endian
+        if (order == ByteOrder.LITTLE_ENDIAN) {
+            bytes.reverse()
+        }
+
+        stream.write(bytes)
+    }
+
+    fun WritePFM(outStream: OutputStream, endianness: ByteOrder = ByteOrder.LITTLE_ENDIAN){
+        var endiannessStr = ""
+        if (endianness == ByteOrder.LITTLE_ENDIAN)
+            endiannessStr = "-1.0"
+        else
+            endiannessStr = "1.0"
+
+        val header: String = "PF\n${this.width} ${this.height}\n${endiannessStr}\n"
+        outStream.write(header.toByteArray())
+
+        for (y in this.height - 1  downTo 0){
+            for (x in 0 until this.width){
+                var color: Color = this.GetPixel(x, y)
+                writeFloatToStream(outStream, color.r, endianness)
+                writeFloatToStream(outStream, color.g, endianness)
+                writeFloatToStream(outStream, color.b, endianness)
+            }
+        }
+
+
+    }
+
 
 
 

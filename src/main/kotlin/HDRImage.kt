@@ -4,6 +4,7 @@ import java.io.*
 import java.nio.*
 import InvalidPfmFileFormat
 import javax.imageio.ImageIO
+import kotlin.math.*
 
 data class HDRImage (
     val width: Int,
@@ -52,6 +53,18 @@ data class HDRImage (
                     buff[i] = b.toByte()
             }
             return String(buff, offset = 0, j, charset = StandardCharsets.US_ASCII)
+    }
+
+    /**
+     * Calculates the average luminosity
+     */
+
+    fun AverageLuminosity(delta: Float = 1e-10f): Float {
+        var Sum: Float = 0.0f
+        for (pix in pixels){
+            Sum += log10(delta + pix.Luminosity())
+        }
+        return 10.0f.pow(Sum / pixels.size)
     }
 
     /**

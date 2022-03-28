@@ -74,7 +74,7 @@ data class HDRImage (
 
     fun NormalizeImage(factor: Float, luminosity: Float? = null){
         var lum = luminosity ?: AverageLuminosity();
-        for (i in 1..pixels.size-1){
+        for (i in 0..pixels.size-1){
             this.pixels[i] = this.pixels[i] * (factor / lum)
         }
     }

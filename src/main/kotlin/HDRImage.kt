@@ -6,6 +6,11 @@ import InvalidPfmFileFormat
 import javax.imageio.ImageIO
 import kotlin.math.*
 
+fun Clamp(x: Float): Float{
+    return x / (1.0f + x)
+}
+
+
 data class HDRImage (
     val width: Int,
     val height: Int,
@@ -65,6 +70,13 @@ data class HDRImage (
             Sum += log10(delta + pix.Luminosity())
         }
         return 10.0f.pow(Sum / pixels.size)
+    }
+
+    fun NormalizeImage(factor: Float, luminosity: Float? = null){
+        var lum = luminosity ?: AverageLuminosity();
+        for (i in 1..pixels.size-1){
+            this.pixels[i] = this.pixels[i] * (factor / lum)
+        }
     }
 
     /**

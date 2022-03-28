@@ -47,4 +47,15 @@ internal class HDRImageTest {
         img.SetPixel(1, 0, Color(500.0f, 1000.0f, 1500.0f))
         assertEquals(100.0f, img.AverageLuminosity(0.0f))
     }
+
+    @Test
+    fun NormalizeImage() {
+        val img = HDRImage(2, 1)
+        img.SetPixel(0, 0, Color(5.0f, 10.0f, 15.0f))
+        img.SetPixel(1, 0, Color(500.0f, 1000.0f, 1500.0f))
+
+        img.NormalizeImage(factor = 1000.0f, luminosity = 100.0f)
+        assert(img.GetPixel(0, 0).is_close(Color(0.5e2f, 1.0e2f, 1.5e2f)))
+        assert(img.GetPixel(1, 0).is_close(Color(0.5e4f, 1.0e4f, 1.5e4f)))
+    }
 }

@@ -15,6 +15,10 @@ public data class Color (var r: Float = 0.0f, var g: Float = 0.0f, var b: Float 
         }
         return isclose
     }
+
+    fun Luminosity(): Float{
+        return (maxOf(maxOf(this.r, this.g),this.b) + minOf(minOf(this.r, this.g),this.b) / 2)
+    }
 }
 
 /**

@@ -24,4 +24,17 @@ internal class ColorTest {
         val a = Color(1.0f, 2.0f, 4.0f)
         assertEquals(Color(1.0f, 2.0f, 4.0f), a)
     }
+
+    @Test
+    fun Luminosity() {
+        val col1: Color = Color(1.0f, 2.0f, 3.0f)
+        val col2: Color = Color(9.0f, 5.0f, 7.0f)
+
+        val lum1: Float = 2.0f
+        val lum2: Float = 7.0f
+
+        assertEquals(lum1, col1.Luminosity())
+        assertEquals(lum2, col2.Luminosity())
+
+    }
 }

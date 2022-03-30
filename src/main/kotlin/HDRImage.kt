@@ -3,6 +3,8 @@ import java.io.InputStream
 import java.io.*
 import java.nio.*
 import InvalidPfmFileFormat
+import java.awt.Image
+import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import kotlin.math.*
 
@@ -124,6 +126,42 @@ data class HDRImage (
                 writeFloatToStream(outStream, color.b, endianness)
             }
         }
+    }
+
+    fun ClampImg (){
+        for (i in 0 until this.pixels.size){
+            this.pixels[i].r = Clamp(this.pixels[i].r)
+            this.pixels[i].g = Clamp(this.pixels[i].g)
+            this.pixels[i].b = Clamp(this.pixels[i].b)
+        }
+
+    }
+
+    /**
+     * Creates a LDR image where colors are defined as threeplets of integers ranging between 0 and 255
+     * Requires a HDR image and a value for gamma (used in the tone mapping formula
+     */
+    fun WriteLDR(stream: OutputStream, format: String, gamma: Float = 1.0f){
+        val img: BufferedImage = BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB)
+        for (y in 0 until this.height){
+            for (x in 0 until this.width){
+                val curCol = this.GetPixel(x, y)
+                val sR: Int = (255 * curCol.r.pow(1 / gamma)).toInt()
+                val sG: Int = (255 * curCol.g.pow(1 / gamma)).toInt()
+                val sB: Int = (255 * curCol.b.pow(1 / gamma)).toInt()
+                val rgb: Int = sR.shl(16) + sG.shl(8) + sB
+                img.setRGB(x, y, rgb)
+            }
+        }
+        ImageIO.write(img, format, stream)
+    }
+
+    fun SaveLDR(filename: String, format: String, gamma: Float = 1.0f){
+        FileOutputStream(filename).use {outStream ->
+            WriteLDR(outStream, format, gamma)
+
+        }
+
     }
 
     /**

@@ -4,7 +4,7 @@ import java.io.*
 import java.nio.*
 import InvalidPfmFileFormat
 import java.util.Arrays
-import java.lang.Float
+//import java.lang.Float
 import java.awt.Image
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO

@@ -1,5 +1,10 @@
-import org.junit.Test
 import org.junit.Assert.*
+import org.junit.Test
+import java.io.ByteArrayInputStream
+import java.io.InputStream
+import java.io.InputStream.*
+import java.nio.ByteOrder
+import InvalidPfmFileFormat
 
 internal class HDRImageTest {
 
@@ -33,11 +38,46 @@ internal class HDRImageTest {
     }
 
     @Test
-    fun pixel_offset(){
+    fun PixelOffset(){
         val image = HDRImage(4, 4)
-        val testpos: Int = image.pixel_offset(3, 2)
+        val testpos: Int = image.PixelOffset(3, 2)
         val position: Int = 11
         assertEquals(position, testpos)
 
+    }
+
+    @Test
+    fun ReadLine(){
+        val image = HDRImage(4, 4)
+        var str = "hello\nworld"
+        val stream: InputStream = ByteArrayInputStream(str.toByteArray())
+        assertEquals(image.ReadLine(stream), "hello")
+        assertEquals(image.ReadLine(stream), "world")
+        assertEquals(image.ReadLine(stream), "")
+    }
+
+    @Test
+    fun parseEndianness() {
+        val image = HDRImage(4, 4)
+        assertEquals(image.parseEndianness("1.0"), ByteOrder.BIG_ENDIAN)
+        assertEquals(image.parseEndianness("-1.0"), ByteOrder.LITTLE_ENDIAN)
+        assertThrows(InvalidPfmFileFormat::class.java) {
+            image.parseEndianness("0.0")
+        }
+        assertThrows(InvalidPfmFileFormat::class.java) {
+            image.parseEndianness("abc")
+        }
+    }
+
+    @Test
+    fun ParseImageSize(){
+        val image = HDRImage(4, 4)
+        assertEquals(image.ParseImageSize("3 2"), Pair(3,2))
+        assertThrows(InvalidPfmFileFormat::class.java) {
+            image.ParseImageSize("-3 2")
+        }
+        assertThrows(InvalidPfmFileFormat::class.java) {
+            image.ParseImageSize("3 2 2")
+        }
     }
 }

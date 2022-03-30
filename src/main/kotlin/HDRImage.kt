@@ -1,11 +1,8 @@
-import java.nio.charset.StandardCharsets
 import java.io.InputStream
 import java.io.*
 import java.nio.*
-import InvalidPfmFileFormat
 import java.util.Arrays
 //import java.lang.Float
-import java.awt.Image
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import kotlin.math.*
@@ -15,8 +12,8 @@ fun Clamp(x: Float): Float{
 }
 
 data class HDRImage (
-    val width: Int,
-    val height: Int,
+    var width: Int = 0,
+    var height: Int = 0,
     var pixels: Array<Color> = Array(width * height) {Color (0.0f,0.0f,0.0f )}
         ) {
     fun ValidCoordinates(x: Int, y: Int): Boolean {
@@ -136,15 +133,16 @@ data class HDRImage (
         return Pair(wi, he)
     }
 
-    fun ReadPFMImage(stream: InputStream): HDRImage{
+    fun ReadPFMImage(stream: InputStream) {
         var magic = ReadLine(stream)
         if (magic != "PF") throw InvalidPfmFileFormat("invalid magic in PFM file")
         var img_size = ReadLine(stream)
-        var (width, height) = ParseImageSize(img_size)
+        var (w, h) = ParseImageSize(img_size)
+        width = w
+        height = h
         var endiannessline = ReadLine(stream)
         var endianness = parseEndianness(endiannessline)
 
-        var result = HDRImage(width, height)
         pixels = Array(width * height) { Color(0.0F, 0.0F, 0.0F) }
         for (y in (height - 1) downTo 0) {
             for (x in 0 until width) {
@@ -154,7 +152,6 @@ data class HDRImage (
                 SetPixel(x, y, Color(r, g, b))
             }
         }
-        return result
     }
 
     fun writeFloatToStream(stream: OutputStream, value: Float, order: ByteOrder){

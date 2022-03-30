@@ -1,4 +1,4 @@
-public data class Color (var r: Float = 0.0f, var g: Float = 0.0f, var b: Float = 0.0f) {
+public data class Color(var r: Float = 0.0f, var g: Float = 0.0f, var b: Float = 0.0f) {
 
     operator fun plus(other: Color): Color {
         return Color(this.r + other.r, this.g + other.g, this.b + other.b)

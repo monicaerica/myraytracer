@@ -1,6 +1,9 @@
 /build/kotlin/
+/buidl/kotlin/classes/
 /.gradle/
 /.idea/.name
+
+
 
 *.png
 *.obj

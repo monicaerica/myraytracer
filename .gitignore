@@ -1,6 +1,8 @@
-/.gradle
+/build/kotlin/
+/.gradle/
+/.idea/.name
+
+*.png
+*.obj
 *.jar
-/build/kotlin/compileKotlin
-*.class
-*.xml
 *.bin

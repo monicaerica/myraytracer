@@ -44,7 +44,7 @@ data class HDRImage (
     fun ReadLine(stream: InputStream): String {
         var result = byteArrayOf()
         while (true) {
-            var cur_byte = stream.readNBytes(1)
+            val cur_byte = stream.readNBytes(1)
             if (Arrays.equals(cur_byte, "".toByteArray()) || Arrays.equals(cur_byte, "\n".toByteArray())){
                 return String(result)
             }

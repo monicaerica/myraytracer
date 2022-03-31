@@ -1,9 +1,8 @@
-import java.nio.charset.StandardCharsets
 import java.io.InputStream
 import java.io.*
 import java.nio.*
-import InvalidPfmFileFormat
-import java.awt.Image
+import java.util.Arrays
+//import java.lang.Float
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import kotlin.math.*
@@ -12,54 +11,45 @@ fun Clamp(x: Float): Float{
     return x / (1.0f + x)
 }
 
-
 data class HDRImage (
-    val width: Int,
-    val height: Int,
+    var width: Int = 0,
+    var height: Int = 0,
     var pixels: Array<Color> = Array(width * height) {Color (0.0f,0.0f,0.0f )}
         ) {
-    fun ValidCoordinates(x: Int, y: Int): Boolean{
-        return ((x>=0 && x<= this.width) && (y>=0 && y<= this.height))
+    fun ValidCoordinates(x: Int, y: Int): Boolean {
+        return ((x >= 0 && x <= this.width) && (y >= 0 && y <= this.height))
     }
 
     //pixel_offset() obtain the 1 dimensional position of a pixel from a tuple (x, y)
-    fun pixel_offset(x: Int, y: Int): Int{
+    fun PixelOffset(x: Int, y: Int): Int {
         return (y * this.width + x)
     }
 
     //get pixel(): obtain the pixel instance in the (x, y) position of the image
-    fun GetPixel(x: Int, y: Int): Color{
+    fun GetPixel(x: Int, y: Int): Color {
         assert(ValidCoordinates(x, y))
-        val pos = pixel_offset(x, y)
+        val pos = PixelOffset(x, y)
         val pixel: Color = this.pixels[pos]
         return pixel
     }
 
     //set pixel(): sets the pixel instance in the (x, y) position of the image
-    fun SetPixel(x: Int, y: Int, color: Color): Unit{
+    fun SetPixel(x: Int, y: Int, color: Color): Unit {
         assert(ValidCoordinates(x, y))
-        val pos = pixel_offset(x, y)
+        val pos = PixelOffset(x, y)
         this.pixels[pos] = color
     }
 
-    /**
-     * This function reads from an input up to a linefeed character and writes to a string the line
-     * @param: insTream: The stream to be read as an input
-     */
 
-    private fun ReadLine(inStream: InputStream): String {
-            val buff = ByteArray(50)
-            var j: Int = 0
-            for (i in buff.indices) {
-                val b = inStream.read()
-                if (b == '\n'.code) {
-                    val j = i
-                    break
-                }
-                else
-                    buff[i] = b.toByte()
+    fun ReadLine(stream: InputStream): String {
+        var result = byteArrayOf()
+        while (true) {
+            var cur_byte = stream.readNBytes(1)
+            if (Arrays.equals(cur_byte, "".toByteArray()) || Arrays.equals(cur_byte, "\n".toByteArray())){
+                return String(result)
             }
-            return String(buff, offset = 0, j, charset = StandardCharsets.US_ASCII)
+            result += cur_byte[0]
+        }
     }
 
     /**
@@ -89,12 +79,58 @@ data class HDRImage (
      */
     private fun StreamToFloat(stream: InputStream, endianness: ByteOrder = ByteOrder.BIG_ENDIAN ): Float{
         try {
-            val buffer = ByteBuffer.wrap(stream.readNBytes(4))
+            var buffer = ByteBuffer.wrap(stream.readNBytes(4))
             buffer.order(endianness)
             return buffer.float
-        }
-            catch(e: java.nio.BufferUnderflowException) {
+        } catch (e: java.nio.BufferUnderflowException) {
             throw InvalidPfmFileFormat("Not enough bytes left")
+        }
+    }
+
+    fun parseEndianness(line: String): ByteOrder {
+        var fileendianness = 1.0F
+        try {
+            fileendianness = line.toFloat()
+        } catch(e: NumberFormatException){ throw InvalidPfmFileFormat("Cannot find endianness") }
+        when{
+            (fileendianness > 0.0F) -> return ByteOrder.BIG_ENDIAN
+            (fileendianness < 0.0F) -> return ByteOrder.LITTLE_ENDIAN
+            else -> throw InvalidPfmFileFormat("Cannot parse endianness")
+        }
+    }
+
+    fun ParseImageSize(line: String): Pair<Int, Int>{
+        val elements = line.split(" ")
+        var wi : Int?
+        var he : Int?
+        if (elements.size != 2) throw InvalidPfmFileFormat("invalid image size specification")
+        try{
+            wi = elements[0].toInt()
+            he = elements[1].toInt()
+            if ((wi < 0) || (he < 0)) {throw NumberFormatException("Invalid image size specification: width and height must be >=0")}
+        }
+        catch(e: NumberFormatException) {throw InvalidPfmFileFormat("invalid width/height")}
+        return Pair(wi, he)
+    }
+
+    fun ReadPFMImage(stream: InputStream) {
+        var magic = ReadLine(stream)
+        if (magic != "PF") throw InvalidPfmFileFormat("invalid magic in PFM file")
+        var img_size = ReadLine(stream)
+        var (w, h) = ParseImageSize(img_size)
+        width = w
+        height = h
+        var endiannessline = ReadLine(stream)
+        var endianness = parseEndianness(endiannessline)
+
+        pixels = Array(width * height) { Color(0.0F, 0.0F, 0.0F) }
+        for (y in (height - 1) downTo 0) {
+            for (x in 0 until width) {
+                val r = StreamToFloat(stream, endianness)
+                val g = StreamToFloat(stream, endianness)
+                val b = StreamToFloat(stream, endianness)
+                SetPixel(x, y, Color(r, g, b))
+            }
         }
     }
 
@@ -172,8 +208,4 @@ data class HDRImage (
             WritePFM(outStream)
         }
     }
-
-
-
-
 }

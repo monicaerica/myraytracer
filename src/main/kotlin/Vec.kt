@@ -27,6 +27,7 @@ data class Vec(
 
     /**
      * Negates a vector
+     * @return -vec
      */
     fun Neg(): Vec{
         return this * -1.0f
@@ -57,7 +58,8 @@ data class Vec(
     }
 
     fun Normalize(): Vec {
-        return Vec(x / Norm(), y / Norm(), z / Norm())
+        val norm: Float = Norm()
+        return Vec(x / norm, y / norm, z / norm)
     }
     fun toNormal(): Normal{
         return Normal(x, y, z)

@@ -1,9 +1,10 @@
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 data class Vec(
-    var x: Float,
-    var y: Float,
-    var z: Float
+    var x: Float = 0.0f,
+    var y: Float = 0.0f,
+    var z: Float = 0.0f
 ) {
 
     /**
@@ -60,5 +61,13 @@ data class Vec(
     }
     fun toNormal(): Normal{
         return Normal(x, y, z)
+    }
+
+    fun IsClose(other: Vec, epsilon: Float = 1e-5f): Boolean{
+        var IsClose: Boolean = false
+        if (abs(x - other.x) < epsilon && abs(y - other.y) < epsilon && abs(z - other.z) < epsilon) {
+            IsClose = true
+        }
+        return IsClose
     }
 }

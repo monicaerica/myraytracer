@@ -4,17 +4,12 @@ import org.junit.Test
 internal class NormalTest {
 
     @Test
-    fun test_normals(){
+    fun TestNormal(){
         val normal: Normal = Normal(1.0f, 2.0f, 3.0f)
-        println(normal.norm())
-        normal.normalize()
-        println(normal.norm())
-        normal.normalize()
-        println(normal.norm())
-        normal.normalize()
-        println(normal.norm())
-        normal.normalize()
-        println(normal.norm())
+        println(normal.Norm())
+        normal.Normalize()
+        println(normal.Norm())
+
 //        assertEquals(normal.norm(), 1.0f)
     }
 //    def test_vectors(self):

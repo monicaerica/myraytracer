@@ -4,6 +4,10 @@ class Transformation(
 )
 {
 
+    fun Inverse(): Transformation{
+        return Transformation(InvM, M)
+    }
+
     fun Scaling(vec: Vec): Transformation{
         val M: HomMatrix = HomMatrix(floatArrayOf(vec.x, 0.0f, 0.0f, 0.0f,
             0.0f, vec.y, 0.0f, 0.0f,

@@ -11,4 +11,10 @@ class HomMatrix(var elements: FloatArray){
             0.0f, 0.0f, 0.0f, 1.0f
         )
     )
+
+    fun GetIndex(i: Int, j: Int): Float{
+        return this.elements.elementAt(i + 3 * j)
+    }
+
+
 }

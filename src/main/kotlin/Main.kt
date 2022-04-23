@@ -4,9 +4,11 @@ import javax.imageio.ImageIO
 
 
 fun main(args: Array<String>) {
-    val inStream = FileInputStream("memorial.pfm")
+    val inStream = FileInputStream(args[0])
     var image = HDRImage()
     image.ReadPFMImage(inStream)
     val gamma: Float = 1.5f
-    image.SaveLDR("memorial"+gamma.toString(), "JPEG", gamma)
+    val format: String = "jpg"
+    val name: String = args[0] + format
+    image.SaveLDR(name, "JPEG", gamma)
 }

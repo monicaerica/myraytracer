@@ -17,5 +17,9 @@ data class Ray(
         return Origin + Dir
     }
 
+    fun transform(trans: Transformation): Ray {
+        return Ray() //Needs to be implemented
+    }
+
 
 }

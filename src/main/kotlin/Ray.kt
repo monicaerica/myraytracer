@@ -14,11 +14,17 @@ data class Ray(
     }
 
     fun At(t: Float): Point{
-        return Origin + Dir
+        return Origin + Dir * t
     }
 
     fun transform(trans: Transformation): Ray {
-        return Ray() //Needs to be implemented
+        return Ray(
+            trans * this.Origin,
+            trans * this.Dir,
+            this.tmin,
+            this.tmax,
+            this.Depth
+        ) 
     }
 
 

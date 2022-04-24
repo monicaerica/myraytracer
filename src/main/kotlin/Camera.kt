@@ -7,6 +7,7 @@ interface Camera {
     fun FireRay(u: Float, v: Float): Ray
 }
 
+/*
 class OrthogonalCamera (override val AspectRatio: Float = 1.0f, override val trans: Transformation,
                         override val distance: Float = 0.0f): Camera{
 
@@ -26,4 +27,4 @@ class PerpectiveCamera ( override val AspectRatio: Float = 1.0f, override val tr
         return Ray(origin, direction, tmin = 1.0f).transform(this.trans)
     }
 
-}
+}*/

@@ -32,6 +32,12 @@ class Transformation(
         return c
     }
 
+    fun IsConsistent(transf: Transformation): Boolean{
+        val identity: HomMatrix = HomMatrix()
+
+//        return ((AssertEquals(identity, transf.MatrixProduct(transf.M, transf.InvM), )
+        return true
+    }
 
     operator fun times(other: Vec): Vec {
         val row0 = M.elements.slice(0..3)

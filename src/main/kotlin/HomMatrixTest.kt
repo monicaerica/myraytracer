@@ -9,7 +9,7 @@ internal class HomMatrixTest{
         var InvM: HomMatrix = HomMatrix()
 
         assert(M.IsClose(InvM))
-        assert(MatrixProduct(InvM, M).IsClose(M))
+        assert(InvM.MatrixProduct(M).IsClose(M))
 
         val testM: HomMatrix = HomMatrix(
             floatArrayOf(
@@ -29,6 +29,6 @@ internal class HomMatrixTest{
             )
         )
 
-        assert(MatrixProduct(testM, testInvM).IsClose(M))
+        assert(testM.MatrixProduct(testInvM).IsClose(M))
     }
 }

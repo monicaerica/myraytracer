@@ -18,25 +18,9 @@ class Transformation(
         return true
     }
 
-    fun MatrixProduct(a: HomMatrix, b: HomMatrix): HomMatrix {
-        var c: HomMatrix = HomMatrix()
-        for (i in 0 until 4) {
-            for (j in 0 until 4) {
-                var sum: Float = 0.0f
-                for (k in 0 until 4) {
-                    sum += a.GetIndex(i, k) * b.GetIndex(k, j)
-                }
-                c.elements.set(i + 3 * j, sum)
-            }
-        }
-        return c
-    }
-
-    fun IsConsistent(transf: Transformation): Boolean{
+    fun IsConsistent(): Boolean{
         val identity: HomMatrix = HomMatrix()
-
-//        return ((AssertEquals(identity, transf.MatrixProduct(transf.M, transf.InvM), )
-        return true
+        return identity.IsClose(MatrixProduct(this.M, this.InvM))
     }
 
     operator fun times(other: Vec): Vec {

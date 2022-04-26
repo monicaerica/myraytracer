@@ -1,16 +1,10 @@
 import org.junit.Assert.*
 import org.junit.Test
 
-internal class HomMatrixTest{
-
+internal class TransformationTest {
+    
     @Test
-    fun HomMatrixTest(){
-        val M: HomMatrix = HomMatrix()
-        var InvM: HomMatrix = HomMatrix()
-
-        assert(M.IsClose(InvM))
-        assert(MatrixProduct(InvM, M).IsClose(M))
-
+    fun IsConsistentTest(){
         val testM: HomMatrix = HomMatrix(
             floatArrayOf(
                 1.0f, 2.0f, 3.0f, 4.0f,
@@ -28,7 +22,11 @@ internal class HomMatrixTest{
                 -1.375f, 0.875f, 0.0f, -0.5f
             )
         )
+        val identity: HomMatrix = HomMatrix()
 
-        assert(MatrixProduct(testM, testInvM).IsClose(M))
+        var product: HomMatrix = HomMatrix()
+        val tr: Transformation = Transformation(testM, testInvM)
+        assert(tr.IsConsistent())
+
     }
 }

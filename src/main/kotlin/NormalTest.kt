@@ -6,11 +6,12 @@ internal class NormalTest {
     @Test
     fun TestNormal(){
         val normal: Normal = Normal(1.0f, 2.0f, 3.0f)
-        println(normal.Norm())
+        val normalneg: Normal = Normal(-1.0f, -2.0f, -3.0f)
+        println(normal.neg())
+        assert(normal.neg().IsClose(normalneg))
         normal.Normalize()
-        println(normal.Norm())
-
-//        assertEquals(normal.norm(), 1.0f)
+        val norm: Float = normal.Norm()
+        assertEquals(norm, 1.0f, 1e-5f)
     }
 //    def test_vectors(self):
 //    a = Vec(1.0, 2.0, 3.0)

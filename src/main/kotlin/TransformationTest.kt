@@ -2,7 +2,7 @@ import org.junit.Assert.*
 import org.junit.Test
 
 internal class TransformationTest {
-    
+
     @Test
     fun IsConsistentTest(){
         val testM: HomMatrix = HomMatrix(

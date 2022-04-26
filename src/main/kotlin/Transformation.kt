@@ -53,6 +53,19 @@ class Transformation(
         )
     }
 
+    operator fun times(other: Normal): Normal {
+        val row0 = InvM.elements.slice(0..3)
+        val row1 = InvM.elements.slice(4..7)
+        val row2 = InvM.elements.slice(8..11)
+        val row3 = InvM.elements.slice(12..15)
+
+        return Normal(
+            row0[0] * other.x + row1[0] * other.y + row2[0] * other.z,
+            row0[1] * other.x + row1[1] * other.y + row2[1] * other.z,
+            row0[2] * other.x + row1[2] * other.y + row2[2] * other.z,
+        )
+    }
+
 
     /**
      * Exchange inverse matrix and matrix

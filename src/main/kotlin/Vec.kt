@@ -2,9 +2,9 @@ import kotlin.math.abs
 import kotlin.math.sqrt
 
 data class Vec(
-    var x: Float,
-    var y: Float,
-    var z: Float
+    var x: Float = 0.0f,
+    var y: Float = 0.0f,
+    var z: Float = 0.0f
 ) {
 
     fun IsClose(other: Vec, epsilon: Float = 1e-5f): Boolean{

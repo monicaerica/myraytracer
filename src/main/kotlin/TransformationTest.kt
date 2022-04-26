@@ -127,16 +127,14 @@ internal class TransformationTest {
         tr3 = RotationZ(90f)
         vec2 = tr3 * VEC_X
         assert(vec2.IsClose(VEC_Y))
-        
-//        def test_scalings (self):
-//        tr1 = scaling(Vec(2.0, 5.0, 10.0))
-//        assert tr1 . is_consistent ()
-//
-//        tr2 = scaling(Vec(3.0, 2.0, 4.0))
-//        assert tr2 . is_consistent ()
-//
-//        expected = scaling(Vec(6.0, 10.0, 40.0))
-//        assert expected . is_close (tr1 * tr2)
+
+        tr3 = Scaling(Vec(2.0f, 5.0f, 10.0f))
+        assert(tr3.IsConsistent())
+        tr4 = Scaling(Vec(3.0f, 2.0f, 4.0f))
+        assert(tr4.IsConsistent())
+
+        var expected_tr : Transformation = Scaling(Vec(6.0f, 10.0f, 40.0f))
+        assert(expected_tr.IsClose(tr3*tr4))
 
     }
 }

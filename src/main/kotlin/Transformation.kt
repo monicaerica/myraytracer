@@ -41,6 +41,39 @@ class Transformation(
         )
     }
 
+    operator fun times(other: Normal): Normal {
+        val row0 = InvM.elements.slice(0..3)
+        val row1 = InvM.elements.slice(4..7)
+        val row2 = InvM.elements.slice(8..11)
+        val row3 = InvM.elements.slice(12..15)
+
+        return Normal(
+            row0[0] * other.x + row1[0] * other.y + row2[0] * other.z,
+            row0[1] * other.x + row1[1] * other.y + row2[1] * other.z,
+            row0[2] * other.x + row1[2] * other.y + row2[2] * other.z,
+        )
+    }
+
+    operator fun times(other: Point): Point {
+        val row0 = M.elements.slice(0..3)
+        val row1 = M.elements.slice(4..7)
+        val row2 = M.elements.slice(8..11)
+        val row3 = M.elements.slice(12..15)
+
+        var w = row3[0] * other.x + row3[1] * other.y + row3[2] * other.z + row3[3]
+        var p : Point = Point(
+            row0[0] * other.x + row0[1] * other.y + row0[2] * other.z + row0[3],
+            row1[0] * other.x + row1[1] * other.y + row1[2] * other.z + row1[3],
+            row2[0] * other.x + row2[1] * other.y + row2[2] * other.z + row2[3],
+            )
+        if (w == 1.0f) return p
+        else {
+            p.x = p.x / w
+            p.y = p.y / w
+            p.z = p.z / w
+            return p
+        }
+    }
 
     /**
      * Exchange inverse matrix and matrix

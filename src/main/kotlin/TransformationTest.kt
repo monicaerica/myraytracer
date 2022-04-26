@@ -90,4 +90,41 @@ internal class TransformationTest {
         )
         assertTrue(expected.M.IsClose((m1*m2).M))
     }
+
+    @Test
+    fun TransfornationClassic() {
+
+        val vec: Vec = Vec(1.0f, 2.0f, 3.0f)
+        var tr1: Transformation = Translation(vec)
+//        assert(tr1.IsConsistent())
+
+//        var tr2: Transformation = Translation(Vec(4.0f, 6.0f, 8.0f))
+//        assert(tr2.IsConsistent())
+
+//        var prod = tr1 * tr2
+//        assert(prod.IsConsistent())
+
+//        var expected : Transformation = Translation(Vec(5.0f, 8.0f, 11.0f))
+//        assert(prod.IsClose(expected))
+
+//        def test_rotations (self):
+//        assert rotation_x (0.1).is_consistent()
+//        assert rotation_y (0.1).is_consistent()
+//        assert rotation_z (0.1).is_consistent()
+//
+//        assert(rotation_x(angle_deg = 90) * VEC_Y).is_close(VEC_Z)
+//        assert(rotation_y(angle_deg = 90) * VEC_Z).is_close(VEC_X)
+//        assert(rotation_z(angle_deg = 90) * VEC_X).is_close(VEC_Y)
+//
+//        def test_scalings (self):
+//        tr1 = scaling(Vec(2.0, 5.0, 10.0))
+//        assert tr1 . is_consistent ()
+//
+//        tr2 = scaling(Vec(3.0, 2.0, 4.0))
+//        assert tr2 . is_consistent ()
+//
+//        expected = scaling(Vec(6.0, 10.0, 40.0))
+//        assert expected . is_close (tr1 * tr2)
+
+    }
 }

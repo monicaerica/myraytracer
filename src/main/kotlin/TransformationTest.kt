@@ -107,15 +107,27 @@ internal class TransformationTest {
 //        var expected : Transformation = Translation(Vec(5.0f, 8.0f, 11.0f))
 //        assert(prod.IsClose(expected))
 
-//        def test_rotations (self):
-//        assert rotation_x (0.1).is_consistent()
-//        assert rotation_y (0.1).is_consistent()
-//        assert rotation_z (0.1).is_consistent()
-//
-//        assert(rotation_x(angle_deg = 90) * VEC_Y).is_close(VEC_Z)
-//        assert(rotation_y(angle_deg = 90) * VEC_Z).is_close(VEC_X)
-//        assert(rotation_z(angle_deg = 90) * VEC_X).is_close(VEC_Y)
-//
+        var tr3: Transformation = RotationX(0.1f)
+        assert(tr3.IsConsistent())
+        var tr4: Transformation = RotationY(0.1f)
+        assert(tr4.IsConsistent())
+        var tr5: Transformation = RotationZ(0.1f)
+        assert(tr5.IsConsistent())
+
+        val VEC_X : Vec = Vec(1.0f, 0.0f, 0.0f)
+        val VEC_Y : Vec = Vec(0.0f, 1.0f, 0.0f)
+        val VEC_Z : Vec = Vec(0.0f, 0.0f, 1.0f)
+
+        tr3 = RotationX(90f)
+        var vec2 = tr3 * VEC_Y
+        assert(vec2.IsClose(VEC_Z))
+        tr3 = RotationY(90f)
+        vec2 = tr3 * VEC_Z
+        assert(vec2.IsClose(VEC_X))
+        tr3 = RotationZ(90f)
+        vec2 = tr3 * VEC_X
+        assert(vec2.IsClose(VEC_Y))
+        
 //        def test_scalings (self):
 //        tr1 = scaling(Vec(2.0, 5.0, 10.0))
 //        assert tr1 . is_consistent ()

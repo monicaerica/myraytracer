@@ -1,3 +1,4 @@
+import kotlin.math.abs
 import kotlin.math.sqrt
 
 data class Vec(
@@ -5,6 +6,14 @@ data class Vec(
     var y: Float,
     var z: Float
 ) {
+
+    fun IsClose(other: Vec, epsilon: Float = 1e-5f): Boolean{
+        var isclose: Boolean = false
+        if (abs(this.x - other.x) < epsilon && abs(this.y - other.y) < epsilon && abs(this.z - other.z) < epsilon) {
+            isclose = true
+        }
+        return isclose
+    }
 
     /**
      * Returns the sum of two vectors

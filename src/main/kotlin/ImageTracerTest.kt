@@ -7,6 +7,7 @@ import java.util.*
 
 internal class ImageTracerTest {
 
+
     companion object {
         var image: HDRImage = HDRImage(width = 4, height = 2)
         var camera = PerpectiveCamera(AspectRatio = 2.0f, trans = Transformation())

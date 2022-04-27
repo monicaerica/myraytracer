@@ -13,7 +13,13 @@ data class Normal(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f)
     fun NormalToString(): String {
         return "Normal: (x:" + this.x + ", y:" + this.y + ", z:" + this.z + ")"
     }
-
+    /**
+     * This is in order to test if two normals are similar.
+     *
+     * @return a Boolean value true if these two normals are similar.
+     * @param Normal another variable of type Normal
+     * @param epsilon the max difference between every single component of the two Normal variables in order to be close together
+     */
     fun IsClose(other: Normal, epsilon: Float = 1e-5f): Boolean{
         var isclose: Boolean = false
         if (abs(this.x - other.x) < epsilon && abs(this.y - other.y) < epsilon && abs(this.z - other.z) < epsilon) {

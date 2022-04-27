@@ -2,7 +2,7 @@ class ImageTracer (val image: HDRImage, val camera: Camera) {
 
     fun FireRay(col: Int, row: Int, uPixel: Float = 0.5f, vPixel: Float = 0.5f): Ray{
         val u: Float = (col + uPixel) / (this.image.width -1 )
-        val v: Float = (row + vPixel) / ( this.image.height -1 )
+        val v: Float = 1.0f - (row + vPixel) / ( this.image.height -1 )
         return this.camera.FireRay(u, v)
     }
 

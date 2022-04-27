@@ -1,6 +1,6 @@
 val VecX: Vec = Vec(1.0f, 0.0f, 0.0f) //Implement this in geometry after merging!
-val Vecy: Vec = Vec(0.0f, 1.0f, 0.0f) //Implement this in geometry after merging!
-val Vecz: Vec = Vec(0.0f, 0.0f, 1.0f) //Implement this in geometry after merging!
+val VecY: Vec = Vec(0.0f, 1.0f, 0.0f) //Implement this in geometry after merging!
+val VecZ: Vec = Vec(0.0f, 0.0f, 1.0f) //Implement this in geometry after merging!
 
 interface Camera {
     val distance: Float

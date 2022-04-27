@@ -1,10 +1,17 @@
 import org.junit.Assert.*
+import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
+import java.util.*
+
 
 internal class ImageTracerTest {
-    var image = HDRImage(width = 4, height = 2)
-    var camera = PerpectiveCamera(AspectRatio = 2.0f, trans = Transformation())
-    var tracer = ImageTracer(image = image, camera = camera)
+
+    companion object {
+        var image: HDRImage = HDRImage(width = 4, height = 2)
+        var camera = PerpectiveCamera(AspectRatio = 2.0f, trans = Transformation())
+        var tracer = ImageTracer(image = image, camera = camera)
+    }
 
    @Test
     fun ImagetracerRay() {

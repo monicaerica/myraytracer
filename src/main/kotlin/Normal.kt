@@ -13,7 +13,7 @@ data class Normal(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f)
     fun NormalToString(): String {
         return "Normal: (x:" + this.x + ", y:" + this.y + ", z:" + this.z + ")"
     }
-    
+
     /**
      * This is in order to test if two normals are similar.
      *

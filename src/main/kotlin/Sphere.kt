@@ -15,7 +15,7 @@ fun spherePointToUv(point: Point): Vec2d{
         u += 1.0f
     return Vec2d(u, v)
 }
-class Sphere(val transformation: Transformation): Shape() {
+class Sphere(val transformation: Transformation = Transformation()): Shape() {
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay: Ray = ray.transform(this.transformation.Inverse())
         val originVec: Vec = invRay.Origin.point_to_vec()
@@ -33,9 +33,9 @@ class Sphere(val transformation: Transformation): Shape() {
         val tmax: Float = (-b + sqrtDelta) / (2.0f * a)
         var firstHit: Float = 0.0f
         if (tmin > invRay.tmin && tmin < invRay.tmax)
-            firstHit = tmin
-        if (tmax > invRay.tmin && tmax < invRay.tmax)
             firstHit = tmax
+        if (tmax > invRay.tmin && tmax < invRay.tmax)
+            firstHit = tmin
 
         val hitPoint: Point = invRay.At(firstHit)
 

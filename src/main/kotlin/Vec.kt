@@ -6,15 +6,12 @@ data class Vec(
     var y: Float = 0.0f,
     var z: Float = 0.0f
 ) {
-
-//    fun IsClose(other: Vec, epsilon: Float = 1e-5f): Boolean{
-//        var isclose: Boolean = false
-//        if (abs(this.x - other.x) < epsilon && abs(this.y - other.y) < epsilon && abs(this.z - other.z) < epsilon) {
-//            isclose = true
-//        }
-//        return isclose
-//    }
-
+    /**
+     * Returns a boolean meaning if two vector are close together
+     * @param other: The other vector to be compared
+     * @param epsilon: tolerance
+     * @return A booleam
+     */
     fun IsClose(other: Vec, epsilon: Float = 1e-5f): Boolean{
         var isclose: Boolean = false
         if (IsClose(this.x, other.x, epsilon) && IsClose(this.y, other.y, epsilon) && IsClose(this.z, other.z, epsilon)) {
@@ -59,11 +56,13 @@ data class Vec(
     }
 
     /**
-     * Negates a vector
+     * Changes the signs of all the components of the vector
+     * @return The vector in the opposite direction
      */
     fun Neg(): Vec{
         return this * -1.0f
     }
+
 
     operator fun minus(other: Vec): Vec{
         return this + other.Neg()
@@ -77,14 +76,27 @@ data class Vec(
         return x * other.x + y * other.y + z * other.z
     }
 
+    /**
+     * Squared norm of the vector
+     * @return Float
+     */
     fun SquaredNorm(): Float {
         return this * this
     }
 
+    /**
+     * Norm of the vector
+     * @return Float
+     */
     fun Norm(): Float {
         return sqrt(SquaredNorm())
     }
 
+    /**
+     * Cross product between two vectors
+     * @param Vec the other vector
+     * @return Vec, cross product between the two vectors
+     */
     fun Cross(other: Vec): Vec {
         return Vec(
             y * other.z - z * other.y,
@@ -93,9 +105,18 @@ data class Vec(
         )
     }
 
+    /**
+     * Normalizes the vector
+     * @return The Vector divided by its norm, the vector with unitary norm
+     */
     fun Normalize(): Vec {
         return Vec(x / Norm(), y / Norm(), z / Norm())
     }
+
+    /**
+     * Turns the vector into a variable of type Normal
+     * @return a Normal
+     */
     fun toNormal(): Normal{
         return Normal(x, y, z)
     }

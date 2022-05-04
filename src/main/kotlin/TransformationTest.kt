@@ -104,14 +104,14 @@ internal class TransformationTest {
         var tr1: Transformation = Translation(vec)
         assert(tr1.IsConsistent())
 
-//        var tr2: Transformation = Translation(Vec(4.0f, 6.0f, 8.0f))
-//        assert(tr2.IsConsistent())
+        var tr2: Transformation = Translation(Vec(4.0f, 6.0f, 8.0f))
+        assert(tr2.IsConsistent())
 
-//        var prod = tr1 * tr2
-//        assert(prod.IsConsistent())
+        var prod = tr1 * tr2
+        assert(prod.IsConsistent())
 
-//        var expected : Transformation = Translation(Vec(5.0f, 8.0f, 11.0f))
-//        assert(prod.IsClose(expected))
+        var expected : Transformation = Translation(Vec(5.0f, 8.0f, 11.0f))
+        assert(prod.IsClose(expected))
 
         var tr3: Transformation = RotationX(0.1f)
         assert(tr3.IsConsistent())

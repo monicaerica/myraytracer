@@ -7,9 +7,17 @@ data class Vec(
     var z: Float = 0.0f
 ) {
 
+//    fun IsClose(other: Vec, epsilon: Float = 1e-5f): Boolean{
+//        var isclose: Boolean = false
+//        if (abs(this.x - other.x) < epsilon && abs(this.y - other.y) < epsilon && abs(this.z - other.z) < epsilon) {
+//            isclose = true
+//        }
+//        return isclose
+//    }
+
     fun IsClose(other: Vec, epsilon: Float = 1e-5f): Boolean{
         var isclose: Boolean = false
-        if (abs(this.x - other.x) < epsilon && abs(this.y - other.y) < epsilon && abs(this.z - other.z) < epsilon) {
+        if (IsClose(this.x, other.x, epsilon) && IsClose(this.y, other.y, epsilon) && IsClose(this.z, other.z, epsilon)) {
             isclose = true
         }
         return isclose
@@ -34,6 +42,23 @@ data class Vec(
     }
 
     /**
+     * Performs the product between a vector and a scalar
+     * @param scalar: A int to be multiplied with the vector
+     * @return The vector times the scalar
+     */
+    operator fun times(scalar: Int): Vec {
+        return Vec(x * scalar, y * scalar, z * scalar)
+    }
+
+    /**
+     * Changes the signs of all the components of the vector
+     * @return The vector in the opposite direction
+     */
+    operator fun unaryMinus(): Vec {
+        return Vec(x * -1, y * -1, z * -1)
+    }
+
+    /**
      * Negates a vector
      */
     fun Neg(): Vec{
@@ -43,7 +68,11 @@ data class Vec(
     operator fun minus(other: Vec): Vec{
         return this + other.Neg()
     }
-
+    /**
+     * Default product between two vector is the dot product
+     * @param Vec the other vector
+     * @return Scalar product between the two vectors
+     */
     operator fun times(other: Vec): Float {
         return x * other.x + y * other.y + z * other.z
     }

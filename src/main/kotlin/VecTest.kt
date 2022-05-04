@@ -1,6 +1,7 @@
 import org.junit.Assert
 import org.junit.Test
 import org.junit.Assert.*
+import kotlin.math.pow
 
 internal class VecTest {
 
@@ -70,5 +71,22 @@ internal class VecTest {
         val vec: Vec = Vec(1.0f, 2.0f, 3.0f)
         val normalized: Vec = Vec(1.0f / vec.Norm(), 2.0f / vec.Norm(), 3.0f / vec.Norm())
         assertNotEquals(normalized, vec.Normalize())
+    }
+
+    @Test
+    fun vecall() {
+        val vec1: Vec = Vec(1.0f, 2.0f, 3.0f)
+        val vec2: Vec = Vec(4.0f, 6.0f, 8.0f)
+        assert(vec1.IsClose(vec1))
+        assert(!vec1.IsClose(vec2))
+        assert((-vec1).IsClose(Vec(-1.0f, -2.0f, -3.0f)))
+        assert((vec1 + vec2).IsClose(Vec(5.0f, 8.0f, 11.0f)))
+        assert((vec2 - vec1).IsClose(Vec(3.0f, 4.0f, 5.0f)))
+        assert((vec1 * 2).IsClose(Vec(2.0f, 4.0f, 6.0f)))
+        assert(IsClose(40.0f, vec1 * vec2))
+        assert(vec1.Cross(vec2).IsClose(Vec(-2.0f, 4.0f, -2.0f)))
+        assert(IsClose(14.0f, vec1.SquaredNorm()))
+        assert(IsClose(14.0f, vec1.Norm().pow(2)))
+
     }
 }

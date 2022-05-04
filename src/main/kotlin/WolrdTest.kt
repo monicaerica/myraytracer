@@ -20,14 +20,14 @@ internal class WolrdTest {
         world.AddShape(sphere2)
 
         intersection1 = world.rayIntersection(Ray(Point(0.0f, 0.0f, 0.0f), VEC_X))
-//        if (intersection1 != null) {
-//            assert(intersection1.worldPoint.is_close(Point(1.0f, 0.0f, 0.0f)))
-//        }
+        if (intersection1 != null) {
+            assert(intersection1.worldPoint.is_close(Point(1.0f, 0.0f, 0.0f)))
+        }
         assertNotNull(intersection1)
         intersection2 = world.rayIntersection(Ray(Point(10.0f, 0.0f, 0.0f), VEC_X * -1.0f))
-//        if (intersection2 != null) {
-//            assert(intersection2.worldPoint.is_close(Point(9.0f, 0.0f, 0.0f)))
-//        }
+        if (intersection2 != null) {
+            assert(intersection2.worldPoint.is_close(Point(9.0f, 0.0f, 0.0f)))
+        }
         assertNotNull(intersection2)
     }
 }

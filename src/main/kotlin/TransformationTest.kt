@@ -2,9 +2,11 @@ import org.junit.Assert.*
 import org.junit.Test
 
 internal class TransformationTest {
+    companion object {
+        val VEC_X : Vec = Vec(1.0f, 0.0f, 0.0f)
+        val VEC_Y : Vec = Vec(0.0f, 1.0f, 0.0f)
+        val VEC_Z : Vec = Vec(0.0f, 0.0f, 1.0f)
 
-    @Test
-    fun IsConsistentTest(){
         val testM: HomMatrix = HomMatrix(
             floatArrayOf(
                 1.0f, 2.0f, 3.0f, 4.0f,
@@ -22,8 +24,12 @@ internal class TransformationTest {
                 -1.375f, 0.875f, 0.0f, -0.5f
             )
         )
-        val identity: HomMatrix = HomMatrix()
 
+        val identity: HomMatrix = HomMatrix()
+    }
+
+    @Test
+    fun IsConsistentTest(){
         var product: HomMatrix = HomMatrix()
         val tr: Transformation = Transformation(testM, testInvM)
         assert(tr.IsConsistent())
@@ -96,7 +102,7 @@ internal class TransformationTest {
 
         val vec: Vec = Vec(1.0f, 2.0f, 3.0f)
         var tr1: Transformation = Translation(vec)
-//        assert(tr1.IsConsistent())
+        assert(tr1.IsConsistent())
 
 //        var tr2: Transformation = Translation(Vec(4.0f, 6.0f, 8.0f))
 //        assert(tr2.IsConsistent())
@@ -113,10 +119,6 @@ internal class TransformationTest {
         assert(tr4.IsConsistent())
         var tr5: Transformation = RotationZ(0.1f)
         assert(tr5.IsConsistent())
-
-        val VEC_X : Vec = Vec(1.0f, 0.0f, 0.0f)
-        val VEC_Y : Vec = Vec(0.0f, 1.0f, 0.0f)
-        val VEC_Z : Vec = Vec(0.0f, 0.0f, 1.0f)
 
         tr3 = RotationX(90f)
         var vec2 = tr3 * VEC_Y

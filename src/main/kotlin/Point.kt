@@ -7,7 +7,7 @@ data class Point(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f){
      *
      * @return a String with the description of the point
      */
-    fun point_tostring(): String{
+    fun PointToString(): String{
         return "Point: (x:" + this.x + ", y:" + this.y + ", z:" + this.z + ")"
     }
 
@@ -18,9 +18,9 @@ data class Point(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f){
      * @param Point another variable of type Point
      * @param epsilon the max difference between every single component of the two Point variables in order to be close together
      */
-    fun is_close(other: Point, epsilon: Float = 1e-5f): Boolean{
+    fun IsClose(other: Point, epsilon: Float = 1e-5f): Boolean{
         var isclose: Boolean = false
-        if (abs(this.x - other.x) < epsilon && abs(this.y - other.y) < epsilon && abs(this.z - other.z) < epsilon) {
+        if (IsClose(this.x, other.x, epsilon) && (IsClose(this.y, other.y, epsilon)) && (IsClose(this.z, other.z, epsilon))) {
             isclose = true
         }
         return isclose
@@ -30,7 +30,7 @@ data class Point(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f){
      *
      * @return a Vec with the same features of the starting Point.
      */
-    fun point_to_vec(): Vec{
+    fun PointToVec(): Vec{
         return Vec(this.x, this.y, this.z)
     }
 

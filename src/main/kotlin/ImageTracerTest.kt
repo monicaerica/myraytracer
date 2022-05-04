@@ -32,9 +32,9 @@ internal class ImageTracerTest {
     @Test
     fun ImageTracerOrientation(){
         val topLeftRay: Ray = tracer.FireRay(0, 0, uPixel = 0.0f, vPixel = 0.0f)
-        assertTrue(Point(0.0f, 2.0f, 1.0f).is_close(topLeftRay.At(1.0f)))
+        assertTrue(Point(0.0f, 2.0f, 1.0f).IsClose(topLeftRay.At(1.0f)))
 
         val bottomRightRay: Ray = tracer.FireRay(0, 0, uPixel = 0.0f, vPixel = 0.0f)
-        assertTrue(Point(0.0f, 2.0f, 1.0f).is_close(topLeftRay.At(1.0f)))
+        assertTrue(Point(0.0f, 2.0f, 1.0f).IsClose(topLeftRay.At(1.0f)))
     }
 }

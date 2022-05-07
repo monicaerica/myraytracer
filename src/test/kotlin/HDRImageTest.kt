@@ -92,8 +92,8 @@ internal class HDRImageTest {
         img.SetPixel(1, 0, Color(500.0f, 1000.0f, 1500.0f))
 
         img.NormalizeImage(factor = 1000.0f, luminosity = 100.0f)
-        assert(img.GetPixel(0, 0).is_close(Color(0.5e2f, 1.0e2f, 1.5e2f)))
-        assert(img.GetPixel(1, 0).is_close(Color(0.5e4f, 1.0e4f, 1.5e4f)))
+        assert(img.GetPixel(0, 0).IsClose(Color(0.5e2f, 1.0e2f, 1.5e2f)))
+        assert(img.GetPixel(1, 0).IsClose(Color(0.5e4f, 1.0e4f, 1.5e4f)))
     }
 
     @Test
@@ -155,13 +155,13 @@ internal class HDRImageTest {
             img.ReadPFMImage(stream)
             assertEquals(img.width, 3)
             assertEquals(img.height, 2)
-            assert(Color(1.0e1f, 2.0e1f, 3.0e1f).is_close(img.GetPixel(0, 0)))
-            assert(Color(4.0e1f, 5.0e1f, 6.0e1f).is_close(img.GetPixel(1, 0)))
-            assert(Color(7.0e1f, 8.0e1f, 9.0e1f).is_close(img.GetPixel(2, 0)))
-            assert(Color(1.0e2f, 2.0e2f, 3.0e2f).is_close(img.GetPixel(0, 1)))
-            assert(Color(1.0e1f, 2.0e1f, 3.0e1f).is_close(img.GetPixel(0, 0)))
-            assert(Color(4.0e2f, 5.0e2f, 6.0e2f).is_close(img.GetPixel(1, 1)))
-            assert(Color(7.0e2f, 8.0e2f, 9.0e2f).is_close(img.GetPixel(2, 1)))
+            assert(Color(1.0e1f, 2.0e1f, 3.0e1f).IsClose(img.GetPixel(0, 0)))
+            assert(Color(4.0e1f, 5.0e1f, 6.0e1f).IsClose(img.GetPixel(1, 0)))
+            assert(Color(7.0e1f, 8.0e1f, 9.0e1f).IsClose(img.GetPixel(2, 0)))
+            assert(Color(1.0e2f, 2.0e2f, 3.0e2f).IsClose(img.GetPixel(0, 1)))
+            assert(Color(1.0e1f, 2.0e1f, 3.0e1f).IsClose(img.GetPixel(0, 0)))
+            assert(Color(4.0e2f, 5.0e2f, 6.0e2f).IsClose(img.GetPixel(1, 1)))
+            assert(Color(7.0e2f, 8.0e2f, 9.0e2f).IsClose(img.GetPixel(2, 1)))
         }
     }
 }

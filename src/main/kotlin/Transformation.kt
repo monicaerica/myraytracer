@@ -7,30 +7,38 @@ class Transformation(
     var M: HomMatrix = HomMatrix(),
     var InvM: HomMatrix = HomMatrix()
 ) {
-
-//    fun IsClose(a: HomMatrix, b: HomMatrix, epsilon: Float = 1e-5f): Boolean {
-//        for (i in 0 until 4) {
-//            for (j in 0 until 4) {
-//                if (abs(a.GetIndex(i, j) - b.GetIndex(i, j)) > epsilon)
-//                    return false
-//            }
-//        }
-//        return true
-//    }
-
+    /**
+     * Tells if two Transformations are close together
+     * @param other: the other Transformation
+     * @return Boolean value
+     */
     fun IsClose(other: Transformation): Boolean{
         return ((this.M.IsClose(other.M)) && (this.InvM.IsClose(other.InvM)))
     }
 
+    /**
+     * Tells if the inverse matrix is indeed the inverse of the matrix describing the Transformation
+     * @return Boolean value
+     */
     fun IsConsistent(): Boolean{
         val identity: HomMatrix = HomMatrix()
         return identity.IsClose(MatrixProduct(this.M, this.InvM))
     }
 
+    /**
+     * Returns the product of two Transformations
+     * @param other: the other Transformation
+     * @return variable of type Transformation
+     */
     operator fun times(other: Transformation): Transformation{
         return Transformation(MatrixProduct(M, other.M), MatrixProduct(InvM, other.InvM))
     }
 
+    /**
+     * Transforms a Vec
+     * @param other: The vector (Vec) we want to apply the Transformation to
+     * @return The vector transformed
+     */
     operator fun times(other: Vec): Vec {
         val row0 = M.elements.slice(0..3)
         val row1 = M.elements.slice(4..7)
@@ -44,6 +52,11 @@ class Transformation(
         )
     }
 
+    /**
+     * Transforms a Normal
+     * @param other: The Normal we want to apply the transformation to
+     * @return The Normal transformed
+     */
     operator fun times(other: Normal): Normal {
         val row0 = InvM.elements.slice(0..3)
         val row1 = InvM.elements.slice(4..7)
@@ -57,6 +70,11 @@ class Transformation(
         )
     }
 
+    /**
+     * Transforms a Point
+     * @param other: The Point we want to apply the transformation to
+     * @return The Point transformed
+     */
     operator fun times(other: Point): Point {
         val row0 = M.elements.slice(0..3)
         val row1 = M.elements.slice(4..7)
@@ -87,7 +105,8 @@ class Transformation(
 }
 
 /**
- *
+ * Scales by a vector
+ * @param vec: The vector we want uor object to be scaled by
  */
 fun Scaling(vec: Vec): Transformation {
     val M: HomMatrix = HomMatrix(
@@ -109,6 +128,11 @@ fun Scaling(vec: Vec): Transformation {
     return Transformation(M, InvM)
 }
 
+/**
+ * Builds a variable of type Transformation describing the translation by a vector
+ * @param vec: the vector we want our object to be translated by
+ * @return variable of type Transformation
+ */
 fun Translation(vec: Vec): Transformation {
     val M: HomMatrix = HomMatrix(
         floatArrayOf(

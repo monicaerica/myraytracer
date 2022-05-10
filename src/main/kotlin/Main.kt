@@ -28,15 +28,19 @@ class Demo: CliktCommand(name = "demo"){
         var world: World = World()
         val scale: Vec = Vec(0.1f, 0.1f, 0.1f)
 
-        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale)))
-        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, -5.0f)) * Scaling(scale)))
-        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, 5.0f)) * Scaling(scale)))
-        world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, 5.0f)) * Scaling(scale)))
-        world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, -5.0f)) * Scaling(scale)))
-        world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, 5.0f, 5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, 5.0f)) * Scaling(scale)))
-
-        tracer.FireAllRays { if (world.rayIntersection(it) != null)  WHITE else BLACK }
+        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, 5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, -5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, 5.0f, 5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, 5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, 5.0f, -5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, -5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 5.0f, 0.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 5.0f)) * Scaling(scale)))
+        world.AddShape(BBox(corner1 = Point(0.0f, 0.0f, 0.0f), corner2 = Point(1.0f, 1.0f, 1.0f), transformation = Translation(Vec(-10.0f, 5.0f, 0.0f))))
+        world.AddShape(BBox(corner1 = Point(0.0f, 0.0f, 0.0f), corner2 = Point(5.0f, 5.0f, 5.0f), transformation = Translation(Vec(-5.0f, 5.0f, 5.0f))))
+        tracer.FireAllRays { if (world.rayIntersection(it) != null)  NAVY else BLACK }
         image.SaveLDR(fname, "PNG", 1.0f)
 
 

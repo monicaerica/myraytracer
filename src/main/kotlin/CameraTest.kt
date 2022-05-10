@@ -15,7 +15,7 @@ internal class CameraTest{
         assertEquals(0.0f, ray1.Dir.Cross(ray3.Dir).SquaredNorm())
         assertEquals(0.0f, ray1.Dir.Cross(ray4.Dir).SquaredNorm())
 
-        assertTrue(ray1.At(1.0f).is_close(Point(0.0f, 2.0f, -1.0f)))
+        assertTrue(ray1.At(1.0f).is_close(Point(10.0f, 2.0f, -1.0f)))
         assertTrue(ray2.At(1.0f).is_close(Point(0.0f, -2.0f, -1.0f)))
         assertTrue(ray3.At(1.0f).is_close(Point(0.0f, 2.0f, 1.0f)))
         assertTrue(ray4.At(1.0f).is_close(Point(0.0f, -2.0f, 1.0f)))

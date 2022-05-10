@@ -1,3 +1,10 @@
+/**
+ * Computes the matrix product between two homogeneous 4x4 matrices (computes [a] * [b])
+ *
+ * @param a The first matrix
+ * @param b the second matrix
+ * @return a 4x4 HomMatrix obtained by matrix multiplication
+ */
 fun MatrixProduct(a: HomMatrix, b: HomMatrix): HomMatrix {
     var c: HomMatrix = HomMatrix()
     for (i in 0 until 4) {

@@ -63,15 +63,20 @@ data class Normal(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f)
         return sqrt(sq_norm)
     }
 
-    fun Normalize(): Unit{
+    fun Normalize(): Normal{
         var norm = this.Norm()
         x /= norm
         y /= norm
         z /= norm
+        return Normal(x, y, z)
     }
 
     operator fun times(other: Vec): Float{
         var scalar : Float = x * other.x + y * other.y + z * other.z
         return scalar
+    }
+
+    fun Neg(): Normal{
+        return this * -1.0f
     }
 }

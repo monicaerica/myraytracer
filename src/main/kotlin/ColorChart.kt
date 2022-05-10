@@ -1,3 +1,7 @@
+/**
+ * Contains hdr RGB values for different colours, to be used for quick usage where there is no need for subtle color adjustment
+ */
+
 val WHITE: Color = Color(1.0f, 1.0f, 1.0f)
 val BLACK: Color = Color(0.0f, 0.0f, 0.0f)
 val RED: Color = Color(1.0f, 0.0f, 0.0f)

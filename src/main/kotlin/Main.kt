@@ -38,8 +38,7 @@ class Demo: CliktCommand(name = "demo"){
         world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, -5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 5.0f, 0.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 5.0f)) * Scaling(scale)))
-        world.AddShape(BBox(corner1 = Point(0.0f, 0.0f, 0.0f), corner2 = Point(1.0f, 1.0f, 1.0f), transformation = Translation(Vec(-10.0f, 5.0f, 0.0f))))
-        world.AddShape(BBox(corner1 = Point(0.0f, 0.0f, 0.0f), corner2 = Point(5.0f, 5.0f, 5.0f), transformation = Translation(Vec(-5.0f, 5.0f, 5.0f))))
+        world.AddShape(Plane(transformation = Translation(Vec(0.0f, 0.0f, 10f))))
         tracer.FireAllRays { if (world.rayIntersection(it) != null)  NAVY else BLACK }
         image.SaveLDR(fname, "PNG", 1.0f)
 

@@ -22,7 +22,9 @@ class World (vararg shapesin: Shape){
         var closest : HitRecord? = null
         var intersection : HitRecord? = null
         for (shape in shapes){
-            intersection = shape?.rayIntersection(ray)
+            if (shape != null) {
+                intersection = shape.rayIntersection(ray)
+            }
             if (intersection != null){
                 if (closest == null || intersection.t < closest.t ){
                     closest = intersection

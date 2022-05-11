@@ -115,7 +115,7 @@ class BBox(val corner1: Point = Point(0.0f, 0.0f, 0.0f), val corner2: Point = Po
         return(t0 < t1 && t0 > ray.tmin && t1 < ray.tmax)
 
     }
-    fun boxHitRec(ray: Ray):HitRecord?{
+    override fun rayIntersection(ray: Ray):HitRecord?{
         val txMin: Float
         val txMax: Float
         val tyMin: Float

@@ -22,12 +22,12 @@ class Demo: CliktCommand(name = "demo"){
     override fun run() {
         val image: HDRImage = HDRImage(width, height)
         val ar: Float = image.width.toFloat() / image.height.toFloat()
-        var camera: PerpectiveCamera = PerpectiveCamera(AspectRatio = ar,trans = RotationZ(rotation) * Translation(VecX * (-2.0f) + VecZ * camheight) * RotationY(
-            atan(camheight / 3.0f) * 180.0f / PI.toFloat()))
+        var camera: PerpectiveCamera = PerpectiveCamera(AspectRatio = ar,trans = RotationZ(rotation) * Translation(VecX * (-2.0f) + VecZ * camheight))
         var tracer: ImageTracer = ImageTracer(image = image, camera = camera)
         var world: World = World()
         val scale: Vec = Vec(0.1f, 0.1f, 0.1f)
 
+/*
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, 5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, 5.0f)) * Scaling(scale)))
@@ -38,9 +38,14 @@ class Demo: CliktCommand(name = "demo"){
         world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, -5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 5.0f, 0.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 5.0f)) * Scaling(scale)))
-        world.AddShape(Plane(transformation = Translation(Vec(0.0f, 0.0f, 10f))))
-        tracer.FireAllRays { if (world.rayIntersection(it) != null)  NAVY else BLACK }
+
+ */
+        world.AddShape(Triangle(Point(0.0f, 2.0f, 0.0f), Point(0.0f, -2.0f, 1.0f), Point(0.0f, 0.0f, 2.0f)))
+        world.AddShape(BBox(transformation = Transformation()))
+
+        tracer.FireAllRays { if (world.rayIntersection(it) != null)  WHITE else BLACK }
         image.SaveLDR(fname, "PNG", 1.0f)
+
 
 
 

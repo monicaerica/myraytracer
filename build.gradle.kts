@@ -23,7 +23,6 @@ dependencies {
 tasks.test {
     useJUnit()
     useJUnitPlatform()
-    scanForTestClasses = false
 }
 
 tasks.withType<KotlinCompile> {

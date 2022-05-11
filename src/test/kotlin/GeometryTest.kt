@@ -98,8 +98,8 @@ internal class NormalTest {
     fun TestNormal(){
         val normal: Normal = Normal(1.0f, 2.0f, 3.0f)
         val normalneg: Normal = Normal(-1.0f, -2.0f, -3.0f)
-        println(normal.neg())
-        assert(normal.neg().IsClose(normalneg))
+        println(normal.Neg())
+        assert(normal.Neg().IsClose(normalneg))
         normal.Normalize()
         val norm: Float = normal.Norm()
         assertEquals(norm, 1.0f, 1e-5f)
@@ -150,7 +150,7 @@ internal class PointTest {
 
 }
 
-internal class TransformationTest {
+internal class TransformationTesting() {
     companion object {
         val VEC_X : Vec = Vec(1.0f, 0.0f, 0.0f)
         val VEC_Y : Vec = Vec(0.0f, 1.0f, 0.0f)

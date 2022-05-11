@@ -8,10 +8,10 @@ import kotlin.math.*
  */
 fun sphereNormal(point: Point, rayDir: Vec): Normal {
     val result = Normal(point.x, point.y, point.z)
-    if (point.point_to_vec() * rayDir < 0)
+    if (point.PointToVec() * rayDir < 0)
         return result
     else
-        return result.neg()
+        return result.Neg()
 }
 
 /**
@@ -44,7 +44,7 @@ class Sphere(val transformation: Transformation = Transformation()) : Shape() {
      */
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay: Ray = ray.transform(this.transformation.Inverse())
-        val originVec: Vec = invRay.Origin.point_to_vec()
+        val originVec: Vec = invRay.Origin.PointToVec()
         val a: Float = invRay.Dir.SquaredNorm()
         val b: Float = originVec * 2.0f * invRay.Dir
         val c: Float = originVec.SquaredNorm() - 1.0f

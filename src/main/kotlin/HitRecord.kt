@@ -10,7 +10,7 @@ data class HitRecord(
     fun isClose(other: HitRecord?): Boolean {
         var isClose: Boolean = false
         if (other != null) {
-            if (this.worldPoint.is_close(other.worldPoint) &&
+            if (this.worldPoint.IsClose(other.worldPoint) &&
                 this.normal.IsClose(other.normal) &&
                 this.surfacePoint.IsClose(other.surfacePoint) &&
                 abs(this.t - other.t)<1e-5f &&

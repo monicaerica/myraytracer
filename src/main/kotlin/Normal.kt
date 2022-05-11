@@ -22,7 +22,7 @@ data class Normal(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f)
         return isclose
     }
 
-    fun neg(): Normal{
+    fun Neg(): Normal{
         return (this.times(-1.0f))
     }
 

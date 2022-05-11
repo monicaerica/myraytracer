@@ -23,7 +23,7 @@ data class Ray(
      * @return IsClose: True if they are close
      */
     fun IsClose(other: Ray, epsilon: Float = 1e-5f): Boolean {
-        return Origin.is_close(other.Origin, epsilon = epsilon) and Dir.IsClose(other.Dir, epsilon = epsilon)
+        return Origin.IsClose(other.Origin, epsilon = epsilon) and Dir.IsClose(other.Dir, epsilon = epsilon)
     }
 
     /**

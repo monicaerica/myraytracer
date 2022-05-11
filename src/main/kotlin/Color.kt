@@ -8,9 +8,9 @@ public data class Color(var r: Float = 0.0f, var g: Float = 0.0f, var b: Float =
         return Color (this.r * other, this.g * other, this.b * other)
     }
 
-    fun is_close(other: Color): Boolean{
+    fun IsClose(other: Color, epsilon : Float = 1e-5f): Boolean{
         var isclose: Boolean = false
-        if ((this.r - other.r) < 1e-5f && (this.g - other.g) < 1e-5f && (this.b - other.b) < 1e-5f) {
+        if (IsClose(this.r, other.r, epsilon) && IsClose(this.g, other.g, epsilon) && IsClose(this.b, other.b, epsilon)) {
             isclose = true
         }
         return isclose

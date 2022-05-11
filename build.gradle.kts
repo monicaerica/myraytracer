@@ -13,12 +13,15 @@ repositories {
 }
 
 dependencies {
-    implementation("junit:junit:4.13.1")
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("com.github.ajalt.clikt:clikt:3.4.2")
+    implementation("junit:junit:4.13.2")
+    implementation("org.junit.jupiter:junit-jupiter:5.8.2")
     testImplementation(kotlin("test"))
+    testImplementation("junit:junit:4.13")
 }
 
 tasks.test {
+    useJUnit()
     useJUnitPlatform()
 }
 

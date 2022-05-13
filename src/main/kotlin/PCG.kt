@@ -9,6 +9,10 @@
 //constructor.
 //https://www.callicoder.com/kotlin-data-classes/
 
+/**
+ * Generates random integer positive numbers of 32 bits in the [0, 2^32-1] interval
+ * PCG algorithm
+ */
 class PCG(val init_state : ULong = 42u, val init_seq : ULong = 54u,
                var state : ULong = 0u,
                var inc : ULong = 0u){
@@ -18,7 +22,11 @@ class PCG(val init_state : ULong = 42u, val init_seq : ULong = 54u,
         this.state += init_state
         this.Random()
     }
-
+    /**
+     * Generates random integer positive numbers of 32 bits in the [0, 2^32-1] interval
+     * PCG algorithm
+     * @return UInt random number
+     */
     fun Random(): UInt{
         var oldstate = this.state
         this.state = oldstate * 6364136223846793005u + this.inc

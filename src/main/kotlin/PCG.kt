@@ -9,6 +9,9 @@
 //constructor.
 //https://www.callicoder.com/kotlin-data-classes/
 
+import java.lang.Math.pow
+import kotlin.math.pow
+
 /**
  * Generates random integer positive numbers of 32 bits in the [0, 2^32-1] interval
  * PCG algorithm
@@ -33,5 +36,14 @@ class PCG(val init_state : ULong = 42u, val init_seq : ULong = 54u,
         var xorshifted = (((oldstate shr 18) xor oldstate) shr 27).toUInt()
         var rot = (oldstate shr 59).toUInt()
         return ((xorshifted shr rot.toInt()) or ( xorshifted shl ((-rot.toInt()) and 31).toInt())).toUInt()
+    }
+
+    /**
+     * Generates random float numbers
+     * PCG algorithm
+     * @return Float random number
+     */
+    fun RandomFloat(): Float{
+        return ((this.Random().toFloat())/2f.pow(32))
     }
 }

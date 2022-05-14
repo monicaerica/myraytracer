@@ -7,7 +7,7 @@ abstract class Shape(transformation: Transformation = Transformation()) {
     }
 }
 
-class Plane(val transformation: Transformation = Transformation()): Shape() {
+class Plane(val transformation: Transformation = Transformation(), val material: Material = Material()): Shape() {
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay: Ray = ray.transform(this.transformation.Inverse())
         if (abs(invRay.Dir.z)<1e-5f)

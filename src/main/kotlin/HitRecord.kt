@@ -5,7 +5,8 @@ data class HitRecord(
     var normal: Normal = Normal(),
     var surfacePoint: Vec2d = Vec2d(),
     var t: Float = 0.0f,
-    var ray: Ray = Ray()
+    var ray: Ray = Ray(),
+    var material : Material
 ) {
     fun isClose(other: HitRecord?): Boolean {
         var isClose: Boolean = false

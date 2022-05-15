@@ -1,13 +1,13 @@
 import kotlin.math.abs
 import kotlin.math.floor
 
-abstract class Shape(transformation: Transformation = Transformation()) {
+abstract class Shape(val transformation: Transformation, val material: Material) {
     open fun rayIntersection(ray: Ray): HitRecord?{
         return null
     }
 }
 
-class Plane(val transformation: Transformation = Transformation(), val material: Material = Material()): Shape() {
+class Plane(transformation: Transformation = Transformation(), material: Material = Material()): Shape(transformation, material) {
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay: Ray = ray.transform(this.transformation.Inverse())
         if (abs(invRay.Dir.z)<1e-5f)
@@ -28,7 +28,8 @@ class Plane(val transformation: Transformation = Transformation(), val material:
             normal = norm,
             surfacePoint = Vec2d(hitPoint.x - floor(hitPoint.x), hitPoint.y - floor(hitPoint.y)),
             t = t,
-            ray = ray
+            ray = ray,
+            material = this.material
         )
     }
 }

@@ -210,7 +210,7 @@ class BBox(val corner1: Point = Point(0.0f, 0.0f, 0.0f), val corner2: Point = Po
                 surfacePoint = getUv(face, hitPoint),
                 t = t,
                 ray = ray,
-                material = this.material
+                shape = this
             )
         }
         else{

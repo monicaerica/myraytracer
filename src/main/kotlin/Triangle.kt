@@ -108,7 +108,7 @@ class Triangle(val A: Point, val B: Point, val C: Point, transformation: Transfo
             surfacePoint = pointUV,
             t = t,
             ray = ray,
-            material = this.material
+            shape = this
         )
     }
 }

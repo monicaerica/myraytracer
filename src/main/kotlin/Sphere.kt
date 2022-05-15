@@ -73,7 +73,7 @@ class Sphere(transformation: Transformation = Transformation(), material: Materi
             surfacePoint = spherePointToUv(hitPoint),
             t = firstHit,
             ray = ray,
-            material = this.material
+            shape = this
         )
 
     }

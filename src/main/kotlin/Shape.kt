@@ -29,7 +29,7 @@ class Plane(transformation: Transformation = Transformation(), material: Materia
             surfacePoint = Vec2d(hitPoint.x - floor(hitPoint.x), hitPoint.y - floor(hitPoint.y)),
             t = t,
             ray = ray,
-            material = this.material
+            shape = this
         )
     }
 }

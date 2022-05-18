@@ -18,6 +18,7 @@ class Demo: CliktCommand(name = "demo"){
     private val height: Int by option("--height", "--h", help = "Image height in pixels (default = 480px)").int().default(480)
     private val rotation: Float by option ("--rotation", "--r", help="Rotation of the observer around z axis in degrees").float().default(0.0f)
     private val camheight: Float by option ("--camheight", "--ch", help = "Height of the camera").float().default(0.0f)
+    private val algorithm: Int by option ("--algorithm", "--a", help = "Select the algorithm you wish to use to render the image: \n 1- OnOffRender\n 2- FlatRender").int().default(1)
     private val fname by option("--fname", "-f", help = "Filename").required()
     override fun run() {
         val image: HDRImage = HDRImage(width, height)
@@ -26,6 +27,12 @@ class Demo: CliktCommand(name = "demo"){
         var tracer: ImageTracer = ImageTracer(image = image, camera = camera)
         var world: World = World()
         val scale: Vec = Vec(0.1f, 0.1f, 0.1f)
+//        when (algorithm) {
+//            1 -> val render : OnOffRender = OnOffRender()
+//            2 -> print("x == 2")
+//            else -> {
+//                print("x is neither 1 nor 2")
+//            }
 
 /*
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, 5.0f)) * Scaling(scale)))

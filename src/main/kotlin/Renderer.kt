@@ -13,11 +13,9 @@ class OnOffRender(world: World = World(), background_color: Color = BLACK, var c
     }
 }
 
-class FlatRender(world: World = World(), background_color: Color = BLACK, var color: Color = WHITE):Renderer(world, background_color){
+class FlatRender(world: World = World(), background_color: Color = BLACK):Renderer(world, background_color){
     override fun Render(ray: Ray):Color{
-        val hit = this.world.rayIntersection(ray)
-        if (hit == null)
-            return this.background_color
+        val hit = this.world.rayIntersection(ray) ?: return this.background_color
         val material = hit.shape.material
         return (material.brdf.pigment.GetColor(hit.surfacePoint) + material.emitted_radiance.GetColor(hit.surfacePoint))
     }

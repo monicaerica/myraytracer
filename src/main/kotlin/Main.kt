@@ -27,16 +27,14 @@ class Demo: CliktCommand(name = "demo"){
         var tracer: ImageTracer = ImageTracer(image = image, camera = camera)
         var world: World = World()
         val scale: Vec = Vec(0.1f, 0.1f, 0.1f)
-//        when (algorithm) {
-//            1 -> val render : OnOffRender = OnOffRender()
-//            2 -> print("x == 2")
-//            else -> {
-//                print("x is neither 1 nor 2")
-//            }
+        val render = if (algorithm == 1) {
+            OnOffRender(world)
+        } else {
+            FlatRender(world)
+        }
 
-/*
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, 5.0f)) * Scaling(scale)))
-        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale)))
+        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = CheckredPigment(WHITE, FUCHSIA, 4)))))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, 5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, -5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, 5.0f, 5.0f)) * Scaling(scale)))
@@ -46,11 +44,10 @@ class Demo: CliktCommand(name = "demo"){
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 5.0f, 0.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 5.0f)) * Scaling(scale)))
 
- */
-        world.AddShape(Triangle(Point(0.0f, 2.0f, 0.0f), Point(0.0f, -2.0f, 1.0f), Point(0.0f, 0.0f, 2.0f)))
-        world.AddShape(BBox(transformation = Transformation()))
+//        world.AddShape(Triangle(Point(0.0f, 2.0f, 0.0f), Point(0.0f, -2.0f, 1.0f), Point(0.0f, 0.0f, 2.0f)))
+//        world.AddShape(BBox(transformation = Transformation()))
 
-        tracer.FireAllRays { if (world.rayIntersection(it) != null)  WHITE else BLACK }
+        tracer.FireAllRays {render.Render(it)}2
         image.SaveLDR(fname, "PNG", 1.0f)
 
 

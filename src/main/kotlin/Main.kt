@@ -47,7 +47,7 @@ class Demo: CliktCommand(name = "demo"){
 //        world.AddShape(Triangle(Point(0.0f, 2.0f, 0.0f), Point(0.0f, -2.0f, 1.0f), Point(0.0f, 0.0f, 2.0f)))
 //        world.AddShape(BBox(transformation = Transformation()))
 
-        tracer.FireAllRays {render.Render(it)}2
+        tracer.FireAllRays {render.Render(it)}
         image.SaveLDR(fname, "PNG", 1.0f)
 
 

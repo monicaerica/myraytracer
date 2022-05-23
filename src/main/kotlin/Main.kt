@@ -32,7 +32,7 @@ class Demo: CliktCommand(name = "demo"){
         } else {
             FlatRender(world)
         }
-/*
+
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, 5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = CheckredPigment(WHITE, FUCHSIA, 4)))))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, 5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = CheckredPigment(BLUE, KHAKI, 4)))))
@@ -43,10 +43,7 @@ class Demo: CliktCommand(name = "demo"){
         world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, -5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 5.0f, 0.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 5.0f)) * Scaling(scale)))
-*/
-        world.AddShape(Triangle(Point(0.0f, 2.0f, 0.0f), Point(0.0f, -2.0f, 1.0f), Point(0.0f, 0.0f, 2.0f), material = Material(brdf = DiffuseBRDF(pigment = CheckredPigment(AQUA, KHAKI, 5)))))
 
-//        world.AddShape(BBox(transformation = Transformation()))
 
 
         tracer.FireAllRays {render.Render(it)}

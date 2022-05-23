@@ -1,5 +1,7 @@
+import javax.lang.model.type.UnionType
 import kotlin.math.abs
 import kotlin.math.sqrt
+import kotlin.collections.union
 
 data class Vec(
     var x: Float = 0.0f,
@@ -120,4 +122,18 @@ data class Vec(
     fun toNormal(): Normal{
         return Normal(x, y, z)
     }
+}
+
+
+fun createOnbFromZ (normal: Normal): Triple<Vec, Vec, Vec>{
+    if (normal.SquaredNorm() != 1.0f)
+        normal.Normalize()
+    val sign: Float =  if (normal.z > 0.0f) 1.0f else -1.0f
+    val a: Float = -1.0f / (sign + normal.z)
+    val b: Float = normal.x * normal.y * a
+
+    val e1: Vec = Vec(1.0f + sign * normal.x * normal.x *a, sign * b, -sign * normal.x)
+    val e2: Vec = Vec(b, sign + normal.y * normal.y * a, -normal.y)
+
+    return Triple(e1, e2, Vec(normal.x, normal.y, normal.z))
 }

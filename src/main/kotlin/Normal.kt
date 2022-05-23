@@ -14,6 +14,10 @@ data class Normal(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f)
         return "Normal: (x:" + this.x + ", y:" + this.y + ", z:" + this.z + ")"
     }
 
+    fun ToVec(): Vec{
+        return Vec(this.x, this.y, this.z)
+    }
+
     fun IsClose(other: Normal, epsilon: Float = 1e-5f): Boolean{
         var isclose: Boolean = false
         if (abs(this.x - other.x) < epsilon && abs(this.y - other.y) < epsilon && abs(this.z - other.z) < epsilon) {

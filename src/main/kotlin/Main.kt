@@ -27,11 +27,15 @@ class Demo: CliktCommand(name = "demo"){
         var tracer: ImageTracer = ImageTracer(image = image, camera = camera)
         var world: World = World()
         val scale: Vec = Vec(0.1f, 0.1f, 0.1f)
-        val render = if (algorithm == 1) {
-            OnOffRender(world)
-        } else {
-            FlatRender(world)
+        var render: Renderer = OnOffRender()
+        if (algorithm == 1) {
+            render = OnOffRender(world)
+        } else if (algorithm == 2) {
+            render = FlatRender(world)
+        } else if (algorithm == 3){
+            render = PathTracer(world, maxDepth = 5, numberOfRays = 10, russianRouletteLimit = 5)
         }
+
 
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, 5.0f)) * Scaling(scale)))
         world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = CheckredPigment(WHITE, FUCHSIA, 4)))))

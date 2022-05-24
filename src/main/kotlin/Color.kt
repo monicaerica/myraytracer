@@ -8,6 +8,10 @@ public data class Color(var r: Float = 0.0f, var g: Float = 0.0f, var b: Float =
         return Color (this.r * other, this.g * other, this.b * other)
     }
 
+    operator fun times(other: Color): Color{
+        return Color (this.r * other.r, this.g * other.g, this.b * other.b)
+    }
+
     fun IsClose(other: Color, epsilon : Float = 1e-5f): Boolean{
         var isclose: Boolean = false
         if (IsClose(this.r, other.r, epsilon) && IsClose(this.g, other.g, epsilon) && IsClose(this.b, other.b, epsilon)) {

@@ -104,6 +104,19 @@ internal class NormalTest {
         val norm: Float = normal.Norm()
         assertEquals(norm, 1.0f, 1e-5f)
     }
+
+    @Test
+    fun createOnbFromZ(){
+        val pcg: PCG = PCG()
+
+        for (i in (0 until 100)){
+            val normal: Normal = Normal(pcg.RandomFloat(), pcg.RandomFloat(), pcg.RandomFloat())
+            val (e1, e2, e3) = createOnbFromZ(normal)
+
+            assert(e3.toNormal().IsClose(normal))
+            assert(IsClose(e1 * e2, 0.0f))
+        }
+    }
 }
 
 internal class PointTest {

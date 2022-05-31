@@ -39,7 +39,7 @@ class matrixThreebyThree(var elements: FloatArray) {
     }
 }
 
-class Triangle(val A: Point, val B: Point, val C: Point) : Shape() {
+class Triangle(val A: Point, val B: Point, val C: Point, transformation: Transformation = Transformation(), material: Material = Material()) : Shape(transformation, material) {
     private val vecAB: Vec = B - A
     private val vecAC: Vec = C - A
 
@@ -107,7 +107,8 @@ class Triangle(val A: Point, val B: Point, val C: Point) : Shape() {
             normal = normal,
             surfacePoint = pointUV,
             t = t,
-            ray = ray
+            ray = ray,
+            shape = this
         )
     }
 }

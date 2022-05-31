@@ -45,7 +45,7 @@ fun getUv(face: Int, point: Point): Vec2d{
 }
 
 
-class BBox(val corner1: Point = Point(0.0f, 0.0f, 0.0f), val corner2: Point = Point(0.0f, 0.0f, 1.0f), val transformation: Transformation): Shape() {
+class BBox(val corner1: Point = Point(0.0f, 0.0f, 0.0f), val corner2: Point = Point(0.0f, 0.0f, 1.0f), transformation: Transformation, material: Material = Material()): Shape(transformation, material) {
 
     /**
      * Detrmines whether a ray hits or not the box
@@ -209,7 +209,8 @@ class BBox(val corner1: Point = Point(0.0f, 0.0f, 0.0f), val corner2: Point = Po
                 normal = normal,
                 surfacePoint = getUv(face, hitPoint),
                 t = t,
-                ray = ray
+                ray = ray,
+                shape = this
             )
         }
         else{

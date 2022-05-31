@@ -33,8 +33,10 @@ fun spherePointToUv(point: Point): Vec2d {
  *
  * @property transformation: The transformation to be applied to the sphere
  */
-class Sphere(val transformation: Transformation = Transformation()) : Shape() {
+//class DiffuseBRDF(pigment: Pigment = UniformPigment(WHITE)): BRDF(pigment)
+class Sphere(transformation: Transformation = Transformation(), material: Material = Material()) : Shape(transformation, material) {
 
+//class Sphere() : Shape() {
     /**
      * Finds the point on the sphere (in three-dimensional space) at which there is an intersection with a [ray],
      * then converts it to uv coordinates and gives back a hit record containing the required information to render the sphere
@@ -70,7 +72,8 @@ class Sphere(val transformation: Transformation = Transformation()) : Shape() {
             normal = this.transformation * sphereNormal(hitPoint, invRay.Dir),
             surfacePoint = spherePointToUv(hitPoint),
             t = firstHit,
-            ray = ray
+            ray = ray,
+            shape = this
         )
 
     }

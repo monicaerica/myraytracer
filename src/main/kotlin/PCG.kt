@@ -16,7 +16,7 @@ import kotlin.math.pow
  * Generates random integer positive numbers of 32 bits in the [0, 2^32-1] interval
  * PCG algorithm
  */
-class PCG(val init_state : ULong = 42u, val init_seq : ULong = 54u,
+data class PCG(val init_state : ULong = 42u, val init_seq : ULong = 54u,
                var state : ULong = 0u,
                var inc : ULong = 0u){
     init{

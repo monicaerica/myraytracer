@@ -11,7 +11,7 @@ import kotlin.Float.Companion.POSITIVE_INFINITY
 data class Ray(
     val Origin: Point = Point(),
     val Dir: Vec = Vec(),
-    val tmin: Float = 1e-5f,
+    val tmin: Float = 1e-3f,
     val tmax: Float = POSITIVE_INFINITY,
     val Depth: Int = 0
 

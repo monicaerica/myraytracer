@@ -7,11 +7,14 @@ class ImageTracer(val image: HDRImage, val camera: Camera) {
     }
 
     fun FireAllRays(func: (Ray) -> Color) {
+        var percent: Float = 0.0f
         for (row in 0 until this.image.height) {
             for (col in 0 until this.image.width) {
                 var ray: Ray = this.FireRay(col, row)
                 var color: Color = func(ray)
                 this.image.SetPixel(col, row, color)
+                percent += 1.0f
+                println(percent / (this.image.width * this.image.height) * 100.0f)
             }
         }
     }

@@ -22,7 +22,7 @@ class FlatRender(world: World = World(), background_color: Color = BLACK):Render
     }
 }
 
-class PathTracer(world: World = World(), background_color: Color = BLACK, val pcg: PCG = PCG(), val numberOfRays: Int, val maxDepth: Int, val russianRouletteLimit: Int): Renderer(world, background_color){
+class PathTracer(world: World = World(), background_color: Color = BLACK, private val pcg: PCG = PCG(), val numberOfRays: Int, val maxDepth: Int, val russianRouletteLimit: Int): Renderer(world, background_color){
     override fun Render (ray: Ray): Color{
         if (ray.Depth > this.maxDepth)
             return BLACK
@@ -41,7 +41,6 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, val pc
         }
 
         var cumRadiance: Color = Color(0.0f, 0.0f, 0.0f)
-
         if (hitColorLum > 0.0f){
             for (rayIndex in 0 until numberOfRays){
                 val newRay: Ray = hitMaterial.brdf.ScatterRay(
@@ -52,12 +51,13 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, val pc
                     depth = ray.Depth + 1
                 )
 
-                val newRadiance = Render(newRay)
+                val newRadiance = this.Render(newRay)
                 cumRadiance += hitColor * newRadiance
+
 
             }
         }
-        return emittedRadiance + cumRadiance * (1.0f / this.numberOfRays)
+        return emittedRadiance + cumRadiance * (1.0f / this.numberOfRays.toFloat())
     }
 
 

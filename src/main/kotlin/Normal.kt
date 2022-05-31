@@ -57,7 +57,7 @@ data class Normal(var x: Float = 0.0f, var y: Float = 0.0f, var z: Float = 0.0f)
 
     fun SquaredNorm(): Float{
 //        val kotlin_array: FloatArray = floatArrayOf(this.x,this.y, this.z)
-        var scalar : Float = x.pow(2) + y.pow(2) + z.pow(2)
+        var scalar : Float = x * x + y * y + z * z
         return scalar
     }
 

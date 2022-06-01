@@ -3,12 +3,87 @@ import java.io.*
 import java.nio.charset.Charset
 
 data class SourceLocation(var file_name : String = "", var line_num : Int = 0, var col_num : Int = 0) {
+    override fun toString(): String {
+        return file_name + " line: " + line_num.toString() +" col: "+ col_num.toString()
+    }
 }
 
-abstract class Token {
-    val location: SourceLocation = SourceLocation()
+enum class keywordEnum {
+    NEW,
+    WORLD,
+    SHAPE,
+    SPHERE,
+    PLANE,
+    TRIANGLE,
+    DISK,
+    CAMERA,
+    ORTHOGONAL,
+    PERSPECTIVE,
+    TRANSFORMATION,
+    TRANSLATION,
+    SCALING,
+    ROTATIONX,
+    ROTATIONY,
+    ROTATIONZ
+}
+
+val inToKeyword = mapOf(
+    "new" to keywordEnum.NEW,
+    "world" to keywordEnum.WORLD,
+    "shape" to keywordEnum.SHAPE,
+    "sphere" to keywordEnum.SPHERE,
+    "plane" to keywordEnum.PLANE,
+    "triangle" to keywordEnum.TRIANGLE,
+    "disk" to keywordEnum.DISK,
+    "camera" to keywordEnum.CAMERA,
+    "orthogonal" to keywordEnum.ORTHOGONAL,
+    "perspective" to keywordEnum.PERSPECTIVE,
+    "transformation" to keywordEnum.TRANSFORMATION,
+    "translation" to keywordEnum.TRANSLATION,
+    "scaling" to keywordEnum.SCALING,
+    "rotationx" to keywordEnum.ROTATIONX,
+    "rotationy" to keywordEnum.ROTATIONY,
+    "rotationz" to keywordEnum.ROTATIONZ
+)
+
+
+
+abstract class Token (    val location: SourceLocation = SourceLocation()) {
 
 }
+
+class keywordToken(val keyword: String): Token(){
+    override fun toString(): String {
+        return keyword
+    }
+}
+
+class symbolToken(val symbol: String): Token(){
+    override fun toString(): String {
+        return symbol
+    }
+}
+
+class identifierToken(val identifier: String): Token(){
+    override fun toString(): String {
+        return identifier.toString()
+    }
+}
+
+class literalNumberToken(val litnum: Float){
+    override fun toString(): String {
+        return litnum.toString()
+    }
+}
+
+class stringToken(val string: String){
+    override fun toString(): String {
+        return string.toString()
+    }
+}
+
+
+
 
 //val reader: FileReader = FileReader(file_name)
 //val pushback_reader = PushbackReader(reader)
@@ -49,4 +124,8 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         this.saved_char = ch
         this.location = this.saved_location
     }
+}
+
+data class grammarError(override val message: String, val sourceLocation: SourceLocation): Exception(){
+
 }

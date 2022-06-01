@@ -32,11 +32,12 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
             ch = this.saved_char
             this.saved_char = null
         }
-        else {
-            var ascii = this.stream.read()
-            if (ascii != -1) ch = ascii.toChar()
-                else ch = null
-        }
+//        else {
+//            var ascii = this.stream.read()
+//            if (ascii != -1) ch = ascii.toChar()
+//                else ch = null
+//        }
+        else{ch = this.stream.read().toChar()}
 
         this.UpdatePos(ch)
         this.saved_location = this.location

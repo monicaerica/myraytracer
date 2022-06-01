@@ -21,6 +21,7 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
             '\n' -> {this.location.col_num = 1
                     this.location.line_num += 1}
             null -> return
+            ' ' -> return
             '\t' -> this.location.col_num = this.tabulations
             else -> this.location.col_num += 1
         }

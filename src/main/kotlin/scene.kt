@@ -3,12 +3,21 @@ import java.io.*
 import java.nio.charset.Charset
 
 const val WHITESPACE = " \n\r\t"
-
+const val SYMBOL = ",():[]"
 data class SourceLocation(var file_name : String = "", var line_num : Int = 0, var col_num : Int = 0) {
     override fun toString(): String {
         return "$file_name line: $line_num col: $col_num"
     }
 }
+
+/**
+ * Class used for errors found while reading the input file, given a source location should return a user friendly message
+ * describing the error
+ */
+data class grammarError(override val message: String, val sourceLocation: SourceLocation): Exception(){
+
+}
+
 
 enum class keywordEnum {
     NEW,
@@ -144,12 +153,27 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         }
         this.UnreadChar(ch)
     }
+
+    fun parseStringToken(tokenLocation: SourceLocation): stringToken{
+        var token: String = ""
+        while (true){
+            var ch = this.ReadChar()
+
+            if (ch == '"'){
+                break
+            }
+
+            if (ch in ""){
+                //For some reason can't add sourcelocation!!!
+                GrammarError("unterminated string")
+            }
+
+            token += ch
+        }
+
+        return stringToken(token)
+    }
+
+
 }
 
-/**
- * Class used for errors found while reading the input file, given a source location should return a user friendly message
- * describing the error
- */
-data class grammarError(override val message: String, val sourceLocation: SourceLocation): Exception(){
-
-}

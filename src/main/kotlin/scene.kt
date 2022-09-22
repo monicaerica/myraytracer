@@ -4,10 +4,10 @@ import java.nio.charset.Charset
 
 data class SourceLocation(var file_name : String = "", var line_num : Int = 0, var col_num : Int = 0) {
     override fun toString(): String {
-        return file_name + " line: " + line_num.toString() +" col: "+ col_num.toString()
+        return "$file_name line: $line_num col: $col_num"
     }
 }
-
+    
 enum class keywordEnum {
     NEW,
     WORLD,

@@ -2,12 +2,14 @@ import java.io.Reader
 import java.io.*
 import java.nio.charset.Charset
 
+const val WHITESPACE = " \n\r\t"
+
 data class SourceLocation(var file_name : String = "", var line_num : Int = 0, var col_num : Int = 0) {
     override fun toString(): String {
         return "$file_name line: $line_num col: $col_num"
     }
 }
-    
+
 enum class keywordEnum {
     NEW,
     WORLD,
@@ -102,10 +104,10 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         }
     }
 
-    fun ReadChar(): Char?{
-        var ch : Char?
+    fun ReadChar(): Char{
+        var ch : Char
         if (this.saved_char != null){
-            ch = this.saved_char
+            ch = this.saved_char!!
             this.saved_char = null
         }
 //        else {
@@ -126,8 +128,28 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         this.saved_char = ch
         this.location = this.saved_location
     }
+
+    fun skipWhitespaceAndComents(){
+        var ch: Char = this.ReadChar()
+        while (ch!! in WHITESPACE || ch == '#'){
+            if (ch == '#'){
+                while (!(this.ReadChar() in "\r\n" || this.ReadChar() in "" )){
+                    {}
+                }
+            }
+            ch = this.ReadChar()
+            if (ch in ""){
+                return
+            }
+        }
+        this.UnreadChar(ch)
+    }
 }
 
+/**
+ * Class used for errors found while reading the input file, given a source location should return a user friendly message
+ * describing the error
+ */
 data class grammarError(override val message: String, val sourceLocation: SourceLocation): Exception(){
 
 }

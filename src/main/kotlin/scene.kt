@@ -82,7 +82,7 @@ class identifierToken(val identifier: String): Token(){
     }
 }
 
-class literalNumberToken(val litnum: Float): Token(){
+class literalNumberToken(val litnum: Float, location: SourceLocation): Token(){
     override fun toString(): String {
         return litnum.toString()
     }
@@ -203,8 +203,27 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         }
     }
 
-    private fun parseFloatToken(): Token {
+    private fun parseFloatToken(firstChar: Char, tokenLocation: SourceLocation): literalNumberToken {
+        var token: String = firstChar.toString()
+        while (true){
+            var ch =this.ReadChar()
 
+            if (!(ch.isDigit() || ch == '.' || ch in "eE")){
+                this.UnreadChar(ch)
+                break
+            }
+
+            token += ch
+        }
+
+        val num: Float
+        try {
+            num= token.toFloat()
+        }catch (err: NumberFormatException) {
+            throw GrammarError("Invalid floating point number: $token", this.location)
+        }
+
+        return literalNumberToken(litnum = num, location = this.location)
     }
 
     private fun parseKeywordOrIdentifierToken(firstChar: Char, tokenLocation: SourceLocation): Token {

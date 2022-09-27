@@ -1,4 +1,5 @@
 import java.io.*
+import java.security.InvalidKeyException
 
 const val WHITESPACE = " \n\r\t"
 const val SYMBOL = "(),[]<>*"
@@ -76,7 +77,7 @@ class symbolToken(val symbol: String, location: SourceLocation): Token(){
     }
 }
 
-class identifierToken(val identifier: String): Token(){
+class identifierToken(val identifier: String, location: SourceLocation): Token(){
     override fun toString(): String {
         return identifier.toString()
     }
@@ -192,19 +193,19 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
             return this.parseStringToken(tokenLocation = this.location)
         }
         else if (ch.isDigit() || ch in "+-."){
-            return this.parseFloatToken()
+            return this.parseFloatToken(firstChar = ch.toString(), tokenLocation = this.location)
             //Need to implement
         }
         else if (ch.isLetter() || ch == '_'){
-            return this.parseKeywordOrIdentifierToken(firstChar = ch, tokenLocation = this.location)
+            return this.parseKeywordOrIdentifierToken(firstChar = ch.toString(), tokenLocation = this.location)
         }
         else {
             throw GrammarError("Invalid character: $ch", this.location)
         }
     }
 
-    private fun parseFloatToken(firstChar: Char, tokenLocation: SourceLocation): literalNumberToken {
-        var token: String = firstChar.toString()
+    private fun parseFloatToken(firstChar: String, tokenLocation: SourceLocation): literalNumberToken {
+        var token: String = firstChar
         while (true){
             var ch =this.ReadChar()
 
@@ -226,8 +227,22 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         return literalNumberToken(litnum = num, location = this.location)
     }
 
-    private fun parseKeywordOrIdentifierToken(firstChar: Char, tokenLocation: SourceLocation): Token {
+    private fun parseKeywordOrIdentifierToken(firstChar: String, tokenLocation: SourceLocation): Token {
+        var token = firstChar
+        while (true) {
+            var ch = this.ReadChar()
+            if (!(ch.isLetterOrDigit() || ch == '_')){
+                this.UnreadChar(ch)
+                break
+            }
+            token += ch
+        }
 
+        try {
+            return keywordToken(inToKeyword.getValue(token).toString())
+        }catch (err: InvalidKeyException) {
+            return identifierToken(location = this.location, identifier = token)
+        }
     }
 
 

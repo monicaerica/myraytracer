@@ -166,7 +166,7 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
 
             if (ch == '\u0000'){
                 //For some reason can't add sourcelocation!!!
-                GrammarError("unterminated string")
+                GrammarError("unterminated string", location)
             }
 
             token += ch
@@ -192,11 +192,24 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
             return this.parseStringToken(tokenLocation = this.location)
         }
         else if (ch.isDigit() || ch in "+-."){
-            //return this.parseFloatToken()
+            return this.parseFloatToken()
             //Need to implement
+        }
+        else if (ch.isLetter() || ch == '_'){
+            return this.parseKeywordOrIdentifierToken(firstChar = ch, tokenLocation = this.location)
+        }
+        else {
+            throw GrammarError("Invalid character: $ch", this.location)
         }
     }
 
+    private fun parseFloatToken(): Token {
+
+    }
+
+    private fun parseKeywordOrIdentifierToken(firstChar: Char, tokenLocation: SourceLocation): Token {
+
+    }
 
 
 }

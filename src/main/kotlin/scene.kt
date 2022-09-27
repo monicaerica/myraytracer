@@ -1,9 +1,7 @@
-import java.io.Reader
 import java.io.*
-import java.nio.charset.Charset
 
 const val WHITESPACE = " \n\r\t"
-const val SYMBOL = ",():[]"
+const val SYMBOL = "(),[]<>*"
 data class SourceLocation(var file_name : String = "", var line_num : Int = 0, var col_num : Int = 0) {
     override fun toString(): String {
         return "$file_name line: $line_num col: $col_num"
@@ -59,7 +57,7 @@ val inToKeyword = mapOf(
 
 
 
-abstract class Token (    val location: SourceLocation = SourceLocation()) {
+abstract class Token (val location: SourceLocation = SourceLocation()) {
 
 }
 
@@ -68,8 +66,11 @@ class keywordToken(val keyword: String): Token(){
         return keyword
     }
 }
+class stopToken(location: SourceLocation) : Token(){
 
-class symbolToken(val symbol: String): Token(){
+}
+
+class symbolToken(val symbol: String, location: SourceLocation): Token(){
     override fun toString(): String {
         return symbol
     }
@@ -81,13 +82,13 @@ class identifierToken(val identifier: String): Token(){
     }
 }
 
-class literalNumberToken(val litnum: Float){
+class literalNumberToken(val litnum: Float): Token(){
     override fun toString(): String {
         return litnum.toString()
     }
 }
 
-class stringToken(val string: String){
+class stringToken(val string: String): Token(){
     override fun toString(): String {
         return string.toString()
     }
@@ -163,7 +164,7 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
                 break
             }
 
-            if (ch in ""){
+            if (ch == '\u0000'){
                 //For some reason can't add sourcelocation!!!
                 GrammarError("unterminated string")
             }
@@ -173,6 +174,29 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
 
         return stringToken(token)
     }
+
+    /**
+     * Reads a token and, based on the first character determines the type of token (literal, number, symbol)
+     */
+    fun readToken(): Token {
+        this.skipWhitespaceAndComents()
+        val ch = this.ReadChar()
+        if (ch == '\u0000'){
+            return stopToken(location = this.location)
+        }
+
+        if (ch in SYMBOL){
+            return symbolToken(symbol = ch.toString(),location = this.location)
+        }
+        else if (ch == '"'){
+            return this.parseStringToken(tokenLocation = this.location)
+        }
+        else if (ch.isDigit() || ch in "+-."){
+            //return this.parseFloatToken()
+            //Need to implement
+        }
+    }
+
 
 
 }

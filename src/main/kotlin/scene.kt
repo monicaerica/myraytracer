@@ -368,7 +368,8 @@ fun parseVector(inFile: InputStream, scene: Scene): Vec {
 
 fun parsePigment(inFile: InputStream, scene: Scene): Pigment {
     val keyword = expectKeyword(inFile, listOf(keywordEnum.CHECKERED, keywordEnum.UNIFORM, keywordEnum.IMAGE))
-    var result: Pigment
+    expectSymbol(inFile, "(")
+    var result: Pigment = UniformPigment(WHITE)
     when (keyword) {
         keywordEnum.UNIFORM -> {
             val color = parseColor(inFile, scene)
@@ -383,6 +384,9 @@ fun parsePigment(inFile: InputStream, scene: Scene): Pigment {
             val nSteps = (expectNumber(inFile, scene)).toInt()
             result = CheckredPigment(color1, color2, nSteps)
         }
-        //Implement image, need to check how we defined it 
+        //Implement image, need to check how we defined it
     }
+    expectSymbol(inFile, ")")
+    return result
+
 }

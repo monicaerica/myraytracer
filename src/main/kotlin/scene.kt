@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Assertions.assertTrue
 import java.io.*
+import kotlin.math.exp
 
 const val WHITESPACE = " \n\r\t"
 const val SYMBOL = "(),[]<>*"
@@ -18,7 +19,7 @@ data class grammarError(override val message: String, val sourceLocation: Source
 }
 
 
-enum class keywordEnum {
+enum class keywordEnum() {
     NEW,
     WORLD,
     SHAPE,
@@ -37,6 +38,8 @@ enum class keywordEnum {
     ROTATIONZ,
     MATERIAL,
     DIFFUSE,
+    UNIFORM,
+    CHECKERED,
     IMAGE
 }
 
@@ -59,6 +62,8 @@ val inToKeyword = mapOf(
     "rotationz" to keywordEnum.ROTATIONZ,
     "material" to keywordEnum.MATERIAL,
     "diffuse" to keywordEnum.DIFFUSE,
+    "uniform" to keywordEnum.UNIFORM,
+    "checkered" to keywordEnum.CHECKERED,
     "image" to keywordEnum.IMAGE
 
 )
@@ -69,9 +74,9 @@ abstract class Token (val location: SourceLocation = SourceLocation()) {
 
 }
 
-class keywordToken(val keyword: String, location: SourceLocation): Token(){
+class keywordToken(val keyword: keywordEnum, location: SourceLocation): Token(){
     override fun toString(): String {
-        return keyword
+        return keyword.toString()
     }
 }
 class stopToken(location: SourceLocation) : Token(){
@@ -255,7 +260,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
         }
 
         return if (inToKeyword.containsKey(token)) {
-            keywordToken(token, location = this.location)
+            keywordToken(inToKeyword[token]!!, location = this.location)
         } else {
             identifierToken(token, location = this.location)
         }
@@ -272,3 +277,112 @@ data class Scene(var materials: MutableMap<String, Material> = mutableMapOf(),
                  var floatVariables: MutableMap<String, Float> = mutableMapOf(),
                  var overriddenVariables: Set<String> = setOf()
 )
+
+/**
+ * Raises a grammar error if the token is not a symbol
+ */
+fun expectSymbol(inFile: InputStream, symbol: String) {
+    val token = inFile.readToken()
+    if (token !is symbolToken || token.symbol != symbol) {
+        throw GrammarError("Got $token instead of $symbol", location = token.location)
+    }
+}
+
+/**
+ * Raises a grammar error if the token is not a keyword
+ */
+
+fun expectKeyword(inFile: InputStream, keywords: List<keywordEnum>): keywordEnum {
+    val token = inFile.readToken()
+    if (token !is keywordToken) {
+        throw GrammarError("Expected a keyword, got $token", location = token.location)
+    }
+    if (token.keyword !in keywords) {
+        throw GrammarError("Expected a specific keyword, got $token", location = token.location)
+    }
+
+    return token.keyword
+}
+
+
+fun expectNumber(inFile: InputStream, scene: Scene): Float {
+    val token = inFile.readToken()
+    if (token is literalNumberToken) { return token.litnum}
+    else if (token is identifierToken) {
+        val varName = token.identifier
+        if (varName !in scene.floatVariables) {
+            throw GrammarError("Unknown variable: $token", location = token.location)
+        }
+        return scene.floatVariables[varName]!!
+
+    }
+
+    throw GrammarError("Got $token instead of a number", token.location)
+}
+
+fun expectString(inFile: InputStream): String {
+    val token = inFile.readToken()
+
+    if (token !is stringToken) { throw GrammarError("Got $token instead of a string", token.location) }
+
+    return token.string
+}
+
+fun expectIdentifier(inFile: InputStream): String {
+    val token = inFile.readToken()
+
+    if (token !is identifierToken) { throw GrammarError("Got $token instead of an identifier", token.location) }
+    return token.identifier
+}
+
+/**
+ * Parse a color to a Color type, the format in the file should be <r, g, b>
+ */
+fun parseColor(inFile: InputStream, scene: Scene): Color {
+    expectSymbol(inFile, "<")
+    val red = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+
+    val blue = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+
+    val green = expectNumber(inFile, scene)
+    expectSymbol(inFile, ">")
+
+    return Color(red, blue, green)
+}
+
+fun parseVector(inFile: InputStream, scene: Scene): Vec {
+    expectSymbol(inFile, "[")
+    val x = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+
+    val y = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+
+    val z = expectNumber(inFile, scene)
+    expectSymbol(inFile, "]")
+
+    return Vec(x, y, z)
+}
+
+fun parsePigment(inFile: InputStream, scene: Scene): Pigment {
+    val keyword = expectKeyword(inFile, listOf(keywordEnum.CHECKERED, keywordEnum.UNIFORM, keywordEnum.IMAGE))
+    var result: Pigment
+    when (keyword) {
+        keywordEnum.UNIFORM -> {
+            val color = parseColor(inFile, scene)
+            result = UniformPigment(color = color)
+        }
+
+        keywordEnum.CHECKERED -> {
+            val color1 = parseColor(inFile, scene)
+            expectSymbol(inFile, ",")
+            val color2 = parseColor(inFile, scene)
+            expectSymbol(inFile, ",")
+            val nSteps = (expectNumber(inFile, scene)).toInt()
+            result = CheckredPigment(color1, color2, nSteps)
+        }
+        //Implement image, need to check how we defined it 
+    }
+}

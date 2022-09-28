@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Assertions.assertTrue
 import java.io.*
-import java.security.InvalidKeyException
 
 const val WHITESPACE = " \n\r\t"
 const val SYMBOL = "(),[]<>*"
@@ -35,7 +34,10 @@ enum class keywordEnum {
     SCALING,
     ROTATIONX,
     ROTATIONY,
-    ROTATIONZ
+    ROTATIONZ,
+    MATERIAL,
+    DIFFUSE,
+    IMAGE
 }
 
 val inToKeyword = mapOf(
@@ -54,7 +56,11 @@ val inToKeyword = mapOf(
     "scaling" to keywordEnum.SCALING,
     "rotationx" to keywordEnum.ROTATIONX,
     "rotationy" to keywordEnum.ROTATIONY,
-    "rotationz" to keywordEnum.ROTATIONZ
+    "rotationz" to keywordEnum.ROTATIONZ,
+    "material" to keywordEnum.MATERIAL,
+    "diffuse" to keywordEnum.DIFFUSE,
+    "image" to keywordEnum.IMAGE
+
 )
 
 
@@ -63,7 +69,7 @@ abstract class Token (val location: SourceLocation = SourceLocation()) {
 
 }
 
-class keywordToken(val keyword: String): Token(){
+class keywordToken(val keyword: String, location: SourceLocation): Token(){
     override fun toString(): String {
         return keyword
     }
@@ -92,7 +98,7 @@ class literalNumberToken(val litnum: Float, location: SourceLocation): Token(){
 
 class stringToken(val string: String): Token(){
     override fun toString(): String {
-        return string.toString()
+        return string
     }
 }
 
@@ -248,10 +254,10 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
             token += ch
         }
 
-        try {
-            return keywordToken(inToKeyword.getValue(token).toString())
-        }catch (err: InvalidKeyException) {
-            return identifierToken(location = this.location, identifier = token)
+        return if (inToKeyword.containsKey(token)) {
+            keywordToken(token, location = this.location)
+        } else {
+            identifierToken(token, location = this.location)
         }
     }
 

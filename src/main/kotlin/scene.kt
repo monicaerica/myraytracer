@@ -406,3 +406,15 @@ fun parseBRDF(inFile: InputStream, scene: Scene): BRDF {
     }
 }
 
+fun parseMaterial(inFile: InputStream, scene: Scene): Pair<String, Material> {
+    val name = expectIdentifier(inFile)
+
+    expectSymbol(inFile,"(")
+    val brdf: BRDF = parseBRDF(inFile, scene)
+    expectSymbol(inFile, ",")
+    val emittedRadiance = parsePigment(inFile, scene)
+    expectSymbol(inFile, ")")
+    return Pair(name, Material())
+}
+
+

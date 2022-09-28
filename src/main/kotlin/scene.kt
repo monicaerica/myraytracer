@@ -41,7 +41,8 @@ enum class keywordEnum() {
     UNIFORM,
     CHECKERED,
     IMAGE,
-    SPECULAR
+    SPECULAR,
+    IDENTITY
 }
 
 val inToKeyword = mapOf(
@@ -66,7 +67,8 @@ val inToKeyword = mapOf(
     "uniform" to keywordEnum.UNIFORM,
     "checkered" to keywordEnum.CHECKERED,
     "image" to keywordEnum.IMAGE,
-    "specular" to keywordEnum.SPECULAR
+    "specular" to keywordEnum.SPECULAR,
+    "identity" to keywordEnum.IDENTITY
 
 )
 
@@ -417,4 +419,48 @@ fun parseMaterial(inFile: InputStream, scene: Scene): Pair<String, Material> {
     return Pair(name, Material())
 }
 
+fun parseTransformation(inFile: InputStream, scene: Scene): Transformation {
+    var result = Transformation()
 
+    while(true) {
+        val transformationKw = expectKeyword(inFile, listOf<keywordEnum>(
+            keywordEnum.ROTATIONX,
+            keywordEnum.ROTATIONY,
+            keywordEnum.ROTATIONZ,
+            keywordEnum.IDENTITY,
+            keywordEnum.TRANSLATION,
+            keywordEnum.SCALING
+        )
+        )
+
+        if (transformationKw == keywordEnum.IDENTITY) { }
+
+        if (transformationKw == keywordEnum.TRANSLATION) {
+            expectSymbol(inFile,"(")
+            result *= Translation(parseVector(inFile, scene))
+            expectSymbol(inFile, ")")
+        }
+        if (transformationKw == keywordEnum.ROTATIONX) {
+            expectSymbol(inFile, "(")
+            result *= RotationX(expectNumber(inFile, scene))
+            expectSymbol(inFile, ")")
+        }
+        if (transformationKw == keywordEnum.ROTATIONY) {
+            expectSymbol(inFile, "(")
+            result *= RotationY(expectNumber(inFile, scene))
+            expectSymbol(inFile, ")")
+        }
+        if (transformationKw == keywordEnum.ROTATIONZ) {
+            expectSymbol(inFile, "(")
+            result *= RotationZ(expectNumber(inFile, scene))
+            expectSymbol(inFile, ")")
+        }
+        if (transformationKw == keywordEnum.SCALING) {
+            expectSymbol(inFile, "(")
+            result *= Scaling(parseVector(inFile, scene))
+            expectSymbol(inFile, ")")
+        }
+
+
+    }
+}

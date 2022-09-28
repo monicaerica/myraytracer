@@ -1,3 +1,4 @@
+import org.junit.jupiter.api.Assertions.assertTrue
 import java.io.*
 import java.security.InvalidKeyException
 
@@ -102,9 +103,13 @@ class stringToken(val string: String): Token(){
 //val pushback_reader = PushbackReader(reader)
 ////Charset(US-ASCII))
 
-class InputStream(val stream: PushbackReader, val file_name : String = "", val tabulations : Int = 4, var location : SourceLocation = SourceLocation(file_name = file_name, line_num = 1, col_num = 1), var saved_char : Char? = null, var saved_location: SourceLocation = SourceLocation(file_name = file_name, line_num = 1, col_num = 1)){
+class InputStream(val stream: InputStreamReader, val file_name : String = "", val tabulations : Int = 4, var location : SourceLocation = SourceLocation(file_name = file_name, line_num = 1, col_num = 1)){
 
-    fun UpdatePos(ch: Char?){
+
+    private var saved_char : Char? = null
+    private var saved_location: SourceLocation = this.location.copy()
+
+    private fun UpdatePos(ch: Char?){
         when(ch){
             '\n' -> {this.location.col_num = 1
                     this.location.line_num += 1}
@@ -115,41 +120,40 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         }
     }
 
-    fun ReadChar(): Char{
-        var ch : Char
+    fun ReadChar(): Char?{
+        var ch : Char?
         if (this.saved_char != null){
             ch = this.saved_char!!
             this.saved_char = null
         }
-//        else {
-//            var ascii = this.stream.read()
-//            if (ascii != -1) ch = ascii.toChar()
-//                else ch = null
-//        }
-        else{ch = this.stream.read().toChar()}
+        else {
+            var ascii = this.stream.read()
+            if (ascii != -1) {ch = ascii.toChar()}
+            else { ch = null }
+        }
+        this.saved_location = this.location.copy()
 
         this.UpdatePos(ch)
-        this.saved_location = this.location
 
         return ch
     }
 
     fun UnreadChar(ch: Char){
-        assert(this.saved_char == null)
+        assertTrue(this.saved_char == null)
         this.saved_char = ch
-        this.location = this.saved_location
+        this.location = this.saved_location.copy()
     }
 
     fun skipWhitespaceAndComents(){
-        var ch: Char = this.ReadChar()
+        var ch: Char? = this.ReadChar()
         while (ch!! in WHITESPACE || ch == '#'){
             if (ch == '#'){
-                while (!(this.ReadChar() in "\r\n" || this.ReadChar() in "" )){
+                while (!(this.ReadChar()!! in "\r\n" || this.ReadChar()!! in "" )){
                     {}
                 }
             }
             ch = this.ReadChar()
-            if (ch in ""){
+            if (ch == null){
                 return
             }
         }
@@ -182,7 +186,7 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
     fun readToken(): Token {
         this.skipWhitespaceAndComents()
         val ch = this.ReadChar()
-        if (ch == '\u0000'){
+        if (ch == null){
             return stopToken(location = this.location)
         }
 
@@ -209,9 +213,11 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         while (true){
             var ch =this.ReadChar()
 
-            if (!(ch.isDigit() || ch == '.' || ch in "eE")){
-                this.UnreadChar(ch)
-                break
+            if (ch != null) {
+                if (!(ch.isDigit() || ch == '.' || ch in "eE")){
+                    this.UnreadChar(ch)
+                    break
+                }
             }
 
             token += ch
@@ -231,9 +237,13 @@ class InputStream(val stream: PushbackReader, val file_name : String = "", val t
         var token = firstChar
         while (true) {
             var ch = this.ReadChar()
-            if (!(ch.isLetterOrDigit() || ch == '_')){
-                this.UnreadChar(ch)
-                break
+            if (ch != null) {
+                if (!(ch.isLetterOrDigit() || ch == '_')){
+                    if (ch != null) {
+                        this.UnreadChar(ch)
+                    }
+                    break
+                }
             }
             token += ch
         }

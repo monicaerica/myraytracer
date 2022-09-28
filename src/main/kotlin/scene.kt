@@ -264,3 +264,11 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
 
 }
 
+/**
+ * Scene data class, produced by parsing a scene descriptor file, contains everything that's needed to render a scene
+ */
+data class Scene(var materials: MutableMap<String, Material> = mutableMapOf(),
+                 var world: World = World(), var camera: Camera? = null,
+                 var floatVariables: MutableMap<String, Float> = mutableMapOf(),
+                 var overriddenVariables: Set<String> = setOf()
+)

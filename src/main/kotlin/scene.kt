@@ -461,6 +461,26 @@ fun parseTransformation(inFile: InputStream, scene: Scene): Transformation {
             expectSymbol(inFile, ")")
         }
 
+        var nextKw = inFile.readToken()
+
+        if (nextKw !is symbolToken || nextKw.symbol != "*") {
+            //unread, to implement!!!
+        }
 
     }
+}
+
+fun parseSphere(inFile: InputStream, scene: Scene): Sphere? {
+    expectSymbol(inFile, "(")
+    val matName = expectIdentifier(inFile)
+
+    if (matName !in scene.materials.keys) {
+        throw GrammarError("$matName is an unknown material", location = SourceLocation())
+    }
+
+    expectSymbol(inFile, ",")
+    val transformation: Transformation = parseTransformation(inFile, scene)
+    expectSymbol(inFile, ")")
+
+    return scene.materials[matName]?.let { Sphere(transformation, it) }
 }

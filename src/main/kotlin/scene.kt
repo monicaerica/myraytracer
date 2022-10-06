@@ -484,3 +484,22 @@ fun parseSphere(inFile: InputStream, scene: Scene): Sphere? {
 
     return scene.materials[matName]?.let { Sphere(transformation, it) }
 }
+
+fun parseCamera(inFile: InputStream, scene: Scene): Camera {
+    expectSymbol(inFile, "(")
+    val typeKw = expectKeyword(inFile, listOf(keywordEnum.PERSPECTIVE, keywordEnum.ORTHOGONAL))
+    expectSymbol(inFile, ",")
+    val transformation = parseTransformation(inFile, scene)
+    expectSymbol(inFile, ",")
+    val ar = expectNumber(inFile, scene)
+    val distance = expectNumber(inFile, scene)
+    expectSymbol(inFile, ")")
+    var cam: Camera = PerpectiveCamera(trans = Transformation())
+    if (typeKw == keywordEnum.PERSPECTIVE) {
+         cam = PerpectiveCamera(ar, transformation, distance)
+    }
+    else if (typeKw == keywordEnum.ORTHOGONAL) {
+        cam =  OrthogonalCamera(ar, transformation, distance)
+    }
+    return cam
+}

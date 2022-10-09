@@ -123,6 +123,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
 
     private var saved_char : Char? = null
     private var saved_location: SourceLocation = this.location.copy()
+    private var saved_token: Token? = null
 
     private fun UpdatePos(ch: Char?){
         when(ch){
@@ -199,6 +200,11 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
      * Reads a token and, based on the first character determines the type of token (literal, number, symbol)
      */
     fun readToken(): Token {
+        if (this.saved_token != null){
+            val this_saved_token : Token = this.saved_token!! //not-null-assertion operator
+            this.saved_token = null
+            return this_saved_token
+        }
         this.skipWhitespaceAndComents()
         val ch = this.ReadChar()
         if (ch == null){
@@ -221,6 +227,15 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
         else {
             throw GrammarError("Invalid character: $ch", this.location)
         }
+    }
+
+
+    /**
+     * Given a token in input this 'unreads' the token and puts the token unread in this inputstream 'unread_token' variable
+     */
+    fun unreadToken(token: Token):Unit{
+        assertTrue(this.saved_token == null)
+        this.saved_token = token
     }
 
     private fun parseFloatToken(firstChar: String, tokenLocation: SourceLocation): literalNumberToken {

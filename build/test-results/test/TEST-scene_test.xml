@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="scene_test" tests="1" skipped="0" failures="0" errors="0" timestamp="2022-10-18T11:13:43" hostname="Monicas-MBP.lan" time="0.068">
+  <properties/>
+  <testcase name="test_parser()" classname="scene_test" time="0.068"/>
+  <system-out><![CDATA[Material(brdf=DiffuseBRDF@739046f3, emitted_radiance=UniformPigment@613d7b8)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

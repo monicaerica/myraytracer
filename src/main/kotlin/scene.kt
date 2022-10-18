@@ -42,7 +42,8 @@ enum class keywordEnum() {
     CHECKERED,
     IMAGE,
     SPECULAR,
-    IDENTITY
+    IDENTITY,
+    FLOAT
 }
 
 val inToKeyword = mapOf(
@@ -68,7 +69,8 @@ val inToKeyword = mapOf(
     "checkered" to keywordEnum.CHECKERED,
     "image" to keywordEnum.IMAGE,
     "specular" to keywordEnum.SPECULAR,
-    "identity" to keywordEnum.IDENTITY
+    "identity" to keywordEnum.IDENTITY,
+    "float" to keywordEnum.FLOAT
 
 )
 
@@ -187,7 +189,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
 
             if (ch == '\u0000'){
                 //For some reason can't add sourcelocation!!!
-                GrammarError("unterminated string", location)
+                grammarError("unterminated string", location)
             }
 
             token += ch
@@ -225,7 +227,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
             return this.parseKeywordOrIdentifierToken(firstChar = ch.toString(), tokenLocation = this.location)
         }
         else {
-            throw GrammarError("Invalid character: $ch", this.location)
+            throw grammarError("Invalid character: $ch", this.location)
         }
     }
 
@@ -257,7 +259,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
         try {
             num= token.toFloat()
         }catch (err: NumberFormatException) {
-            throw GrammarError("Invalid floating point number: $token", this.location)
+            throw grammarError("Invalid floating point number: $token", this.location)
         }
 
         return literalNumberToken(litnum = num, location = this.location)
@@ -303,7 +305,7 @@ data class Scene(var materials: MutableMap<String, Material> = mutableMapOf(),
 fun expectSymbol(inFile: InputStream, symbol: String) {
     val token = inFile.readToken()
     if (token !is symbolToken || token.symbol != symbol) {
-        throw GrammarError("Got $token instead of $symbol", location = token.location)
+        throw grammarError("Got $token instead of $symbol", sourceLocation = token.location)
     }
 }
 
@@ -314,10 +316,10 @@ fun expectSymbol(inFile: InputStream, symbol: String) {
 fun expectKeyword(inFile: InputStream, keywords: List<keywordEnum>): keywordEnum {
     val token = inFile.readToken()
     if (token !is keywordToken) {
-        throw GrammarError("Expected a keyword, got $token", location = token.location)
+        throw grammarError("Expected a keyword, got $token", sourceLocation = token.location)
     }
     if (token.keyword !in keywords) {
-        throw GrammarError("Expected a specific keyword, got $token", location = token.location)
+        throw grammarError("Expected a specific keyword, got $token", sourceLocation = token.location)
     }
 
     return token.keyword
@@ -330,19 +332,19 @@ fun expectNumber(inFile: InputStream, scene: Scene): Float {
     else if (token is identifierToken) {
         val varName = token.identifier
         if (varName !in scene.floatVariables) {
-            throw GrammarError("Unknown variable: $token", location = token.location)
+            throw grammarError("Unknown variable: $token", sourceLocation = token.location)
         }
         return scene.floatVariables[varName]!!
 
     }
 
-    throw GrammarError("Got $token instead of a number", token.location)
+    throw grammarError("Got $token instead of a number", token.location)
 }
 
 fun expectString(inFile: InputStream): String {
     val token = inFile.readToken()
 
-    if (token !is stringToken) { throw GrammarError("Got $token instead of a string", token.location) }
+    if (token !is stringToken) { throw grammarError("Got $token instead of a string", token.location) }
 
     return token.string
 }
@@ -350,7 +352,7 @@ fun expectString(inFile: InputStream): String {
 fun expectIdentifier(inFile: InputStream): String {
     val token = inFile.readToken()
 
-    if (token !is identifierToken) { throw GrammarError("Got $token instead of an identifier", token.location) }
+    if (token !is identifierToken) { throw grammarError("Got $token instead of an identifier", token.location) }
     return token.identifier
 }
 
@@ -476,11 +478,13 @@ fun parseTransformation(inFile: InputStream, scene: Scene): Transformation {
             expectSymbol(inFile, ")")
         }
 
-        var nextKw = inFile.readToken()
+        return result
 
-        if (nextKw !is symbolToken || nextKw.symbol != "*") {
-            //unread, to implement!!!
-        }
+//        var nextKw = inFile.readToken()
+//
+//        if (nextKw !is symbolToken || nextKw.symbol != "*") {
+//            //unread, to implement!!!
+//        }
 
     }
 }
@@ -490,7 +494,7 @@ fun parseSphere(inFile: InputStream, scene: Scene): Sphere? {
     val matName = expectIdentifier(inFile)
 
     if (matName !in scene.materials.keys) {
-        throw GrammarError("$matName is an unknown material", location = SourceLocation())
+        throw grammarError("$matName is an unknown material", sourceLocation = SourceLocation())
     }
 
     expectSymbol(inFile, ",")
@@ -507,6 +511,7 @@ fun parseCamera(inFile: InputStream, scene: Scene): Camera {
     val transformation = parseTransformation(inFile, scene)
     expectSymbol(inFile, ",")
     val ar = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
     val distance = expectNumber(inFile, scene)
     expectSymbol(inFile, ")")
     var cam: Camera = PerpectiveCamera(trans = Transformation())
@@ -517,4 +522,63 @@ fun parseCamera(inFile: InputStream, scene: Scene): Camera {
         cam =  OrthogonalCamera(ar, transformation, distance)
     }
     return cam
+}
+
+/**
+ * Read a scene description from a stream and returns a Scene() object
+ */
+fun parseScene(inFile: InputStream): Scene {
+    var scene = Scene()
+    var what_name : String
+    var what_where : SourceLocation
+    var variable_value : Float
+    while (true){
+        var what = inFile.readToken()
+
+        if(what is stopToken){
+            break
+        }
+        if(what !is keywordToken){
+            throw grammarError("expected a keyword instead of $what", sourceLocation = what.location)
+        }
+
+        if(what.keyword == keywordEnum.FLOAT){
+            what_name = expectIdentifier(inFile)
+            what_where = inFile.location
+
+            expectSymbol(inFile, "(")
+            variable_value = expectNumber(inFile, scene)
+            expectSymbol(inFile, ")")
+
+            if((what_name in scene.floatVariables) && (what_name !in scene.overriddenVariables)){
+                throw grammarError("variable $what_name cannot be redefined", sourceLocation = what_where)
+            }
+            if(what_name !in scene.overriddenVariables){
+                scene.floatVariables[what_name] = variable_value
+            }
+        }
+
+        else if (what.keyword == keywordEnum.SPHERE){
+            what_where = inFile.location
+            parseSphere(inFile, scene)?.let { scene.world.AddShape(it) }
+        }
+
+//        else if (what.keyword == keywordEnum.PLANE){
+//            parsePlane(inFile, scene)?.let { scene.world.AddShape(it) }
+//        }
+
+        else if (what.keyword == keywordEnum.CAMERA){
+            what_where = inFile.location
+            if(scene.camera != null){
+                throw grammarError("You cannot define more than one camera", sourceLocation = what_where)
+            }
+            parseCamera(inFile, scene)?.let { scene.camera = it }
+        }
+
+        else if(what.keyword == keywordEnum.MATERIAL){
+            var (material_name, material) = parseMaterial(inFile, scene)
+            scene.materials[material_name] = material
+        }
+    }
+    return scene
 }

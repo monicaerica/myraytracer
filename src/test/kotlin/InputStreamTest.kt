@@ -104,7 +104,9 @@ internal class InputStreamTest() {
 internal class scene_test {
     @Test
     fun test_parser() {
-        val inFile = InputStream(InputStreamReader("""
+        val inFile = InputStream(
+            InputStreamReader(
+                """
         float clock(150)
     
         material sky_material(
@@ -138,10 +140,10 @@ internal class scene_test {
 
         assert(scene.floatVariables.size == 1)
         assert("clock" in scene.floatVariables.keys)
-        assert( scene.floatVariables["clock"] == 150.0f)
+        assert(scene.floatVariables["clock"] == 150.0f)
 
         //Check that the materials are ok
-        assert(scene.materials.size ==  3)
+        assert(scene.materials.size == 3)
         assert("sphere_material" in scene.materials)
         assert("sky_material" in scene.materials)
         assert("ground_material" in scene.materials)
@@ -154,55 +156,89 @@ internal class scene_test {
         if (sky_material != null) {
             assert(sky_material.brdf is DiffuseBRDF)
             assert(sky_material.brdf.pigment is UniformPigment)
-//            assert(sky_material.brdf.pigment.GetColor(Vec2d(0.5f, 0.5f)).IsClose(Color(0.0f, 0.0f, 0.0f)))
+            assert(sky_material.brdf.pigment.GetColor(Vec2d(0.5f, 0.5f)).IsClose(Color(0.0f, 0.0f, 0.0f)))
 
         }
 
         assert(ground_material !== null)
-        println(sphere_material)
-        if (sphere_material != null && ground_material != null && sky_material != null) {
-            println(sphere_material.brdf)
-            println(sphere_material.brdf.pigment)
-            println(sphere_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)))
-            println(ground_material)
-            println(ground_material.brdf)
-            println(ground_material.brdf.pigment)
-            println(ground_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)))
-            println(sky_material.emitted_radiance)
-            println(sky_material.emitted_radiance.GetColor(Vec2d(1.0f, 0.0f)))
-//            assert(ground_material.brdf.pigment is CheckredPigment)
+        if (ground_material != null) {
+            assert(ground_material.brdf.pigment is CheckredPigment)
+            assert(ground_material.brdf is DiffuseBRDF)
+            assert(ground_material.brdf.pigment.GetColor(Vec2d(0.1f, 0.1f)).IsClose(Color(0.3f, 0.5f, 0.1f)))
+            assert(ground_material.brdf.pigment.GetColor(Vec2d(0.1f, 0.3f)).IsClose(Color(0.1f, 0.2f, 0.5f)))
+//            assert(ground_material.brdf.pigment.color2.is_close(Color(0.1, 0.2, 0.5)))
+//            assert(ground_material.brdf.pigment.num_of_steps == 4)
         }
-////        if (ground_material != null) {
-////            assert(ground_material.brdf is DiffuseBRDF)
-////        }
-////        if (ground_material != null) {
-////            assert(ground_material.brdf.pigment.GetColor(Vec2d(0.1f, 0.1f)).IsClose(Color(0.3f, 0.5f, 0.1f)))
-////            assert(ground_material.brdf.pigment.GetColor(Vec2d(0.1f, 0.3f)).IsClose(Color(0.1f, 0.2f, 0.5f)))
-////        //        assert ground_material.brdf.pigment.color1.is_close(Color(0.3, 0.5, 0.1))
-//////        assert ground_material.brdf.pigment.color2.is_close(Color(0.1, 0.2, 0.5))
-//////        assert ground_material.brdf.pigment.num_of_steps == 4
-////        }
-//        assert(sphere_material !== null)
-//        if (sphere_material != null) {
-//            assert(sphere_material.brdf is SpecularBRDF)
-//            assert(sphere_material.brdf.pigment is UniformPigment)
-//            assert(sphere_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.5f, 0.5f, 0.5f)))
-//        }
 
-////        if (sky_material != null) {
-////            assert(sky_material.emitted_radiance is UniformPigment)
-////            assert(sky_material.emitted_radiance.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.7f, 0.5f, 1.0f)))
-////        }
-////        if (ground_material != null) {
-////            assert(ground_material.emitted_radiance is UniformPigment)
-////            assert(ground_material.emitted_radiance.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.0f, 0.0f, 0.0f)))
-////        }
-////        if (sphere_material != null) {
-////            assert(sphere_material.emitted_radiance is UniformPigment)
-////            assert(sphere_material.emitted_radiance.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.0f, 0.0f, 0.0f)))
-////        }
-//        //Check that the shapes are ok
-//
-//
+        assert(sphere_material !== null)
+        if (sphere_material != null) {
+            assert(sphere_material.brdf is SpecularBRDF)
+            assert(sphere_material.brdf.pigment is UniformPigment)
+            assert(sphere_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.5f, 0.5f, 0.5f)))
+        }
+
+        if (sky_material != null) {
+            assert(sky_material.emitted_radiance is UniformPigment)
+            assert(sky_material.emitted_radiance.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.7f, 0.5f, 1.0f)))
+        }
+        if (ground_material != null) {
+            assert(ground_material.emitted_radiance is UniformPigment)
+            assert(ground_material.emitted_radiance.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.0f, 0.0f, 0.0f)))
+        }
+        if (sphere_material != null) {
+            assert(sphere_material.emitted_radiance is UniformPigment)
+            assert(sphere_material.emitted_radiance.GetColor(Vec2d(0.0f, 0.0f)).IsClose(Color(0.0f, 0.0f, 0.0f)))
+        }
+        //Check that the shapes are ok
+        //To be implemented
+
+        //Check that the camera is ok
+
+        assert(scene.camera is PerpectiveCamera)
+        var scene_camera = scene.camera
+        if (scene_camera != null) {
+            assert(scene_camera.trans.IsClose(RotationZ(30f)))
+            assert(IsClose(scene_camera.AspectRatio, 1.0f))
+            assert(IsClose(scene_camera.distance, 2.0f))
+        }
+    }
+
+    @Test
+    fun test_parser_undefined_material() {
+        // Check that unknown materials raises a GrammarError
+        val inFile = InputStream(
+            InputStreamReader(
+                """
+//        plane(this_material_does_not_exist, identity)
+//        """.byteInputStream()
+            )
+        )
+
+        try {
+            parseScene(inFile)
+            assertTrue(false, "the code did not throw an exception")
+        } catch (e: grammarError) {
+            null
+        }
+    }
+
+    @Test
+    fun testParserDoubleCamera() {
+        //Check that defining two cameras in the same file raises a GrammarError
+        val inFile = InputStream(
+            InputStreamReader(
+                """
+//        camera(perspective, rotation_z(30) * translation([-4, 0, 1]), 1.0, 1.0)
+//        camera(orthogonal, identity, 1.0, 1.0)
+//        """.byteInputStream()
+            )
+        )
+
+        try {
+            parseScene(inFile)
+            assertTrue(false, "the code did not throw an exception")
+        } catch (e: grammarError) {
+            null
+        }
     }
 }

@@ -160,14 +160,16 @@ internal class scene_test {
 
         assert(ground_material !== null)
         println(sphere_material)
-        if (sphere_material != null && ground_material != null) {
-//            println(sphere_material.brdf)
-//            println(sphere_material.brdf.pigment)
-//            println(sphere_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)))
-//            println(ground_material)
-//            println(ground_material.brdf)
-//            println(ground_material.brdf.pigment)
-//            println(ground_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)))
+        if (sphere_material != null && ground_material != null && sky_material != null) {
+            println(sphere_material.brdf)
+            println(sphere_material.brdf.pigment)
+            println(sphere_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)))
+            println(ground_material)
+            println(ground_material.brdf)
+            println(ground_material.brdf.pigment)
+            println(ground_material.brdf.pigment.GetColor(Vec2d(0.0f, 0.0f)))
+            println(sky_material.emitted_radiance)
+            println(sky_material.emitted_radiance.GetColor(Vec2d(1.0f, 0.0f)))
 //            assert(ground_material.brdf.pigment is CheckredPigment)
         }
 ////        if (ground_material != null) {

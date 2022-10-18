@@ -433,7 +433,7 @@ fun parseMaterial(inFile: InputStream, scene: Scene): Pair<String, Material> {
     expectSymbol(inFile, ",")
     val emittedRadiance = parsePigment(inFile, scene)
     expectSymbol(inFile, ")")
-    return Pair(name, Material())
+    return Pair(name, Material(brdf, emittedRadiance))
 }
 
 fun parseTransformation(inFile: InputStream, scene: Scene): Transformation {

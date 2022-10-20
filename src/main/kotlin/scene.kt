@@ -1,6 +1,5 @@
 import org.junit.jupiter.api.Assertions.assertTrue
-import java.io.*
-import kotlin.math.exp
+import java.io.InputStreamReader
 
 const val WHITESPACE = " \n\r\t"
 const val SYMBOL = "(),[]<>*"
@@ -9,15 +8,6 @@ data class SourceLocation(var file_name : String = "", var line_num : Int = 0, v
         return "$file_name line: $line_num col: $col_num"
     }
 }
-
-/**
- * Class used for errors found while reading the input file, given a source location should return a user friendly message
- * describing the error
- */
-data class grammarError(override val message: String, val sourceLocation: SourceLocation): Exception(){
-
-}
-
 
 enum class keywordEnum() {
     NEW,

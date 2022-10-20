@@ -3,11 +3,9 @@ import com.github.ajalt.clikt.core.subcommands
 import com.github.ajalt.clikt.parameters.options.*
 import com.github.ajalt.clikt.parameters.types.float
 import com.github.ajalt.clikt.parameters.types.int
-import java.awt.image.BufferedImage
+import java.io.File
 import java.io.FileInputStream
-import javax.imageio.ImageIO
-import kotlin.math.PI
-import kotlin.math.atan
+import java.io.InputStreamReader
 
 class myRatracer(): CliktCommand(){
     override fun run() = Unit
@@ -69,4 +67,41 @@ class Demo: CliktCommand(name = "demo"){
     
 }
 
-fun main(args: Array<String>) = myRatracer().subcommands(Demo()).main(args)
+class Render: CliktCommand(name = "render") {
+    private val filename: String by option("--infile", "-inf", help = "Name of the file containing the description of the scene to be rendered").required()
+    private val fname by option("--fname", "-f", help = "Filename into which to save the resulting image").required()
+    private val width: Int by option("--width", "--w", help = "Image width in pixels (default = 640px)").int()
+        .default(640)
+    private val height: Int by option("--height", "--h", help = "Image height in pixels (default = 480px)").int()
+        .default(480)
+    private val numray: Int by option(
+        "--numray",
+        "--nr",
+        help = "NUmber of rays used in the pathtracing algorithm"
+    ).int().default(1)
+
+    override fun run() {
+        val image: HDRImage = HDRImage(width, height)
+        val ar: Float = image.width.toFloat() / image.height.toFloat()
+
+        var file_byte = FileInputStream(filename)
+        var InFile_char = InputStreamReader(file_byte)
+        var inFile = InputStream(InFile_char, file_name = filename)
+
+        val scene = parseScene(inFile)
+        var camera = scene.camera
+        if(camera != null){
+            var tracer: ImageTracer = ImageTracer(image = image, camera = camera)
+            var world = scene.world
+            var render = PathTracer(world, maxDepth = 2, numberOfRays = numray, russianRouletteLimit = 5)
+            tracer.FireAllRays {render.Render(it)}
+            image.SaveLDR(fname, "PNG", 1.0f)
+        }
+        else{
+            error("A camera must be provided in the scene file")
+            return
+        }
+    }
+}
+
+fun main(args: Array<String>) = myRatracer().subcommands(Render()).main(args)

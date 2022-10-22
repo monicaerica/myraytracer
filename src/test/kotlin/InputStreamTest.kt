@@ -2,6 +2,7 @@ import jdk.dynalink.linker.support.Guards.isInstance
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 import java.io.InputStreamReader
+import grammarError as grammarError
 
 fun assertIsKeyword(token: Token, keyword: keywordEnum) {
     assert(token is keywordToken)
@@ -129,7 +130,7 @@ internal class scene_test {
     
         sphere(sphere_material, translation([0, 0, 1]))
     
-        camera(perspective, rotationz(30), 1.0, 2.0)
+        camera(perspective, rotationz(30) * translation([-4, 0, 1]), 1.0, 2.0)
         """.byteInputStream()
             )
         )
@@ -197,7 +198,7 @@ internal class scene_test {
         assert(scene.camera is PerpectiveCamera)
         var scene_camera = scene.camera
         if (scene_camera != null) {
-            assert(scene_camera.trans.IsClose(RotationZ(30f)))
+            assert(scene_camera.trans.IsClose(RotationZ(30f)*Translation(Vec(-4f, 0f, 1f))))
             assert(IsClose(scene_camera.AspectRatio, 1.0f))
             assert(IsClose(scene_camera.distance, 2.0f))
         }

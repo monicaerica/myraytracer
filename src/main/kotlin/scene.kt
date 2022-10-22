@@ -168,6 +168,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
         this.UnreadChar(ch)
     }
 
+    @Throws(grammarError::class)
     fun parseStringToken(tokenLocation: SourceLocation): stringToken{
         var token: String = ""
         while (true){
@@ -179,7 +180,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
 
             if (ch == '\u0000'){
                 //For some reason can't add sourcelocation!!!
-                grammarError("unterminated string", location)
+                throw grammarError("unterminated string", location)
             }
 
             token += ch
@@ -468,13 +469,12 @@ fun parseTransformation(inFile: InputStream, scene: Scene): Transformation {
             expectSymbol(inFile, ")")
         }
 
-        return result
+        var nextKw = inFile.readToken()
 
-//        var nextKw = inFile.readToken()
-//
-//        if (nextKw !is symbolToken || nextKw.symbol != "*") {
-//            //unread, to implement!!!
-//        }
+        if (nextKw !is symbolToken || nextKw.symbol != "*") {
+            inFile.unreadToken(nextKw)
+            return result
+        }
 
     }
 }

@@ -79,7 +79,10 @@ class Render: CliktCommand(name = "render") {
         "--nr",
         help = "NUmber of rays used in the pathtracing algorithm"
     ).int().default(1)
-
+    private val maxDepth: Int by option("--maxdepht", "--md", help = "Max number of times the ray has been scattered").int()
+        .default(10)
+    private val russianRouletteLimit: Int by option("--russroulettelimit", "--rll", help = "Times the ray has to be scattered before the russian roulette starts").int()
+        .default(5)
     override fun run() {
         val image: HDRImage = HDRImage(width, height)
         val ar: Float = image.width.toFloat() / image.height.toFloat()
@@ -93,7 +96,7 @@ class Render: CliktCommand(name = "render") {
         if(camera != null){
             var tracer: ImageTracer = ImageTracer(image = image, camera = camera)
             var world = scene.world
-            var render = PathTracer(world, maxDepth = 2, numberOfRays = numray, russianRouletteLimit = 5)
+            var render = PathTracer(world, maxDepth = maxDepth, numberOfRays = numray, russianRouletteLimit = russianRouletteLimit)
             tracer.FireAllRays {render.Render(it)}
             image.SaveLDR(fname, "PNG", 1.0f)
         }

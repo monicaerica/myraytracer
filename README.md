@@ -11,3 +11,9 @@ The available algorithms for rendering are the following:
 - Flat Rendering: A step above the flat renderer, if a ray hits an object, then the corresponding pixel is set to the color of the object specified in the material
 - Path Tracer: The proper raytracer, returns a pixel with a certain color based on the light, other objects proesent on the scene, the type of material...
 More on how to use them with the scripting language can be found in the sections below.
+
+## Scene Descriptor
+The description of a scene, as mentioned above, is given in the form of a script. In this script the user can insert inside the scene a geometric object, which by default is inserted at the origin, and then operate some transformations on it, such as translations, rotations and scaling.
+This operations can be done around one or more of the 3 axes. The user can also create a material which can then be applied to an object.
+For instance the following line in the script
+sphere(light_sphere, translation([-10, 4, 0])*scaling([0.2, 0.2, 0.2]))

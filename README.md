@@ -20,3 +20,5 @@ For instance the following line in the script
 sphere(light_sphere, translation([-10, 4, 0])*scaling([0.2, 0.2, 0.2]))
 
 will create a sphere with the light_sphere material atteched to it (to be previously defined), then the sphere is translated -10 units along the x axis, 4 along the y axis and 0 along the z axis and will also be scaled down to 20% of its original size along all axes.
+
+The material is defined

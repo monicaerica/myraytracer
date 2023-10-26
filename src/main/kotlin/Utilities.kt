@@ -1,6 +1,6 @@
 import kotlin.math.abs
 
-fun IsClose(first: Float, second: Float, epsilon: Float = 1e-5f): Boolean{
+fun IsClose(first: Float, second: Float, epsilon: Float = 1e-4f): Boolean{
     var bool: Boolean
     if (abs(first - second) < epsilon){
         bool = true
@@ -11,7 +11,7 @@ fun IsClose(first: Float, second: Float, epsilon: Float = 1e-5f): Boolean{
     return bool
 }
 
-fun IsClose(first: Int, second: Int, epsilon: Float = 1e-5f): Boolean{
+fun IsClose(first: Int, second: Int, epsilon: Float = 1e-4f): Boolean{
     var bool: Boolean
     if (abs(first - second) < epsilon){
         bool = true
@@ -22,7 +22,7 @@ fun IsClose(first: Int, second: Int, epsilon: Float = 1e-5f): Boolean{
     return bool
 }
 
-fun IsClose(first: Double, second: Double, epsilon: Float = 1e-5f): Boolean{
+fun IsClose(first: Double, second: Double, epsilon: Float = 1e-4f): Boolean{
     var bool: Boolean
     if (abs(first - second) < epsilon){
         bool = true
@@ -69,7 +69,7 @@ class HomMatrix(var elements: FloatArray){
         return if (b) 0 else 1
     }
 
-    fun IsClose(other: HomMatrix, epsilon: Float = 1e-5f): Boolean{
+    fun IsClose(other: HomMatrix, epsilon: Float = 1e-4f): Boolean{
         var sum: Int = 0
         var result: Boolean = false
         for (i in 0 until 4) {

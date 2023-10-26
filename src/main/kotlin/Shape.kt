@@ -8,6 +8,7 @@ abstract class Shape(val transformation: Transformation, val material: Material)
 }
 
 class Plane(transformation: Transformation = Transformation(), material: Material = Material()): Shape(transformation, material) {
+    
     override fun rayIntersection(ray: Ray): HitRecord? {
         val invRay: Ray = ray.transform(this.transformation.Inverse())
         if (abs(invRay.Dir.z)<1e-5f)
@@ -18,9 +19,9 @@ class Plane(transformation: Transformation = Transformation(), material: Materia
             return null
 
         val hitPoint: Point = invRay.At(t)
-        var norm: Normal = Normal(0.0f, 0.0f, -1.0f)
+        var norm: Normal = transformation*Normal(0.0f, 0.0f, -1.0f)
         if (invRay.Dir.z < 0.0f)
-            norm = Normal(0.0f, 0.0f, 1.0f)
+            norm = transformation*Normal(0.0f, 0.0f, 1.0f)
 
 
         return HitRecord(

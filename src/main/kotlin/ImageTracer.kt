@@ -10,8 +10,7 @@ class ImageTracer(val image: HDRImage, val camera: Camera, val samplesPerSide: I
         var uPixel = 0.5f
         var vPixel = 0.5f
         var percent: Float = 0.0f
-        var interPixelRow: Int
-        var interPixelCol: Int
+
         var ray: Ray
         for (row in 0 until this.image.height) {
         
@@ -42,8 +41,13 @@ class ImageTracer(val image: HDRImage, val camera: Camera, val samplesPerSide: I
                 
                 
                 percent += 1.0f
-                println(percent / (this.image.width * this.image.height) * 100.0f)
-                System.out.flush()
+                val totalPixels = this.image.width * this.image.height
+                val progress = (percent / totalPixels) * 100.0f
+
+                
+                println("Progress: ${progress.toInt()}%")
+                
+
             }
         }
     }

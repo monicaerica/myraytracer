@@ -24,7 +24,11 @@ class DiffuseBRDF(pigment: Pigment = UniformPigment(WHITE)): BRDF(pigment){
         var sin_theta = sqrt(1.0f - cos_theta_sq)
         var phi = 2.0f * PI.toFloat() * pcg.RandomFloat()
 
-        return Ray(interaction_point, base.first * cos(phi).toFloat() + base.second * sin(phi).toFloat() * cos_theta + base.third * sin_theta, 1.0e-3f, POSITIVE_INFINITY, depth)
+        return Ray(interaction_point, 
+        base.first * cos(phi).toFloat() + base.second * sin(phi).toFloat() * cos_theta + base.third * sin_theta, 
+        1.0e-3f, 
+        POSITIVE_INFINITY, 
+        depth)
     }
 }
 
@@ -32,8 +36,8 @@ class SpecularBRDF(pigment: Pigment = UniformPigment(WHITE), val threshold_angle
     override fun Eval(nor: Normal, in_dir: Vec, out_dir: Vec, uv: Vec2d):Color{
         val theta_in = acos(nor.ToVec() * in_dir)
         val theta_out = acos(nor.ToVec() * out_dir)
-        if(abs(theta_in - theta_out) < threshold_angle_rad) return this.pigment.GetColor(uv)
-        return if (abs(theta_in - theta_out) < 0.01) pigment.getColor(uv) else Color()
+        //if(abs(theta_in - theta_out) < threshold_angle_rad) return this.pigment.GetColor(uv)
+        return if (abs(theta_in - theta_out) < 0.01) pigment.GetColor(uv) else Color()
         
     }
 

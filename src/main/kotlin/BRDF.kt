@@ -33,13 +33,18 @@ class SpecularBRDF(pigment: Pigment = UniformPigment(WHITE), val threshold_angle
         val theta_in = acos(nor.ToVec() * in_dir)
         val theta_out = acos(nor.ToVec() * out_dir)
         if(abs(theta_in - theta_out) < threshold_angle_rad) return this.pigment.GetColor(uv)
-        else return Color(0.0f, 0.0f, 0.0f)
+        return if (abs(theta_in - theta_out) < 0.01) pigment.getColor(uv) else Color()
+        
     }
 
     override fun ScatterRay(pcg: PCG, incoming_dir: Vec, interaction_point: Point, normal: Normal, depth: Int): Ray{
         var ray_dir = Vec(incoming_dir.x, incoming_dir.y, incoming_dir.z).Normalize()
         var normal_normalized = normal.Normalize()
 
-        return Ray(interaction_point, ray_dir - normal_normalized.ToVec() * 2 * normal_normalized.Dot(ray_dir), 1.0e-3f, POSITIVE_INFINITY, depth)
+        return Ray(interaction_point, 
+        ray_dir - normal_normalized.ToVec() * 2.0f * normal_normalized.Dot(ray_dir), 
+        1.0e-3f, 
+        POSITIVE_INFINITY, 
+        depth)
     }
 }

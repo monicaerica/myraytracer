@@ -22,11 +22,13 @@ class Demo: CliktCommand(name = "demo"){
     private val fname by option("--fname", "-f", help = "Filename").required()
     private val numray: Int by option("--numray", "--nr", help = "NUmber of rays used in the pathtracing algorithm").int().default(1)
     private val maxd: Int by option("--maxdepth", "--md", help = "Number of times rays can bounce used in the pathtracing algorithm (2 by default)").int().default(2)
+    private val sPS: Int by option("--samplse", "--sps", help = "Number of samples (1 by default)").int().default(1)
+
     override fun run() {
         val image: HDRImage = HDRImage(width, height)
         val ar: Float = image.width.toFloat() / image.height.toFloat()
         var camera: PerpectiveCamera = PerpectiveCamera(AspectRatio = ar,trans = RotationZ(rotation) * Translation(VecX * (-3.0f) + VecZ * camheight))
-        var tracer: ImageTracer = ImageTracer(image = image, camera = camera, samplesPerSide = 5)
+        var tracer: ImageTracer = ImageTracer(image = image, camera = camera, samplesPerSide = sPS)
         var world: World = World()
         val scale: Vec = Vec(0.3f, 0.3f, 0.3f)
         var render: Renderer = OnOffRender()
@@ -49,7 +51,7 @@ class Demo: CliktCommand(name = "demo"){
 //         world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, 5.0f, -5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(AQUA)), emitted_radiance = UniformPigment( BLACK))))
          world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 0.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(KHAKI)), emitted_radiance = UniformPigment( WHITE))))
          world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 5.0f, 0.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(AQUA)), emitted_radiance = UniformPigment( BLACK))))
-         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(RED)), emitted_radiance = UniformPigment( GRAY))))
+         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 0.0f, 5.0f)) * Scaling(scale), Material(brdf = SpecularBRDF(pigment = UniformPigment(RED)), emitted_radiance = UniformPigment( GRAY))))
 //         world.AddShape(Sphere(transformation = Translation(Vec(7.0f, 1.0f, -10.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(RED)), emitted_radiance = UniformPigment( WHITE))))
 //  //
 //      world.AddShape(Sphere(transformation = Translation(Vec(2.0f, 5.0f, 5.0f)) * Scaling(scale), material = Material(brdf = DiffuseBRDF(pigment = UniformPigment(NAVY)), emitted_radiance = UniformPigment( WHITE))))

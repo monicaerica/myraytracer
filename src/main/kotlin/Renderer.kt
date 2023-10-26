@@ -39,7 +39,6 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, privat
             else
                 return emittedRadiance
         }
-
         var cumRadiance: Color = Color(0.0f, 0.0f, 0.0f)
         if (hitColorLum > 0.0f){
             for (rayIndex in 0 until numberOfRays){
@@ -59,6 +58,4 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, privat
         }
         return emittedRadiance + cumRadiance * (1.0f / this.numberOfRays.toFloat())
     }
-
-
 }

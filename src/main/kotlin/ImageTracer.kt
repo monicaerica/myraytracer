@@ -1,4 +1,4 @@
-class ImageTracer(val image: HDRImage, val camera: Camera) {
+class ImageTracer(val image: HDRImage, val camera: Camera, val samplesPerSide: Int, val pcg: PCG = PCG()) {
 
     fun FireRay(col: Int, row: Int, uPixel: Float = 0.5f, vPixel: Float = 0.5f): Ray {
         val u: Float = (col + uPixel) / (this.image.width - 1)
@@ -7,14 +7,43 @@ class ImageTracer(val image: HDRImage, val camera: Camera) {
     }
 
     fun FireAllRays(func: (Ray) -> Color) {
+        var uPixel = 0.5f
+        var vPixel = 0.5f
         var percent: Float = 0.0f
+        var interPixelRow: Int
+        var interPixelCol: Int
+        var ray: Ray
         for (row in 0 until this.image.height) {
+        
+        
             for (col in 0 until this.image.width) {
-                var ray: Ray = this.FireRay(col, row)
-                var color: Color = func(ray)
-                this.image.SetPixel(col, row, color)
+                var cumColor: Color = Color(0.0f, 0.0f, 0.0f)
+
+                if (samplesPerSide > 0)
+                {
+                    for (interPixelRow in 0 until this.samplesPerSide)
+                    {
+                        for (interPixelCol in 0 until this.samplesPerSide)
+                        {
+                            uPixel = (interPixelCol + this.pcg.RandomFloat()) / samplesPerSide.toFloat()
+                            vPixel = (interPixelRow + this.pcg.RandomFloat()) / samplesPerSide.toFloat()
+                            ray = this.FireRay(col, row, uPixel, vPixel)
+                            cumColor += func(ray)
+                        }
+                    }
+                    this.image.SetPixel(col, row, cumColor)
+                }
+                else
+                {
+                    ray = this.FireRay(col, row)
+                    this.image.SetPixel(col, row, func(ray))
+                }
+                
+                
+                
                 percent += 1.0f
                 println(percent / (this.image.width * this.image.height) * 100.0f)
+                System.out.flush()
             }
         }
     }

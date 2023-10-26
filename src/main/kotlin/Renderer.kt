@@ -40,6 +40,7 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, privat
                 return emittedRadiance
         }
         var cumRadiance: Color = Color(0.0f, 0.0f, 0.0f)
+        var newRadiance: Color =  Color(0.0f, 0.0f, 0.0f)
         if (hitColorLum > 0.0f){
             for (rayIndex in 0 until numberOfRays){
                 val newRay: Ray = hitMaterial.brdf.ScatterRay(
@@ -50,7 +51,7 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, privat
                     depth = ray.Depth + 1
                 )
 
-                val newRadiance = this.Render(newRay)
+                newRadiance = this.Render(newRay)
                 cumRadiance += hitColor * newRadiance
 
 

@@ -12,3 +12,7 @@
 *.class
 
 *.class
+build/classes/kotlin/main/DiffuseBRDF.class
+*.class
+*.class
+build/classes/kotlin/main/DiffuseBRDF.class

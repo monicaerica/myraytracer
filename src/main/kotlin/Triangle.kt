@@ -47,6 +47,9 @@ class Triangle(val A: Point, val B: Point, val C: Point, transformation: Transfo
     var gamma: Float = 0.0f
     override fun rayIntersection(ray: Ray): HitRecord? {
         var t: Float = 0.0f
+
+
+
         val M: matrixThreebyThree = matrixThreebyThree(
             floatArrayOf(
                 vecAB.x, vecAC.x, ray.Dir.x,

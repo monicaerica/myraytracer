@@ -43,22 +43,24 @@ class Demo: CliktCommand(name = "demo"){
 
 //        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, 5.0f)) * Scaling(scale)))
 //        world.AddShape(Sphere(transformation = Translation(Vec(5.0f, 5.0f, -5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = CheckredPigment(WHITE, FUCHSIA, 4)), emitted_radiance = UniformPigment( WHITE))))
-//       world.AddShape(Sphere(transformation = Translation(Vec(5.0f, -5.0f, 5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = CheckredPigment(BLUE, KHAKI, 4)), emitted_radiance = UniformPigment( WHITE*0.5f))))
+//       world.AddShape(Sphere(transformation = Transformation().Translation(Vec(20.0f, -15.0f, -5.0f)) * Transformation().Scaling(scale * 0.25f), Material(brdf = DiffuseBRDF(pigment = CheckredPigment(BLUE, RED, 4)), emitted_radiance = UniformPigment( BLACK))))
 
 //         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 10.0f, 0.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(RED)), emitted_radiance = UniformPigment( BLACK))))
 //         world.AddShape(Sphere(transformation = Translation(Vec(-10.0f, 0.0f, 0.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(AQUA)), emitted_radiance = UniformPigment( BLACK))))
 //         world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, -5.0f, 5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(RED)), emitted_radiance = UniformPigment( BLACK))))
 //         world.AddShape(Sphere(transformation = Translation(Vec(-5.0f, 5.0f, -5.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(AQUA)), emitted_radiance = UniformPigment( BLACK))))
 //         world.AddShape(Sphere(transformation = Translation(Vec(10.0f, 0.0f, -10.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(KHAKI)), emitted_radiance = UniformPigment( WHITE))))
-//         world.AddShape(Sphere(transformation = Translation(Vec(0.0f, 5.0f, 0.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(AQUA)), emitted_radiance = UniformPigment( BLACK))))
-         world.AddShape(Sphere(transformation = Transformation().Translation(Vec(10.0f, 0.0f, -10.0f)) * Transformation().Scaling(scale), Material(brdf = SpecularBRDF(pigment = UniformPigment(RED)), emitted_radiance = UniformPigment( BLACK))))
+         world.AddShape(Sphere(transformation = Transformation().Translation(Vec(-30.0f, 5.0f, -10.0f)) * Transformation().Scaling(scale * 1.5f), Material(brdf = DiffuseBRDF(pigment = UniformPigment(AQUA)), emitted_radiance = UniformPigment( BLACK))))
+          world.AddShape(Sphere(transformation = Transformation().Translation(Vec(-30.0f, 5.0f, -5.0f)) *Transformation().Scaling(scale ), Material(brdf = DiffuseBRDF(pigment = UniformPigment(NAVY)), emitted_radiance = UniformPigment( BLACK))))
+         world.AddShape(Sphere(transformation = Transformation().Translation(Vec(20.0f, 0.0f, -10.0f)) * Transformation().Scaling(scale), Material(brdf = SpecularBRDF(pigment = UniformPigment(WHITE)), emitted_radiance = UniformPigment( BLACK))))
 //         world.AddShape(Sphere(transformation = Translation(Vec(7.0f, 1.0f, -10.0f)) * Scaling(scale), Material(brdf = DiffuseBRDF(pigment = UniformPigment(RED)), emitted_radiance = UniformPigment( WHITE))))
 //  //
-//      world.AddShape(Sphere(transformation = Translation(Vec(2.0f, 5.0f, 5.0f)) * Scaling(scale), material = Material(brdf = DiffuseBRDF(pigment = UniformPigment(NAVY)), emitted_radiance = UniformPigment( WHITE))))
+      world.AddShape(Sphere(transformation = Transformation().Translation(Vec(10.0f, 15.0f, -10.0f)) * Transformation().Scaling(scale * 0.5f), material = Material(brdf = DiffuseBRDF(pigment = UniformPigment(NAVY)), emitted_radiance = UniformPigment( BLACK))))
 
-         world.AddShape(Plane(transformation = Transformation().Translation(Vec(0.0f,0.0f, -10.0f)), material = Material(brdf = DiffuseBRDF(pigment = CheckredPigment(CYAN, OLIVE, 2)), emitted_radiance = UniformPigment(GRAY))))
-         world.AddShape(Plane(transformation = Transformation().Translation(Vec(0.0f,0.0f, 5.0f)), material = Material(brdf = DiffuseBRDF(pigment = UniformPigment(GRAY)), emitted_radiance = UniformPigment(WHITE))))
-
+         world.AddShape(Plane(transformation = Transformation().Translation(Vec(0.0f,0.0f, -10.0f)), material = Material(brdf = DiffuseBRDF(pigment = CheckredPigment(WHITE, BLACK, 1)), emitted_radiance = UniformPigment(BLACK))))
+         world.AddShape(Plane(transformation = Transformation().Translation(Vec(0.0f,0.0f, 15.0f)), material = Material(brdf = DiffuseBRDF(pigment = UniformPigment(GRAY)), emitted_radiance = UniformPigment(GRAY * 1.2f))))
+        
+//        world.AddShape(Triangle(A = Point(30.0f, -10.0f, -10.0f), B = Point(30.0f, 10.0f, -10.0f), C = Point(30.0f, 0.0f, 5.0f), transformation = Transformation(), Material(brdf = DiffuseBRDF(pigment = UniformPigment(KHAKI)), emitted_radiance = UniformPigment( BLACK))))
 //         world.AddShape(Sphere(transformation = Translation(Vec(10.0f,0.0f, -10.0f)), material = Material(brdf = SpecularBRDF(pigment = UniformPigment(RED)))))
 
         tracer.FireAllRays {render.Render(it)}

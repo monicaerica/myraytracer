@@ -11,7 +11,7 @@ import kotlin.Float.Companion.POSITIVE_INFINITY
 data class Ray(
     val Origin: Point = Point(),
     val Dir: Vec = Vec(),
-    val tmin: Float = 1e-3f,
+    val tmin: Float = 1e-5f,
     val tmax: Float = POSITIVE_INFINITY,
     val Depth: Int = 0
 
@@ -35,18 +35,7 @@ data class Ray(
         return Origin + Dir * t
     }
 
-    /**
-     * Trasform a ray using the possible transformations: scaling, rotate around x, y or z axis, translate
-     * @param trans: the transformation you want to apply to the ray
-     * @return the transformed ray
-     */
-    fun transform(trans: Transformation): Ray {
-        return Ray(
-            trans * this.Origin,
-            trans * this.Dir,
-            this.tmin,
-            this.tmax,
-            this.Depth
-        )
-    }
+   
+
+ 
 }

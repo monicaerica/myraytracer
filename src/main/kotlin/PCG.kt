@@ -44,6 +44,6 @@ data class PCG(val init_state : ULong = 42u, val init_seq : ULong = 54u,
      * @return Float random number
      */
     fun RandomFloat(): Float{
-        return ((this.Random().toFloat())/2f.pow(32))
+        return ((this.Random().toFloat())/4294967296.0f)
     }
 }

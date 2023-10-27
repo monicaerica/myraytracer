@@ -19,33 +19,38 @@ class Sphere(transformation: Transformation = Transformation(), material: Materi
      * @return Either a "null" if there is no intersection or a hitrecord type if an intersection is recorded
      */
     override fun rayIntersection(ray: Ray): HitRecord? {
-        val invRay: Ray = ray.transform(this.transformation.Inverse())
-        val originVec: Vec = invRay.Origin.PointToVec()
-        val a: Float = invRay.Dir.SquaredNorm()
-        val b: Float = originVec * 2.0f * invRay.Dir
-        val c: Float = originVec.SquaredNorm() - 1.0f
+        val invRay: Ray = transformation.Inverse() * ray
 
-        val delta: Float = b * b - 4.0f * a * c
+        val originVec: Vec = invRay.Origin.PointToVec()
+
+        val b: Float = originVec * invRay.Dir
+        val c: Float = invRay.Dir.SquaredNorm() 
+
+        val delta: Float = b * b - c * (originVec.SquaredNorm() - 1.0f)
 
         if (delta <= 0)
             return null
 
         val sqrtDelta: Float = sqrt(delta)
-        val tmin: Float = (-b - sqrtDelta) / (2.0f * a)
-        val tmax: Float = (-b + sqrtDelta) / (2.0f * a)
-        var firstHit: Float = 0.0f
-        if (tmin > invRay.tmin && tmin < invRay.tmax)
-            firstHit = tmax
-        else if (tmax > invRay.tmin && tmax < invRay.tmax)
-            firstHit = tmin
-        else
-            return null
+        val tmin: Float = (-b - sqrtDelta) / c
+        val tmax: Float = (-b + sqrtDelta) / c
 
+        val firstHit = when {
+            tmin in ray.tmin..ray.tmax -> {
+                tmin
+            }
+            tmax in ray.tmin..ray.tmax -> {
+                tmax
+            }
+            else -> {
+                return null
+            }
+        }
         val hitPoint: Point = invRay.At(firstHit)
 
         return HitRecord(
-            worldPoint = this.transformation * hitPoint,
-            normal = this.transformation * sphereNormal(hitPoint, invRay.Dir),
+            worldPoint = transformation * hitPoint,
+            normal = transformation * sphereNormal(hitPoint, invRay.Dir),
             surfacePoint = spherePointToUv(hitPoint),
             t = firstHit,
             ray = ray,
@@ -75,7 +80,10 @@ class Sphere(transformation: Transformation = Transformation(), material: Materi
     * @return A Vec2 containing the two-dimensional uv coordinates
     */
     private fun spherePointToUv(point: Point): Vec2d {
-        var u: Float = atan2(point.y, point.x) / (2.0f * PI.toFloat())
+
+        var u: Float = atan2(point.y, point.x) 
+        if (point.y < 0) 
+            u += 2.0f * PI.toFloat()
         val v: Float = acos(point.z) / PI.toFloat()
         if (u < 0.0f)
             u += 1.0f

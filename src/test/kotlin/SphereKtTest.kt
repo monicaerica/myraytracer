@@ -19,6 +19,7 @@ internal class SphereKtTest {
         val ray1: Ray = Ray(Point(0.0f, 0.0f, 2.0f), VecZ.Neg())
         val intersection1 = sphere.rayIntersection(ray1)
         assertTrue(intersection1!=null)
+        
         assertTrue(
             HitRecord(
                 worldPoint = Point(0.0f, 0.0f, 1.0f),
@@ -45,11 +46,12 @@ internal class SphereKtTest {
 
     @Test
     fun testTransformation(){
-        val sphere: Sphere = Sphere(transformation = Translation(Vec(10.0f, 0.0f, 0.0f)))
+        val sphere: Sphere = Sphere(transformation = Transformation().Translation(Vec(10.0f, 0.0f, 0.0f)))
 
         val ray1: Ray = Ray(Point(10.0f, 0.0f, 2.0f), VecZ.Neg())
         val intersection1 = sphere.rayIntersection(ray1)
         assertTrue(intersection1!=null)
+        println(intersection1!!.normal.NormalToString())
         assertTrue(
             HitRecord(
                 worldPoint = Point(10.0f, 0.0f, 1.0f),

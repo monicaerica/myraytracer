@@ -5,15 +5,19 @@ abstract class Shape(val transformation: Transformation, val material: Material)
     open fun rayIntersection(ray: Ray): HitRecord?{
         return null
     }
+
 }
 
 class Plane(transformation: Transformation = Transformation(), material: Material = Material()): Shape(transformation, material) {
     
     override fun rayIntersection(ray: Ray): HitRecord? {
-        val invRay: Ray = ray.transform(this.transformation.Inverse())
+
+        val invRay: Ray = transformation.Inverse() * ray
+
         if (abs(invRay.Dir.z)<1e-5f)
             return null
-        val t: Float = invRay.Origin.z / invRay.Dir.z
+
+        val t: Float = -invRay.Origin.z / invRay.Dir.z
 
         if (t <= invRay.tmin || t > invRay.tmax)
             return null
@@ -25,7 +29,7 @@ class Plane(transformation: Transformation = Transformation(), material: Materia
 
 
         return HitRecord(
-            worldPoint = this.transformation * hitPoint,
+            worldPoint = transformation * hitPoint,
             normal = norm,
             surfacePoint = Vec2d(hitPoint.x - floor(hitPoint.x), hitPoint.y - floor(hitPoint.y)),
             t = t,

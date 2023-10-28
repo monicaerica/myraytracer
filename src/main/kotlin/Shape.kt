@@ -8,7 +8,8 @@ abstract class Shape(val transformation: Transformation, val material: Material)
 
 }
 
-class Plane(val transformation: Transformation = Transformation()): Shape() {
+class Plane(transformation: Transformation = Transformation(), material: Material = Material()): Shape(transformation, material) {
+    
     override fun rayIntersection(ray: Ray): HitRecord? {
 
         val invRay: Ray = transformation.Inverse() * ray
@@ -32,7 +33,7 @@ class Plane(val transformation: Transformation = Transformation()): Shape() {
             normal = norm,
             surfacePoint = Vec2d(hitPoint.x - floor(hitPoint.x), hitPoint.y - floor(hitPoint.y)),
             t = t,
-            ray = ray
+            ray = ray,
             shape = this
         )
     }

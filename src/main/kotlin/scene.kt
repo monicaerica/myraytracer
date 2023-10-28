@@ -445,27 +445,27 @@ fun parseTransformation(inFile: InputStream, scene: Scene): Transformation {
 
         if (transformationKw == keywordEnum.TRANSLATION) {
             expectSymbol(inFile,"(")
-            result *= Translation(parseVector(inFile, scene))
+            result *=  Transformation().Translation(parseVector(inFile, scene))
             expectSymbol(inFile, ")")
         }
         if (transformationKw == keywordEnum.ROTATIONX) {
             expectSymbol(inFile, "(")
-            result *= RotationX(expectNumber(inFile, scene))
+            result *=  Transformation().RotationX(expectNumber(inFile, scene))
             expectSymbol(inFile, ")")
         }
         if (transformationKw == keywordEnum.ROTATIONY) {
             expectSymbol(inFile, "(")
-            result *= RotationY(expectNumber(inFile, scene))
+            result *=  Transformation().RotationY(expectNumber(inFile, scene))
             expectSymbol(inFile, ")")
         }
         if (transformationKw == keywordEnum.ROTATIONZ) {
             expectSymbol(inFile, "(")
-            result *= RotationZ(expectNumber(inFile, scene))
+            result *=  Transformation().RotationZ(expectNumber(inFile, scene))
             expectSymbol(inFile, ")")
         }
         if (transformationKw == keywordEnum.SCALING) {
             expectSymbol(inFile, "(")
-            result *= Scaling(parseVector(inFile, scene))
+            result *=  Transformation().Scaling(parseVector(inFile, scene))
             expectSymbol(inFile, ")")
         }
 
@@ -492,6 +492,19 @@ fun parseSphere(inFile: InputStream, scene: Scene): Sphere? {
     expectSymbol(inFile, ")")
 
     return scene.materials[matName]?.let { Sphere(transformation, it) }
+}
+
+fun parsePlane(inFile: InputStream, scene: Scene): Plane? {
+    expectSymbol(inFile, "(")
+    val matName =  expectIdentifier(inFile)
+    if (matName !in scene.materials.keys) {
+        throw grammarError("$matName is an unknown material", sourceLocation = SourceLocation())
+    }
+    expectSymbol(inFile, ",")
+    val transformation: Transformation = parseTransformation(inFile, scene)
+    expectSymbol(inFile, ")")
+
+    return scene.materials[matName]?.let { Plane(transformation, it) }
 }
 
 fun parseCamera(inFile: InputStream, scene: Scene): Camera {
@@ -553,9 +566,9 @@ fun parseScene(inFile: InputStream): Scene {
             parseSphere(inFile, scene)?.let { scene.world.AddShape(it) }
         }
 
-//        else if (what.keyword == keywordEnum.PLANE){
-//            parsePlane(inFile, scene)?.let { scene.world.AddShape(it) }
-//        }
+        else if (what.keyword == keywordEnum.PLANE){
+            parsePlane(inFile, scene)?.let { scene.world.AddShape(it) }
+        }
 
         else if (what.keyword == keywordEnum.CAMERA){
             what_where = inFile.location

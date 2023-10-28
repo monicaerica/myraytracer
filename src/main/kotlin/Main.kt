@@ -31,7 +31,6 @@ class Demo: CliktCommand(name = "demo"){
         var tracer: ImageTracer = ImageTracer(image = image, camera = camera, samplesPerSide = sPS)
         var world: World = World()
         val scale: Vec =  Vec(1.0f, 1.0f, 1.0f) * sc
-
         var render: Renderer = OnOffRender()
         if (algorithm == 1) {
             render = OnOffRender(world)

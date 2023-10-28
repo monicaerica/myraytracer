@@ -18,19 +18,20 @@ class World (vararg shapesin: Shape){
      * @param ray: The ray we want to calculate the intersection
      * @return closest: return the closest intersection with the ray
      */
-    fun rayIntersection(ray: Ray): HitRecord?{
-        var closest : HitRecord? = null
-        var intersection : HitRecord? = null
-        for (shape in shapes){
-            if (shape != null) {
-                intersection = shape.rayIntersection(ray)
-            }
-            if (intersection != null){
-                if (closest == null || intersection.t < closest.t ){
-                    closest = intersection
-                }
+    fun rayIntersection(ray: Ray): HitRecord? {
+    var closest: HitRecord? = null
+
+    for (shape in shapes) {
+        val intersection = shape?.rayIntersection(ray)
+
+        if (intersection != null) {
+            if (closest == null || intersection.t < closest.t) {
+                closest = intersection
             }
         }
-        return closest
     }
+
+    return closest
+}
+
 }

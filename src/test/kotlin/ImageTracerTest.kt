@@ -8,7 +8,7 @@ internal class ImageTracerTest {
     companion object {
         var image: HDRImage = HDRImage(width = 4, height = 2)
         var camera = PerpectiveCamera(AspectRatio = 2.0f, trans = Transformation())
-        var tracer = ImageTracer(image = image, camera = camera)
+        var tracer = ImageTracer(image = image, camera = camera, samplesPerSide = 1)
     }
 
    @Test

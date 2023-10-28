@@ -7,8 +7,9 @@ internal class WolrdTest {
         val VEC_X : Vec = Vec(1.0f, 0.0f, 0.0f)
         val VEC_Y : Vec = Vec(0.0f, 1.0f, 0.0f)
         val VEC_Z : Vec = Vec(0.0f, 0.0f, 1.0f)
-        var sphere1: Sphere = Sphere(Translation(VEC_X * 2.0f))
-        var sphere2: Sphere = Sphere(Translation(VEC_X * 8.0f))
+        var sphere1: Sphere = Sphere(Transformation().Translation(VEC_X * 2.0f))
+        var sphere2: Sphere = Sphere(Transformation().Translation(VEC_X * 8.0f))
+        
     }
 
     @Test

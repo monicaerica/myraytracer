@@ -16,17 +16,19 @@ class OrthogonalCamera (override val AspectRatio: Float = 1.0f, override val tra
     override fun FireRay(u: Float, v: Float): Ray{
         val origin: Point = Point(-1.0f, (1.0f - 2.0f * u) * AspectRatio, 2.0f * v - 1.0f)
         val direction: Vec = VecX
-        return Ray(origin, direction, tmin = 1.0f).transform(this.trans)
+        return this.trans * Ray(origin, direction, tmin = 1.0f)
     }
 }
+
+
 
 class PerpectiveCamera ( override val AspectRatio: Float = 1.0f, override val trans: Transformation,
                          override val distance: Float = 1.0f): Camera {
 
     override fun FireRay(u: Float, v: Float): Ray {
-        val origin: Point = Point(-this.distance, 0.0f, 0.0f)
-        val direction: Vec = Vec(this.distance, (1.0f - 2.0f * u) * AspectRatio, 2.0f * v - 1.0f)
-        return Ray(origin, direction, tmin = 1.0f).transform(this.trans)
+        val origin: Point = Point(-distance, 0.0f, 0.0f)
+        val direction: Vec = Vec(distance, (1.0f - 2.0f * u) * AspectRatio, 2.0f * v - 1.0f)
+        return trans * Ray(origin, direction, tmin = 1.0f)
     }
 }
 

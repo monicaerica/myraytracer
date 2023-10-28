@@ -13,7 +13,6 @@ class OnOffRender(world: World = World(), background_color: Color = BLACK, var c
             return this.background_color
     }
 }
-
 class FlatRender(world: World = World(), background_color: Color = BLACK):Renderer(world, background_color){
     override fun Render(ray: Ray):Color{
         val hit = this.world.rayIntersection(ray) ?: return this.background_color
@@ -39,8 +38,8 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, privat
             else
                 return emittedRadiance
         }
-
         var cumRadiance: Color = Color(0.0f, 0.0f, 0.0f)
+        var newRadiance: Color =  Color(0.0f, 0.0f, 0.0f)
         if (hitColorLum > 0.0f){
             for (rayIndex in 0 until numberOfRays){
                 val newRay: Ray = hitMaterial.brdf.ScatterRay(
@@ -51,7 +50,7 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, privat
                     depth = ray.Depth + 1
                 )
 
-                val newRadiance = this.Render(newRay)
+                newRadiance = this.Render(newRay)
                 cumRadiance += hitColor * newRadiance
 
 
@@ -59,6 +58,4 @@ class PathTracer(world: World = World(), background_color: Color = BLACK, privat
         }
         return emittedRadiance + cumRadiance * (1.0f / this.numberOfRays.toFloat())
     }
-
-
 }

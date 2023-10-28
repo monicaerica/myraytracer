@@ -35,18 +35,7 @@ data class Ray(
         return Origin + Dir * t
     }
 
-    /**
-     * Trasform a ray using the possible transformations: scaling, rotate around x, y or z axis, translate
-     * @param trans: the transformation you want to apply to the ray
-     * @return the transformed ray
-     */
-    fun transform(trans: Transformation): Ray {
-        return Ray(
-            trans * this.Origin,
-            trans * this.Dir,
-            this.tmin,
-            this.tmax,
-            this.Depth
-        )
-    }
+   
+
+ 
 }

@@ -24,8 +24,9 @@ A simple reflective material, takes a ray coming from a direction and reflects i
 ### DIffusive
 A diffusive material which, upon being hit by a ray, scatters that ray in a random direction in an emisphere
 ### Metal
-Simulates a behaviour changing between a perfect specular and a diffusive material through the fuzzyness, basically a ray is reflected (as in the specular BRDF) and the reflected is deflected in a random direction, the random "deviation" being multiplied by the fuzzyness, thus if **fuzzy = 0** the system behaves as a perfect reflective material, if **fuzzy = 1** it behaves as a diffusive BRDF. 
-![compare_fuzz](https://github.com/monicaerica/myraytracer/assets/54890365/71dd263d-5f52-4e66-9bd1-e73d71c6a0d3)
+Simulates a behaviour changing between a perfect specular and a diffusive material through the fuzzyness, basically a ray is reflected (as in the specular BRDF) and the reflected is deflected in a random direction, the random "deviation" being multiplied by the fuzzyness, thus if **fuzzy = 0** the system behaves as a perfect reflective material, if **fuzzy = 1** it behaves as a diffusive BRDF. A comparison of the same scene with a sphere with a metal BRDF for increasing fuzzyness is shown below.
+![compare_fuzz](https://github.com/monicaerica/myraytracer/assets/54890365/557df9f0-3cba-4c70-ad81-fb23185e7835)
+
 
 ## Scene Descriptor
 The description of a scene, as mentioned above, is given in the form of a script. In this script the user can insert inside the scene a geometric object, which by default is inserted at the origin, and then operate some transformations on it, such as translations, rotations and scaling.
@@ -35,5 +36,13 @@ For instance the following line in the script
 sphere(light_sphere, translation([-10, 4, 0])*scaling([0.2, 0.2, 0.2]))
 
 will create a sphere with the light_sphere material atteched to it (to be previously defined), then the sphere is translated -10 units along the x axis, 4 along the y axis and 0 along the z axis and will also be scaled down to 20% of its original size along all axes.
+### Cameras
+In order to display a scene a camera is required. A camera is initiated with the **camera** keyword, then, between paranthesis the specifics of the camera can be provided. A camera cn either be perspective or orthogonal, after specifying the type of camera transformations can be applied to it to move it from the origin and change its orientation. Then the aspect ratio is specified, note that, as of the current version (1.0.0) the aspect ratio is not automatically linked to the resolution of the image, thus you have to specify it having in mind what the resolution is going to be, for instance:
+> The standard HD resolution: 1280 x 720 requires an AR of 1.777, as with a 1920 x 1080 etc
+> A square image requires an AR of 1.0
+> If an arbitrary resolution is specified use AR = width / height
+
+Then the next parameter is related to the filed of view.
+
 
 

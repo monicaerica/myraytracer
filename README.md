@@ -25,6 +25,7 @@ A simple reflective material, takes a ray coming from a direction and reflects i
 A diffusive material which, upon being hit by a ray, scatters that ray in a random direction in an emisphere
 ### Metal
 Simulates a behaviour changing between a perfect specular and a diffusive material through the fuzzyness, basically a ray is reflected (as in the specular BRDF) and the reflected is deflected in a random direction, the random "deviation" being multiplied by the fuzzyness, thus if **fuzzy = 0** the system behaves as a perfect reflective material, if **fuzzy = 1** it behaves as a diffusive BRDF. 
+![compare_fuzz](https://github.com/monicaerica/myraytracer/assets/54890365/71dd263d-5f52-4e66-9bd1-e73d71c6a0d3)
 
 ## Scene Descriptor
 The description of a scene, as mentioned above, is given in the form of a script. In this script the user can insert inside the scene a geometric object, which by default is inserted at the origin, and then operate some transformations on it, such as translations, rotations and scaling.

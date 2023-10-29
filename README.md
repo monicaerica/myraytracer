@@ -12,6 +12,20 @@ The available algorithms for rendering are the following:
 - Path Tracer: The proper raytracer, returns a pixel with a certain color based on the light, other objects proesent on the scene, the type of material...
 More on how to use them with the scripting language can be found in the sections below.
 
+## BRDF
+The main ingredient of an object, apart from the transformation applied to its size, position and rotation, is the **B**idirectional **R**eflectance **D**istribution **F**unction, the BRDF for short. This function describes the light leaving an object in a direction given a ray hitting an object from a given direction, basically determining the reflctive properties of the material.
+As of right now there are three BRDFs in this raytracer:
+* Specular
+* Diffusive
+* Metal
+The first two BRDFs only take a pigment as an argument, the third one also takes a float, the fuzzyness.
+### Specular
+A simple reflective material, takes a ray coming from a direction and reflects it perfectly using the reflection formula from geometrical optics.
+### DIffusive
+A diffusive material which, upon being hit by a ray, scatters that ray in a random direction in an emisphere
+### Metal
+Simulates a behaviour changing between a perfect specular and a diffusive material through the fuzzyness, basically a ray is reflected (as in the specular BRDF) and the reflected is deflected in a random direction, the random "deviation" being multiplied by the fuzzyness, thus if **fuzzy = 0** the system behaves as a perfect reflective material, if **fuzzy = 1** it behaves as a diffusive BRDF. 
+
 ## Scene Descriptor
 The description of a scene, as mentioned above, is given in the form of a script. In this script the user can insert inside the scene a geometric object, which by default is inserted at the origin, and then operate some transformations on it, such as translations, rotations and scaling.
 This operations can be done around one or more of the 3 axes. The user can also create a material which can then be applied to an object.
@@ -21,4 +35,4 @@ sphere(light_sphere, translation([-10, 4, 0])*scaling([0.2, 0.2, 0.2]))
 
 will create a sphere with the light_sphere material atteched to it (to be previously defined), then the sphere is translated -10 units along the x axis, 4 along the y axis and 0 along the z axis and will also be scaled down to 20% of its original size along all axes.
 
-The material is defined
+

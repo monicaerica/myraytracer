@@ -47,8 +47,14 @@ class MetalBRDF(pigment: Pigment = UniformPigment(WHITE), val fuzz: Float = 1.0f
     override fun ScatterRay(pcg: PCG, incoming_dir: Vec, interaction_point: Point, normal: Normal, depth: Int): Ray{
         var ray_dir = Vec(incoming_dir.x, incoming_dir.y, incoming_dir.z).Normalize()
         var normal_normalized:Normal = normal.Normalize()
-        var reflected = ray_dir.reflect(normal_normalized)
-        var randomVec: Vec = Vec(pcg.RandomFloat(),pcg.RandomFloat(),pcg.RandomFloat()).Normalize()
+        var reflected = reflect(ray_dir, normal_normalized)
+
+        val base : Triple<Vec, Vec, Vec> = createOnbFromZ(normal_normalized)
+        var cos_theta_sq = pcg.RandomFloat()
+        var cos_theta = sqrt(cos_theta_sq)
+        var sin_theta = sqrt(1.0f - cos_theta_sq)
+        var phi = 2.0f * PI.toFloat() * pcg.RandomFloat()
+        var randomVec: Vec = base.first * cos(phi).toFloat() + base.second * sin(phi).toFloat() * cos_theta + base.third * sin_theta
         return Ray( interaction_point, 
                     reflected + randomVec * fuzz, 
                     1.0e-3f, 

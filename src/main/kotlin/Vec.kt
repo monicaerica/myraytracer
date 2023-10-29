@@ -133,7 +133,9 @@ data class Vec(
     }
 }
 
-
+fun reflect(vIn: Vec, normal: Normal): Vec{
+    return vIn - normal.ToVec() * (2.0f * dot(vIn, normal.ToVec()))
+}
 fun dot(vA: Vec, vB: Vec): Float{
     return vA.x * vB.x + vA.y * vB.y + vA.y * vB.y
 }

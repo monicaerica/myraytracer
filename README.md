@@ -39,7 +39,9 @@ will create a sphere with the light_sphere material atteched to it (to be previo
 ### Cameras
 In order to display a scene a camera is required. A camera is initiated with the **camera** keyword, then, between paranthesis the specifics of the camera can be provided. A camera cn either be perspective or orthogonal, after specifying the type of camera transformations can be applied to it to move it from the origin and change its orientation. Then the aspect ratio is specified, note that, as of the current version (1.0.0) the aspect ratio is not automatically linked to the resolution of the image, thus you have to specify it having in mind what the resolution is going to be, for instance:
 > The standard HD resolution: 1280 x 720 requires an AR of 1.777, as with a 1920 x 1080 etc
+
 > A square image requires an AR of 1.0
+
 > If an arbitrary resolution is specified use AR = width / height
 
 Then the next parameter is related to the filed of view.

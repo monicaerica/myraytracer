@@ -51,5 +51,23 @@ In order to display a scene a camera is required. A camera is initiated with the
 
 Then the next parameter is related to the filed of view.
 
+### Materials
+Materials are defined before being applied to objects, you can specify the BRDF, the base pigment and the emissive pigment.
+For example:
+> material floor_material(diffuse(checkered(<0, 0, 0>, <1, 1, 1>, 1)), uniform(<0, 0, 0>))
+
+defines a material called *floor_material* which has a diffusive behaviour, a checkered pigment, black <0, 0, 0> and white <1, 1, 1>, the emissivity is black, that is the material is not emissive
+
+>material ceiling_material(diffuse(uniform(<0.5, 0.5, 0.5>)), uniform(<0.7, 0.7, 0.7>))
+
+defines an emissive material called *ceiling_material*, the material is gray and has a gray emission.
+As an example of a metal material we have:
+
+> material sphere_ref(metal(uniform(<0.5, 0.5, 0.5>), 0.5), uniform(<0, 0, 0>))
+
+a material which has a gray color and a fuzz of 0.5, giving it a somewhat reflective and diffusive behaviour.
+
+
+ ### Objects
 
 

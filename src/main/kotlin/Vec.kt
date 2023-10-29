@@ -122,6 +122,20 @@ data class Vec(
     fun toNormal(): Normal{
         return Normal(x, y, z)
     }
+ 
+     /**
+     * Reflects a vector given a normal
+     * @param normal: The normal 
+     * @return Vec, the reflected vector
+     */
+    fun reflect(normal: Normal): Vec{
+        return this - normal.ToVec() * (2.0f * dot(this, normal.ToVec()))
+    }
+}
+
+
+fun dot(vA: Vec, vB: Vec): Float{
+    return vA.x * vB.x + vA.y * vB.y + vA.y * vB.y
 }
 
 

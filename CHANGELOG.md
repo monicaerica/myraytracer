@@ -14,3 +14,6 @@
 - Fixed issues with transformation
 - Fixed bug where the reflections were inversed
 - Properly parsing spheres and planes
+
+## Version 1.0.1
+- Added fuzzy metal BRDF

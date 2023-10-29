@@ -11,6 +11,7 @@ abstract class BRDF (val pigment: Pigment = UniformPigment(WHITE)){
     abstract fun ScatterRay(pcg: PCG, incoming_dir: Vec, interaction_point: Point, normal: Normal, depth: Int): Ray
 }
 
+
 class DiffuseBRDF(pigment: Pigment = UniformPigment(WHITE)): BRDF(pigment){
     override fun Eval(nor: Normal, in_dir: Vec, out_dir: Vec, uv: Vec2d):Color{
         return this.pigment.GetColor(uv) * (1f/PI.toFloat())
@@ -32,12 +33,38 @@ class DiffuseBRDF(pigment: Pigment = UniformPigment(WHITE)): BRDF(pigment){
     }
 }
 
+
+class MetalBRDF(pigment: Pigment = UniformPigment(WHITE), val fuzz: Float = 1.0f): BRDF(pigment){
+
+
+    override fun Eval(nor: Normal, in_dir: Vec, out_dir: Vec, uv: Vec2d): Color {
+        val theta_in = acos(nor.ToVec() * in_dir)
+        val theta_out = acos(nor.ToVec() * out_dir)
+        //if(abs(theta_in - theta_out) < threshold_angle_rad) return this.pigment.GetColor(uv)
+        return if (abs(theta_in - theta_out) < 0.001) pigment.GetColor(uv) else Color()
+    }
+
+    override fun ScatterRay(pcg: PCG, incoming_dir: Vec, interaction_point: Point, normal: Normal, depth: Int): Ray{
+        var ray_dir = Vec(incoming_dir.x, incoming_dir.y, incoming_dir.z).Normalize()
+        var normal_normalized:Normal = normal.Normalize()
+        var reflected = ray_dir.reflect(normal_normalized)
+        var randomVec: Vec = Vec(pcg.RandomFloat(),pcg.RandomFloat(),pcg.RandomFloat()).Normalize()
+        return Ray( interaction_point, 
+                    reflected + randomVec * fuzz, 
+                    1.0e-3f, 
+                    POSITIVE_INFINITY, 
+                    depth)
+    }
+}
+
+
+
 class SpecularBRDF(pigment: Pigment = UniformPigment(WHITE), val threshold_angle_rad : Float = PI.toFloat()/1800.0f): BRDF(pigment){
     override fun Eval(nor: Normal, in_dir: Vec, out_dir: Vec, uv: Vec2d):Color{
         val theta_in = acos(nor.ToVec() * in_dir)
         val theta_out = acos(nor.ToVec() * out_dir)
         //if(abs(theta_in - theta_out) < threshold_angle_rad) return this.pigment.GetColor(uv)
-        return if (abs(theta_in - theta_out) < 0.01) pigment.GetColor(uv) else Color()
+        return if (abs(theta_in - theta_out) < 0.001) pigment.GetColor(uv) else Color()
         
     }
 

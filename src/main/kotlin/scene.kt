@@ -28,6 +28,7 @@ enum class keywordEnum() {
     ROTATIONZ,
     MATERIAL,
     DIFFUSE,
+    METAL,
     UNIFORM,
     CHECKERED,
     IMAGE,
@@ -59,6 +60,7 @@ val inToKeyword = mapOf(
     "checkered" to keywordEnum.CHECKERED,
     "image" to keywordEnum.IMAGE,
     "specular" to keywordEnum.SPECULAR,
+    "metal" to keywordEnum.METAL,
     "identity" to keywordEnum.IDENTITY,
     "float" to keywordEnum.FLOAT
 
@@ -404,14 +406,22 @@ fun parsePigment(inFile: InputStream, scene: Scene): Pigment {
 }
 
 fun parseBRDF(inFile: InputStream, scene: Scene): BRDF {
-    val BRDFKeyword = expectKeyword(inFile, listOf(keywordEnum.DIFFUSE, keywordEnum.SPECULAR))
+    var fuzz: Float = 1.0f
+    val BRDFKeyword = expectKeyword(inFile, listOf(keywordEnum.DIFFUSE, keywordEnum.SPECULAR, keywordEnum.METAL))
     expectSymbol(inFile, "(")
     val pigment = parsePigment(inFile, scene)
+    if (BRDFKeyword == keywordEnum.METAL){
+        expectSymbol(inFile, ",")
+        fuzz = expectNumber(inFile, scene)
+        
+    }
+        
     expectSymbol(inFile,")")
 
     return when (BRDFKeyword) {
         keywordEnum.SPECULAR ->  SpecularBRDF(pigment)
         keywordEnum.DIFFUSE ->  DiffuseBRDF(pigment)
+        keywordEnum.METAL -> MetalBRDF(pigment, fuzz)
         else -> {throw RuntimeException("Dummy excpetion")}
     }
 }

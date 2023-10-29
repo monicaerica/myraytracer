@@ -6,7 +6,7 @@ The description of the scene is provided through a text file written in a "progr
 
 An example of what can be done, with the help of a python script to automate some passages, is in the animation below, where 20 steps from a molecular dynamics simulation of a gold nanoparticle (done in [LAMMPS](https://github.com/lammps/lammps)) was rendered using the path tracing algorithm.
 
-<img src="https://github.com/monicaerica/myraytracer/assets/54890365/4ce85c70-e4b8-4652-bff0-f66857604f37" width="200">
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/4ce85c70-e4b8-4652-bff0-f66857604f37" width="200", style="float: right;">
 
 
 The rendering algorithm itself can be varied according to one's necessities, we suggest, given the long time required to render a whole scene using the photorealistic path tracing algorithm that you use the flat renderer to check if the scene is defined according to your needs, then, once you are ok with what you see, proceed with the path tracer.

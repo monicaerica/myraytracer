@@ -131,6 +131,12 @@ data class Vec(
     fun reflect(normal: Normal): Vec{
         return this - normal.ToVec() * (2.0f * dot(this, normal.ToVec()))
     }
+
+    fun randomVec(pcg: PCG): Vec{
+        return Vec(pcg.RandomFloat(), pcg.RandomFloat(), pcg.RandomFloat())
+    }
+
+
 }
 
 fun reflect(vIn: Vec, normal: Normal): Vec{
@@ -140,6 +146,10 @@ fun dot(vA: Vec, vB: Vec): Float{
     return vA.x * vB.x + vA.y * vB.y + vA.y * vB.y
 }
 
+fun randomVec(pcg: PCG, min:Float, max:Float): Vec{
+
+    return Vec(pcg.RandomFloat(min, max), pcg.RandomFloat(min, max), pcg.RandomFloat(min, max))
+}
 
 fun createOnbFromZ (normal: Normal): Triple<Vec, Vec, Vec>{
     if (normal.SquaredNorm() != 1.0f)
@@ -152,4 +162,21 @@ fun createOnbFromZ (normal: Normal): Triple<Vec, Vec, Vec>{
     val e2: Vec = Vec(b, sign + normal.y * normal.y * a, -normal.y)
 
     return Triple(e1, e2, Vec(normal.x, normal.y, normal.z))
+}
+
+fun randomInUnitSphere (pcg: PCG): Vec {
+    while(true) {
+        var rnd: Vec = randomVec(pcg, -1.0f, 1.0f)
+        if (rnd.SquaredNorm() < 1)
+            return rnd
+    }
+}
+
+fun randomUnitVector(pcg: PCG): Vec {
+    return randomInUnitSphere(pcg).Normalize()
+}
+
+fun randomOnEmisphere(pcg: PCG, normal: Normal): Vec {
+    var rnd: Vec = randomUnitVector(pcg)
+    return if (dot(rnd, normal.ToVec())> 0.0f) rnd else -rnd
 }

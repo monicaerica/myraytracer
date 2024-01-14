@@ -1,6 +1,6 @@
-MyRaytracer - A Kotlin Raytracer
+KoMoPath - A Kotlin Raytracer
 ================================
-Myraytracer (temporary name) is an open source software that solves the rendering equation in order to produce photorealistic images given the description of a scene (lights, three dimensional shapes etc.)
+KoMoPath (Kotlin Montecarlo Pathtracer) is an open source software that solves the rendering equation in order to produce photorealistic images given the description of a scene (lights, three dimensional shapes etc.)
 
 The description of the scene is provided through a text file written in a "programming language" written in Kotlin, which, through a specific selection of keywords, related to the objects, allows the user to define a scene they want to render.
 

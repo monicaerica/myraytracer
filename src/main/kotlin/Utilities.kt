@@ -93,3 +93,13 @@ val ID4 = Array(4) { i ->
         }
     }
 }
+
+val ID3 = Array(3) { i ->
+    FloatArray(3) { k ->
+        if (k != i) {
+            0.0F
+        } else {
+            1.0F
+        }
+    }
+}

@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Assertions.*
 internal class TriangleTest{
     @Test
     fun determinant(){
-        val M: matrixThreebyThree = matrixThreebyThree(
-            floatArrayOf(
-                2.0f, -3.0f, 1.0f,
-                2.0f, 0.0f, -1.0f,
-                1.0f, 4.0f, 5.0f
+        val M: matrix = matrix(
+            arrayOf(
+                floatArrayOf(2.0f, -3.0f, 1.0f),
+                floatArrayOf(2.0f, 0.0f, -1.0f),
+                floatArrayOf(1.0f, 4.0f, 5.0f)
             ))
-        val determinantCalc = M.determinant()
+        val determinantCalc = M.calculateDeterminant()
         val determinant = 49.0f
         println(determinantCalc)
         assertEquals(determinant, determinantCalc)

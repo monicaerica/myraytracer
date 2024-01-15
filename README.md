@@ -70,4 +70,19 @@ a material which has a gray color and a fuzz of 0.5, giving it a somewhat reflec
 
  ### Objects
 
+There are currently three different objects supported by the code: spheres, planes and triangles. Shapes can  be assigned a series of transformations to change their position, shape, size and orientation, transformations are combined by using the * symbol, for instance:
+>sphere(light_sphere, translation([-1, 0, 1])*scaling([0.7, 0.7, 0.7]))
+will create a sphere translated by the vector [-1, 0, 1] and scaled to 70% of its original size along all three axes.
+#### Sphere
+A sphere is defined as a unit sphere at the origin which can be moved, rotated and rescaled along the three axes by applying the *translation*, *scale* and *rotation* trasformations, for instance:
+>sphere(light_sphere, translation([-1, 0, 1])*scaling([0.7, 0.7, 0.7]))
+Note that giving different values to the three components of a scaling transformation will result in an oblong ellipsoid.
+#### Plane
+A plane is an infinetely spanning plane, moved in the scene from the origin using transformations. For instance, the following line:
+>plane(sky_material,translation([0, 0, 20]))
+creates a plane with an emissive *sky_material* moved 20 units in the positive z direction, acting thus as an emissive sky illuminating the scene
+#### Triangle
+Triangles differ from spheres and planes as they are not defined by trasformations of a primitive object, rather they are defined by specifying the coordinates of its verteces, for instance:
+>triangle(tri_mat, <<-5, -15, -5>, <-5, -5, -5>, <-10, -10, 5>>, scaling([1, 1, 1]))
+the coordinates are given between two angled braces with the components enclosed between two angled braces. The *scaling([1, 1, 1])* part is used to prevent errors while reading the input file.
 

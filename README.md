@@ -86,3 +86,8 @@ Triangles differ from spheres and planes as they are not defined by trasformatio
 >triangle(tri_mat, <<-5, -15, -5>, <-5, -5, -5>, <-10, -10, 5>>, scaling([1, 1, 1]))
 the coordinates are given between two angled braces with the components enclosed between two angled braces. The *scaling([1, 1, 1])* part is used to prevent errors while reading the input file.
 
+
+Below a scene containing "fuzzy" triangles, a big emitting sphere enclosing the scene and smaller diffusive spheres:
+
+<img src=https://github.com/monicaerica/myraytracer/assets/54890365/69738da2-3f8e-47f3-a07d-131189043115 width="500" style="float: right;">
+

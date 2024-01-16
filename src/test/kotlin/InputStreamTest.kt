@@ -198,7 +198,7 @@ internal class scene_test {
         assert(scene.camera is PerpectiveCamera)
         var scene_camera = scene.camera
         if (scene_camera != null) {
-            assert(scene_camera.trans.IsClose(RotationZ(30f)*Translation(Vec(-4f, 0f, 1f))))
+            assert(scene_camera.trans.isClose(RotationZ(30f)*Translation(Vec(-4f, 0f, 1f))))
             assert(IsClose(scene_camera.AspectRatio, 1.0f))
             assert(IsClose(scene_camera.distance, 2.0f))
         }

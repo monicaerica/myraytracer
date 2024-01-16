@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import java.io.InputStreamReader
 
 const val WHITESPACE = " \n\r\t"
-const val SYMBOL = "(),[]<>*"
+const val SYMBOL = "(),[]<>*{}"
 data class SourceLocation(var file_name : String = "", var line_num : Int = 0, var col_num : Int = 0) {
     override fun toString(): String {
         return "$file_name line: $line_num col: $col_num"
@@ -42,6 +42,7 @@ val inToKeyword = mapOf(
     "world" to keywordEnum.WORLD,
     "shape" to keywordEnum.SHAPE,
     "sphere" to keywordEnum.SPHERE,
+    "triangle" to keywordEnum.TRIANGLE,
     "plane" to keywordEnum.PLANE,
     "triangle" to keywordEnum.TRIANGLE,
     "disk" to keywordEnum.DISK,
@@ -489,6 +490,53 @@ fun parseTransformation(inFile: InputStream, scene: Scene): Transformation {
     }
 }
 
+fun parseTriangle(inFile: InputStream, scene: Scene): Triangle? {
+    expectSymbol(inFile, "(")
+    val matName = expectIdentifier(inFile)
+
+    if (matName !in scene.materials.keys) {
+        throw grammarError("$matName is an unknown material", sourceLocation = SourceLocation())
+    }
+
+    expectSymbol(inFile, ",")
+
+    expectSymbol(inFile, "<")
+    expectSymbol(inFile, "<")
+    val Ax: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val Ay: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val Az: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ">")
+
+    expectSymbol(inFile, ",")
+
+    expectSymbol(inFile, "<")
+    val Bx: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val By: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val Bz: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ">")
+
+    expectSymbol(inFile, ",")
+
+    expectSymbol(inFile, "<")
+    val Cx: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val Cy: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val Cz: Float = expectNumber(inFile, scene)
+    expectSymbol(inFile, ">")
+    expectSymbol(inFile, ">")
+
+    expectSymbol(inFile, ",")
+    val transformation: Transformation = parseTransformation(inFile, scene)
+    expectSymbol(inFile, ")")
+
+    return scene.materials[matName]?.let { Triangle(Point(Ax, Ay, Az), Point(Bx, By, Bz), Point(Cx, Cy, Cz), transformation, it) }
+}
+
 fun parseSphere(inFile: InputStream, scene: Scene): Sphere? {
     expectSymbol(inFile, "(")
     val matName = expectIdentifier(inFile)
@@ -578,6 +626,9 @@ fun parseScene(inFile: InputStream): Scene {
 
         else if (what.keyword == keywordEnum.PLANE){
             parsePlane(inFile, scene)?.let { scene.world.AddShape(it) }
+        }
+        else if (what.keyword == keywordEnum.TRIANGLE){
+            parseTriangle(inFile, scene)?.let { scene.world.AddShape(it) }
         }
 
         else if (what.keyword == keywordEnum.CAMERA){

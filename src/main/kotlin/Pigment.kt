@@ -38,6 +38,10 @@ class CheckredPigment(val col1 : Color, val col2 : Color, val n_steps : Int = 10
      *  @return : color, variable of type Color
      */
     override fun GetColor(uv: Vec2d): Color{
+        if (!uv.u.isFinite() || !uv.v.isFinite()) {
+            // Handle NaN or infinite values, return a default color or handle it accordingly
+            return this.col1  // Change this to your desired default color
+        }
         var int_u = (uv.u * this.n_steps).roundToInt()
         var int_v = (uv.v * this.n_steps).roundToInt()
         return if ((int_u % 2) == (int_v % 2)) this.col1

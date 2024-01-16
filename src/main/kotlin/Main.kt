@@ -23,6 +23,7 @@ class Demo: CliktCommand(name = "demo"){
     private val maxd: Int by option("--maxdepth", "--md", help = "Number of times rays can bounce used in the pathtracing algorithm (2 by default)").int().default(2)
     private val sPS: Int by option("--samplse", "--sps", help = "Number of samples (1 by default)").int().default(1)
     private val sc: Float by option("--scale", "--sc", help = "Scale of sphere").float().default(1.0f)
+   
     override fun run() {
         val image: HDRImage = HDRImage(width, height)
         val ar: Float = image.width.toFloat() / image.height.toFloat()
@@ -76,7 +77,7 @@ class Render: CliktCommand(name = "render") {
     ).int().default(1) 
     private val maxDepth: Int by option("--maxdepht", "--md", help = "Max number of times the ray has been scattered").int()
         .default(10)
-    
+
     override fun run() {
         val image: HDRImage = HDRImage(width, height)
         val ar: Float = image.width.toFloat() / image.height.toFloat()
@@ -90,7 +91,7 @@ class Render: CliktCommand(name = "render") {
         if(camera != null){
             var tracer: ImageTracer = ImageTracer(image = image, camera = camera, samplesPerSide = sps)
             var world = scene.world
-            var render = PathTracer(world, maxDepth = maxDepth, numberOfRays = numray, russianRouletteLimit = maxDepth + 5)
+            var render = PathTracer(world, maxDepth = maxDepth, numberOfRays = numray, russianRouletteLimit = maxDepth - 1)
             tracer.FireAllRays {render.Render(it)}
             image.SaveLDR(fname, "PNG", 1.0f)
         }

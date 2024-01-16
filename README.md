@@ -85,5 +85,6 @@ creates a plane with an emissive *sky_material* moved 20 units in the positive z
 Triangles differ from spheres and planes as they are not defined by trasformations of a primitive object, rather they are defined by specifying the coordinates of its verteces, for instance:
 >triangle(tri_mat, <<-5, -15, -5>, <-5, -5, -5>, <-10, -10, 5>>, scaling([1, 1, 1]))
 the coordinates are given between two angled braces with the components enclosed between two angled braces. The *scaling([1, 1, 1])* part is used to prevent errors while reading the input file.
-![tricolor_5_3](https://github.com/monicaerica/myraytracer/assets/54890365/69738da2-3f8e-47f3-a07d-131189043115)
+
+<img src=https://github.com/monicaerica/myraytracer/assets/54890365/69738da2-3f8e-47f3-a07d-131189043115 width="200" style="float: right;">
 

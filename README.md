@@ -196,4 +196,4 @@ camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9)
 
 And the output
 
-
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/9afb16f8-c650-4e9d-820f-378d9b7efb7e" width="200" style="float: right;">

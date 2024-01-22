@@ -148,4 +148,48 @@ And this is the output
 
 <img src="https://github.com/monicaerica/myraytracer/assets/54890365/8f7fd6f9-e9ba-4c9d-a2ae-081ffe9cb29e" width="200" style="float: right;">
 
+The same scene with more spheres and from a different perspective
+
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/66c11d34-b28a-4057-840e-a207faf05aa5" width="200" style="float: right;">
+
+
+### Scene 2
+Scene 2 contains two metal triangles with a fuzzy reflection, 6 fuzzy metal spheres with the colours of the italian flag and a checkered uniform sphere plus the same big emissive sphere and checkered floor as in scene 1:
+```
+material plane_material(diffuse(checkered(<1, 1, 1>, <1, 0, 0>, 1)), uniform(<0.0, 0.0, 0.0>))
+material check_material(diffuse(checkered(<0, 0, 1>, <1, 0, 0>, 10)), uniform(<0.0, 0.0, 0.0>))
+
+material big_sphere(metal(uniform(<10, 5, 0>), 0.5), uniform(<1., 1., 1.>))
+material light_sphere_g(metal(uniform(<0., 10., 0.>), 0.2), uniform(<0., 0., 0.>))
+material light_sphere_w(metal(uniform(<10., 10., 10.>), 0.2), uniform(<0., 0., 0.>))
+material light_sphere_r(metal(uniform(<10., 0., 0.>), 0.2), uniform(<0., 0., 0.>))
+material tri_mat(metal(uniform(<0.5, 0.5, 0.5>), 0.03), uniform(<0., 0., 0.>))
+
+
+sphere(big_sphere, translation([-5, 0, -5])*scaling([50, 50, 50]))
+
+sphere(light_sphere_g, translation([-5, 0, -4])*scaling([1, 1, 1]))
+sphere(light_sphere_g, translation([-5, 0, -2])*scaling([1, 1, 1]))
+
+sphere(light_sphere_w, translation([-5, 0, 0])*scaling([1, 1, 1]))
+sphere(light_sphere_w, translation([-5, 0, 2])*scaling([1, 1, 1]))
+
+sphere(light_sphere_r, translation([-5, 0, 4])*scaling([1, 1, 1]))
+sphere(light_sphere_r, translation([-5, 0, 6])*scaling([1, 1, 1]))	
+
+
+sphere(check_material, translation([-6, 5, 0])*scaling([0.5, 0.5, 0.5]))
+sphere(check_material, translation([-2, -2, 0])*scaling([2, 2, 2]))
+
+
+triangle(tri_mat, <<-15, -15, -5>, <-15, 15, -5>, <-10, 0, 10>>, scaling([1, 1, 1]))
+triangle(tri_mat, <<-15, -15, -5>, <15, -15, -5>, <-10, 0, 10>>, scaling([1, 1, 1]))
+
+plane(plane_material,translation([0, 0, -5]))
+
+camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9) 	
+```
+
+And the output
+
 

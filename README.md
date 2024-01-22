@@ -26,7 +26,7 @@ As of right now there are three BRDFs in this raytracer:
 The first two BRDFs only take a pigment as an argument, the third one also takes a float, the fuzzyness.
 ### Specular
 A simple reflective material, takes a ray coming from a direction and reflects it perfectly using the reflection formula from geometrical optics.
-### DIffusive
+### Diffusive
 A diffusive material which, upon being hit by a ray, scatters that ray in a random direction in an emisphere
 ### Metal
 Simulates a behaviour changing between a perfect specular and a diffusive material through the fuzzyness, basically a ray is reflected (as in the specular BRDF) and the reflected is deflected in a random direction, the random "deviation" being multiplied by the fuzzyness, thus if **fuzzy = 0** the system behaves as a perfect reflective material, if **fuzzy = 1** it behaves as a diffusive BRDF. A comparison of the same scene with a sphere with a metal BRDF for increasing fuzzyness is shown below.
@@ -72,18 +72,22 @@ a material which has a gray color and a fuzz of 0.5, giving it a somewhat reflec
 
 There are currently three different objects supported by the code: spheres, planes and triangles. Shapes can  be assigned a series of transformations to change their position, shape, size and orientation, transformations are combined by using the * symbol, for instance:
 >sphere(light_sphere, translation([-1, 0, 1])*scaling([0.7, 0.7, 0.7]))
+
 will create a sphere translated by the vector [-1, 0, 1] and scaled to 70% of its original size along all three axes.
 #### Sphere
 A sphere is defined as a unit sphere at the origin which can be moved, rotated and rescaled along the three axes by applying the *translation*, *scale* and *rotation* trasformations, for instance:
 >sphere(light_sphere, translation([-1, 0, 1])*scaling([0.7, 0.7, 0.7]))
+
 Note that giving different values to the three components of a scaling transformation will result in an oblong ellipsoid.
 #### Plane
 A plane is an infinetely spanning plane, moved in the scene from the origin using transformations. For instance, the following line:
 >plane(sky_material,translation([0, 0, 20]))
+
 creates a plane with an emissive *sky_material* moved 20 units in the positive z direction, acting thus as an emissive sky illuminating the scene
 #### Triangle
 Triangles differ from spheres and planes as they are not defined by trasformations of a primitive object, rather they are defined by specifying the coordinates of its verteces, for instance:
 >triangle(tri_mat, <<-5, -15, -5>, <-5, -5, -5>, <-10, -10, 5>>, scaling([1, 1, 1]))
+
 the coordinates are given between two angled braces with the components enclosed between two angled braces. The *scaling([1, 1, 1])* part is used to prevent errors while reading the input file.
 
 ## Example Scenes

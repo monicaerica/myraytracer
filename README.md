@@ -86,3 +86,66 @@ Triangles differ from spheres and planes as they are not defined by trasformatio
 >triangle(tri_mat, <<-5, -15, -5>, <-5, -5, -5>, <-10, -10, 5>>, scaling([1, 1, 1]))
 the coordinates are given between two angled braces with the components enclosed between two angled braces. The *scaling([1, 1, 1])* part is used to prevent errors while reading the input file.
 
+## Example Scenes
+A few example scenes are provided to showcase the features of the code
+
+### Scene 1
+Scene 1 is composed of a number of diffusive spheres with random scaling, displacement and color generated using a simple python code:
+```python
+def generate_spheres(N):
+    for i in range(N):
+        scale = random.uniform(0.2,4)
+        trans_x = random.uniform(-10,-25)
+        trans_y = random.uniform(-15,15)
+        trans_z = random.uniform(-15,15)
+        r = random.uniform(0,1)
+        g = random.uniform(0,1)
+        b = random.uniform(0,1)
+        mat = "material mat_{} (diffuse(uniform(<{:.1f},{:.1f},{:.1f}>)), uniform(<0,0,0>))".format(i, r, g, b)
+        print(mat)
+        print("sphere(mat_{}, translation([{:.1f}, {:.1f}, {:.1f}])*scaling([{:.1f},{:.1f},{:.1f}]))".format(i,trans_x,trans_y,trans_z,scale, scale,scale))
+```
+plus a reflective red sphere, a big emissive sphere acting as a sky enclosing the scene and a checkered plane as a floor.
+This is the input scene descriptor file
+```
+material plane_material(diffuse(checkered(<1, 1, 1>, <1, 0, 0>, 1)), uniform(<0.0, 0.0, 0.0>))
+
+material sky_material(diffuse(uniform(<	67.8, 84.7, 90.2>)), uniform(<	1, 2, 1>))
+
+material spec_sphere(specular(uniform(<0.8,0.2,0>)), uniform(<0,0,0>))
+material tri_mat(metal(uniform(<0.5, 0.5, 0.5>), 0.03), uniform(<0., 0., 0.>))
+material light(diffuse(uniform(<0,0,0>)), uniform(<10, 10, 10>))
+
+plane(plane_material, translation([0, 0, -10]))
+
+sphere(sky_material, scaling([50,50,50]))
+sphere(spec_sphere, translation([-15, 3, -10])*scaling([5,5,5]))
+	
+material mat_0 (diffuse(uniform(<0.1,0.2,0.5>)), uniform(<0,0,0>))
+sphere(mat_0, translation([-17.4, -6.5, -9.0])*scaling([3.0,3.0,3.0]))
+material mat_1 (diffuse(uniform(<0.4,0.4,0.2>)), uniform(<0,0,0>))
+sphere(mat_1, translation([-20.2, 8.3, -3.6])*scaling([1.8,1.8,1.8]))
+material mat_2 (diffuse(uniform(<1.0,0.4,0.8>)), uniform(<0,0,0>))
+sphere(mat_2, translation([-21.1, 10.0, 11.6])*scaling([3.1,3.1,3.1]))
+material mat_3 (diffuse(uniform(<0.8,1.0,0.1>)), uniform(<0,0,0>))
+sphere(mat_3, translation([-20.3, 13.9, -13.2])*scaling([2.2,2.2,2.2]))
+material mat_4 (diffuse(uniform(<0.1,0.3,0.9>)), uniform(<0,0,0>))
+sphere(mat_4, translation([-13.4, -9.5, 8.5])*scaling([2.0,2.0,2.0]))
+material mat_5 (diffuse(uniform(<0.0,0.5,0.3>)), uniform(<0,0,0>))
+sphere(mat_5, translation([-11.0, -1.4, 13.1])*scaling([3.3,3.3,3.3]))
+material mat_6 (diffuse(uniform(<0.7,0.3,0.3>)), uniform(<0,0,0>))
+sphere(mat_6, translation([-16.6, -9.2, -1.3])*scaling([3.7,3.7,3.7]))
+material mat_7 (diffuse(uniform(<0.9,0.5,0.1>)), uniform(<0,0,0>))
+sphere(mat_7, translation([-10.6, -12.9, 6.5])*scaling([2.4,2.4,2.4]))
+material mat_8 (diffuse(uniform(<0.4,0.4,1.0>)), uniform(<0,0,0>))
+sphere(mat_8, translation([-23.4, -8.0, -3.6])*scaling([1.2,1.2,1.2]))
+material mat_9 (diffuse(uniform(<0.7,0.8,0.3>)), uniform(<0,0,0>))
+sphere(mat_9, translation([-11.8, 11.2, -0.4])*scaling([1.9,1.9,1.9]))
+
+camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9) 	
+```
+And this is the output
+
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/8f7fd6f9-e9ba-4c9d-a2ae-081ffe9cb29e" width="200" style="float: right;">
+
+

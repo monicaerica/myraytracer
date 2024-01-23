@@ -125,7 +125,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
             '\n' -> {this.location.col_num = 1
                     this.location.line_num += 1}
             null -> return
-            ' ' -> return
+            ' ' -> this.location.col_num += 1
             '\t' -> this.location.col_num = this.tabulations
             else -> this.location.col_num += 1
         }
@@ -177,7 +177,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
         while (true){
             var ch = this.ReadChar()
 
-            if (ch == '"'){
+            if (ch == '\u0022'){
                 break
             }
 
@@ -210,7 +210,7 @@ class InputStream(val stream: InputStreamReader, val file_name : String = "", va
         if (ch in SYMBOL){
             return symbolToken(symbol = ch.toString(),location = this.location)
         }
-        else if (ch == '"'){
+        else if (ch == '\u0022'){
             return this.parseStringToken(tokenLocation = this.location)
         }
         else if (ch.isDigit() || ch in "+-."){

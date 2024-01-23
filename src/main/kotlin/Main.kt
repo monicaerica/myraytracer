@@ -60,7 +60,9 @@ class Demo: CliktCommand(name = "demo"){
 
 class Render: CliktCommand(name = "render") {
     private val filename: String by option("--infile", "-inf", help = "Name of the file containing the description of the scene to be rendered").required()
+    private val algorithm: Int by option("--algorithm", "-a", help = "The algorithm used to render the scene, use 1 for on off rendering (only for quick positioning checks), 2 for the flat renderer, 3 for the path tracer. Default: 3").int().default(3)
     private val fname by option("--fname", "-f", help = "Filename into which to save the resulting image").required()
+    private val gamma: Float by option("--gamma", "-g", help = "Value of the gamma for RGB -> sRGB, default = 1").float().default(1.0f)
     private val width: Int by option("--width", "--w", help = "Image width in pixels (default = 640px)").int()
         .default(640)
     private val height: Int by option("--height", "--h", help = "Image height in pixels (default = 480px)").int()
@@ -91,9 +93,18 @@ class Render: CliktCommand(name = "render") {
         if(camera != null){
             var tracer: ImageTracer = ImageTracer(image = image, camera = camera, samplesPerSide = sps)
             var world = scene.world
-            var render = PathTracer(world, maxDepth = maxDepth, numberOfRays = numray, russianRouletteLimit = maxDepth - 1)
+            var render: Renderer = OnOffRender()
+            if (algorithm == 1){
+                render = OnOffRender(world)
+            }
+            else if (algorithm == 2){
+                render = FlatRender(world)
+            }
+            else if (algorithm == 3){
+                render = PathTracer(world, maxDepth = maxDepth, numberOfRays = numray, russianRouletteLimit = maxDepth - 1)
+            }
             tracer.FireAllRays {render.Render(it)}
-            image.SaveLDR(fname, "PNG", 1.0f)
+            image.SaveLDR(fname, "PNG", gamma)
         }
         else{
             error("A camera must be provided in the scene file")

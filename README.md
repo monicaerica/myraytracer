@@ -26,7 +26,7 @@ As of right now there are three BRDFs in this raytracer:
 The first two BRDFs only take a pigment as an argument, the third one also takes a float, the fuzzyness.
 ### Specular
 A simple reflective material, takes a ray coming from a direction and reflects it perfectly using the reflection formula from geometrical optics.
-### DIffusive
+### Diffusive
 A diffusive material which, upon being hit by a ray, scatters that ray in a random direction in an emisphere
 ### Metal
 Simulates a behaviour changing between a perfect specular and a diffusive material through the fuzzyness, basically a ray is reflected (as in the specular BRDF) and the reflected is deflected in a random direction, the random "deviation" being multiplied by the fuzzyness, thus if **fuzzy = 0** the system behaves as a perfect reflective material, if **fuzzy = 1** it behaves as a diffusive BRDF. A comparison of the same scene with a sphere with a metal BRDF for increasing fuzzyness is shown below.
@@ -72,17 +72,155 @@ a material which has a gray color and a fuzz of 0.5, giving it a somewhat reflec
 
 There are currently three different objects supported by the code: spheres, planes and triangles. Shapes can  be assigned a series of transformations to change their position, shape, size and orientation, transformations are combined by using the * symbol, for instance:
 >sphere(light_sphere, translation([-1, 0, 1])*scaling([0.7, 0.7, 0.7]))
+
 will create a sphere translated by the vector [-1, 0, 1] and scaled to 70% of its original size along all three axes.
 #### Sphere
 A sphere is defined as a unit sphere at the origin which can be moved, rotated and rescaled along the three axes by applying the *translation*, *scale* and *rotation* trasformations, for instance:
 >sphere(light_sphere, translation([-1, 0, 1])*scaling([0.7, 0.7, 0.7]))
+
 Note that giving different values to the three components of a scaling transformation will result in an oblong ellipsoid.
 #### Plane
 A plane is an infinetely spanning plane, moved in the scene from the origin using transformations. For instance, the following line:
 >plane(sky_material,translation([0, 0, 20]))
+
 creates a plane with an emissive *sky_material* moved 20 units in the positive z direction, acting thus as an emissive sky illuminating the scene
 #### Triangle
 Triangles differ from spheres and planes as they are not defined by trasformations of a primitive object, rather they are defined by specifying the coordinates of its verteces, for instance:
 >triangle(tri_mat, <<-5, -15, -5>, <-5, -5, -5>, <-10, -10, 5>>, scaling([1, 1, 1]))
+
 the coordinates are given between two angled braces with the components enclosed between two angled braces. The *scaling([1, 1, 1])* part is used to prevent errors while reading the input file.
 
+## Example Scenes
+A few example scenes are provided to showcase the features of the code
+
+### Scene 1
+Scene 1 is composed of a number of diffusive spheres with random scaling, displacement and color generated using a simple python code:
+```python
+def generate_spheres(N):
+    for i in range(N):
+        scale = random.uniform(0.2,4)
+        trans_x = random.uniform(-10,-25)
+        trans_y = random.uniform(-15,15)
+        trans_z = random.uniform(-15,15)
+        r = random.uniform(0,1)
+        g = random.uniform(0,1)
+        b = random.uniform(0,1)
+        mat = "material mat_{} (diffuse(uniform(<{:.1f},{:.1f},{:.1f}>)), uniform(<0,0,0>))".format(i, r, g, b)
+        print(mat)
+        print("sphere(mat_{}, translation([{:.1f}, {:.1f}, {:.1f}])*scaling([{:.1f},{:.1f},{:.1f}]))".format(i,trans_x,trans_y,trans_z,scale, scale,scale))
+```
+plus a reflective red sphere, a big emissive sphere acting as a sky enclosing the scene and a checkered plane as a floor.
+This is the input scene descriptor file
+```
+material plane_material(diffuse(checkered(<1, 1, 1>, <1, 0, 0>, 1)), uniform(<0.0, 0.0, 0.0>))
+
+material sky_material(diffuse(uniform(<	67.8, 84.7, 90.2>)), uniform(<	1, 2, 1>))
+
+material spec_sphere(specular(uniform(<0.8,0.2,0>)), uniform(<0,0,0>))
+material tri_mat(metal(uniform(<0.5, 0.5, 0.5>), 0.03), uniform(<0., 0., 0.>))
+material light(diffuse(uniform(<0,0,0>)), uniform(<10, 10, 10>))
+
+plane(plane_material, translation([0, 0, -10]))
+
+sphere(sky_material, scaling([50,50,50]))
+sphere(spec_sphere, translation([-15, 3, -10])*scaling([5,5,5]))
+	
+material mat_0 (diffuse(uniform(<0.1,0.2,0.5>)), uniform(<0,0,0>))
+sphere(mat_0, translation([-17.4, -6.5, -9.0])*scaling([3.0,3.0,3.0]))
+material mat_1 (diffuse(uniform(<0.4,0.4,0.2>)), uniform(<0,0,0>))
+sphere(mat_1, translation([-20.2, 8.3, -3.6])*scaling([1.8,1.8,1.8]))
+material mat_2 (diffuse(uniform(<1.0,0.4,0.8>)), uniform(<0,0,0>))
+sphere(mat_2, translation([-21.1, 10.0, 11.6])*scaling([3.1,3.1,3.1]))
+material mat_3 (diffuse(uniform(<0.8,1.0,0.1>)), uniform(<0,0,0>))
+sphere(mat_3, translation([-20.3, 13.9, -13.2])*scaling([2.2,2.2,2.2]))
+material mat_4 (diffuse(uniform(<0.1,0.3,0.9>)), uniform(<0,0,0>))
+sphere(mat_4, translation([-13.4, -9.5, 8.5])*scaling([2.0,2.0,2.0]))
+material mat_5 (diffuse(uniform(<0.0,0.5,0.3>)), uniform(<0,0,0>))
+sphere(mat_5, translation([-11.0, -1.4, 13.1])*scaling([3.3,3.3,3.3]))
+material mat_6 (diffuse(uniform(<0.7,0.3,0.3>)), uniform(<0,0,0>))
+sphere(mat_6, translation([-16.6, -9.2, -1.3])*scaling([3.7,3.7,3.7]))
+material mat_7 (diffuse(uniform(<0.9,0.5,0.1>)), uniform(<0,0,0>))
+sphere(mat_7, translation([-10.6, -12.9, 6.5])*scaling([2.4,2.4,2.4]))
+material mat_8 (diffuse(uniform(<0.4,0.4,1.0>)), uniform(<0,0,0>))
+sphere(mat_8, translation([-23.4, -8.0, -3.6])*scaling([1.2,1.2,1.2]))
+material mat_9 (diffuse(uniform(<0.7,0.8,0.3>)), uniform(<0,0,0>))
+sphere(mat_9, translation([-11.8, 11.2, -0.4])*scaling([1.9,1.9,1.9]))
+
+camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9) 	
+```
+And this is the output
+
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/8f7fd6f9-e9ba-4c9d-a2ae-081ffe9cb29e" width="200" style="float: right;">
+
+The same scene with more spheres and from a different perspective
+
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/66c11d34-b28a-4057-840e-a207faf05aa5" width="200" style="float: right;">
+
+
+### Scene 2
+Scene 2 contains two metal triangles with a fuzzy reflection, 6 fuzzy metal spheres with the colours of the italian flag and a checkered uniform sphere plus the same big emissive sphere and checkered floor as in scene 1:
+```
+material plane_material(diffuse(checkered(<1, 1, 1>, <1, 0, 0>, 1)), uniform(<0.0, 0.0, 0.0>))
+material check_material(diffuse(checkered(<0, 0, 1>, <1, 0, 0>, 10)), uniform(<0.0, 0.0, 0.0>))
+
+material big_sphere(metal(uniform(<10, 5, 0>), 0.5), uniform(<1., 1., 1.>))
+material light_sphere_g(metal(uniform(<0., 10., 0.>), 0.2), uniform(<0., 0., 0.>))
+material light_sphere_w(metal(uniform(<10., 10., 10.>), 0.2), uniform(<0., 0., 0.>))
+material light_sphere_r(metal(uniform(<10., 0., 0.>), 0.2), uniform(<0., 0., 0.>))
+material tri_mat(metal(uniform(<0.5, 0.5, 0.5>), 0.03), uniform(<0., 0., 0.>))
+
+
+sphere(big_sphere, translation([-5, 0, -5])*scaling([50, 50, 50]))
+
+sphere(light_sphere_g, translation([-5, 0, -4])*scaling([1, 1, 1]))
+sphere(light_sphere_g, translation([-5, 0, -2])*scaling([1, 1, 1]))
+
+sphere(light_sphere_w, translation([-5, 0, 0])*scaling([1, 1, 1]))
+sphere(light_sphere_w, translation([-5, 0, 2])*scaling([1, 1, 1]))
+
+sphere(light_sphere_r, translation([-5, 0, 4])*scaling([1, 1, 1]))
+sphere(light_sphere_r, translation([-5, 0, 6])*scaling([1, 1, 1]))	
+
+
+sphere(check_material, translation([-6, 5, 0])*scaling([0.5, 0.5, 0.5]))
+sphere(check_material, translation([-2, -2, 0])*scaling([2, 2, 2]))
+
+
+triangle(tri_mat, <<-15, -15, -5>, <-15, 15, -5>, <-10, 0, 10>>, scaling([1, 1, 1]))
+triangle(tri_mat, <<-15, -15, -5>, <15, -15, -5>, <-10, 0, 10>>, scaling([1, 1, 1]))
+
+plane(plane_material,translation([0, 0, -5]))
+
+camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9) 	
+```
+
+And the output
+
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/9afb16f8-c650-4e9d-820f-378d9b7efb7e" width="200" style="float: right;">
+
+## Running The Code
+
+The code is run via the command-line, in order to run it you require an input file as the ones in the examples above. To get a quick documentation about the different parameters you can pass the command you can run:
+```bash
+komopath render --h
+```
+This will result in the following screen being printed:
+```bash
+Usage: my-ratracer render [OPTIONS]
+
+Options:
+  -inf, --infile TEXT      Name of the file containing the description of the
+                           scene to be rendered
+  -f, --fname TEXT         Filename into which to save the resulting image
+  --width, --w INT         Image width in pixels (default = 640px)
+  --height, --h INT        Image height in pixels (default = 480px)
+  --numray, --nr INT       NUmber of rays used in the pathtracing algorithm
+  --samperside, --sps INT  Number of samples per pixel
+  --maxdepht, --md INT     Max number of times the ray has been scattered
+  -h, --help               Show this message and exit
+```
+Note that the only arguments required are the input file name and the output file name, the others, if not given, will resort to their default values.
+For instance, to render scene 2 with 10 secondary rays and 3 reflections in 1080p and saving it to a file named scene2.png:
+```bash
+komopath render --infile scena2 --fname scene2.png --w 1920 --h 1080 --nr 10 --md 3
+```

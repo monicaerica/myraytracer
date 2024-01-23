@@ -197,3 +197,30 @@ camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9)
 And the output
 
 <img src="https://github.com/monicaerica/myraytracer/assets/54890365/9afb16f8-c650-4e9d-820f-378d9b7efb7e" width="200" style="float: right;">
+
+## Running The Code
+
+The code is run via the command-line, in order to run it you require an input file as the ones in the examples above. To get a quick documentation about the different parameters you can pass the command you can run:
+```bash
+komopath render --h
+```
+This will result in the following screen being printed:
+```bash
+Usage: my-ratracer render [OPTIONS]
+
+Options:
+  -inf, --infile TEXT      Name of the file containing the description of the
+                           scene to be rendered
+  -f, --fname TEXT         Filename into which to save the resulting image
+  --width, --w INT         Image width in pixels (default = 640px)
+  --height, --h INT        Image height in pixels (default = 480px)
+  --numray, --nr INT       NUmber of rays used in the pathtracing algorithm
+  --samperside, --sps INT  Number of samples per pixel
+  --maxdepht, --md INT     Max number of times the ray has been scattered
+  -h, --help               Show this message and exit
+```
+Note that the only arguments required are the input file name and the output file name, the others, if not given, will resort to their default values.
+For instance, to render scene 2 with 10 secondary rays and 3 reflections in 1080p and saving it to a file named scene2.png:
+```bash
+komopath render --infile scena2 --fname scene2.png --w 1920 --h 1080 --nr 10 --md 3
+```

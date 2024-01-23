@@ -211,7 +211,12 @@ Usage: my-ratracer render [OPTIONS]
 Options:
   -inf, --infile TEXT      Name of the file containing the description of the
                            scene to be rendered
+  -a, --algorithm INT      The algorithm used to render the scene, use 1 for
+                           on off rendering (only for quick positioning
+                           checks), 2 for the flat renderer, 3 for the path
+                           tracer. Default: 3
   -f, --fname TEXT         Filename into which to save the resulting image
+  -g, --gamma FLOAT        Value of the gamma for RGB -> sRGB, default = 1
   --width, --w INT         Image width in pixels (default = 640px)
   --height, --h INT        Image height in pixels (default = 480px)
   --numray, --nr INT       NUmber of rays used in the pathtracing algorithm
@@ -220,7 +225,7 @@ Options:
   -h, --help               Show this message and exit
 ```
 Note that the only arguments required are the input file name and the output file name, the others, if not given, will resort to their default values.
-For instance, to render scene 2 with 10 secondary rays and 3 reflections in 1080p and saving it to a file named scene2.png:
+For instance, to render *scene 2* using the path tracer with 10 secondary rays and 3 reflections in 1080p and saving it to a file named scene2.png using a gamma correction of 0.7:
 ```bash
-komopath render --infile scena2 --fname scene2.png --w 1920 --h 1080 --nr 10 --md 3
+komopath render --infile scena2 --fname scene2.png --w 1920 --h 1080 --nr 10 --md 3 --a 3 --gamma 0.7
 ```

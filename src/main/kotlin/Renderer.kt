@@ -21,36 +21,39 @@ class FlatRender(world: World = World(), background_color: Color = BLACK):Render
     }
 }
 
-class PointLightRenderer(world: World = World(), background_color: Color = BLACK, private val pcg: PCG = PCG(), ambientColor = Color(0.1f, 0.1f, 0.1f)): Renderer(world, background_color){
+class PointLightRenderer(world: World = World(), background_color: Color = BLACK, private val pcg: PCG = PCG(), val ambientColor: Color = Color(0.1f, 0.1f, 0.1f)): Renderer(world, background_color){
     override fun Render(ray: Ray): Color {
         val hitRecord = this.world.rayIntersection(ray) ?: return background_color
         val hitMaterial: Material = hitRecord.shape.material
         var resColor = this.ambientColor
 
         for (light in this.world.pointLights) {
-            if (this.world.isPointVisible(light.position, hitRecord.worldPoint)) {
-                val distanceVec: Vec = hitRecord.worldPoint - light.position
-                val distance: Float = distanceVec.Normalize()
+            if (this.world?.isPointVisible(light?.position, hitRecord.worldPoint)) {
+                val distanceVec: Vec = hitRecord.worldPoint - (light?.position ?: Point(0.0f, 0.0f, 0.0f))
+
+                val distance: Float = distanceVec.Norm()
                 
                 val inDir: Vec = distanceVec * (1.0f / distance)
 
-                val cosTheta: Float = max(0.0f, dot(-ray.direction.Normalize(), hitRecord.normal.Normalize()))
+                val cosTheta: Float = max(0.0f, dot(-ray.Dir.Normalize(), hitRecord.normal.ToVec().Normalize()))
                 
                 var distanceFactor: Float = 1.0f
-                if (light.linearRadius > 0.0f){
-                    distanceFactor: Float = (light.linearRadius / distance) * (light.linearRadius / distance)
+                if (light?.linearRadius?.compareTo(0.0f) ?: 0 > 0){
+                    distanceFactor = (light?.linearRadius ?: 0.0f) / distance * (light?.linearRadius ?: 0.0f) / distance
+
                 }
 
                 val emittedColor: Color = hitMaterial.emitted_radiance.GetColor(hitRecord.surfacePoint)
 
-                val brdfColor: Color = hitMaterial.BRDF.Eval(
+                val brdfColor: Color = hitMaterial.brdf.Eval(
                     nor = hitRecord.normal,
                     in_dir = inDir,
-                    out_dir = -ray.direction,
+                    out_dir = -ray.Dir,
                     uv = hitRecord.surfacePoint
                 )
 
-                resColor = resColor + (emittedColor + brdfColor) * light.color * cosTheta * distanceFactor
+                resColor = resColor + (emittedColor + brdfColor) * (light?.color ?: WHITE) * cosTheta * distanceFactor
+
             }
             
         }

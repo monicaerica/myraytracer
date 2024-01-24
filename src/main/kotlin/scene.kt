@@ -34,7 +34,8 @@ enum class keywordEnum() {
     IMAGE,
     SPECULAR,
     IDENTITY,
-    FLOAT
+    FLOAT,
+    LIGHT
 }
 
 val inToKeyword = mapOf(
@@ -63,7 +64,8 @@ val inToKeyword = mapOf(
     "specular" to keywordEnum.SPECULAR,
     "metal" to keywordEnum.METAL,
     "identity" to keywordEnum.IDENTITY,
-    "float" to keywordEnum.FLOAT
+    "float" to keywordEnum.FLOAT,
+    "light" to keywordEnum.LIGHT,
 
 )
 
@@ -351,6 +353,27 @@ fun expectIdentifier(inFile: InputStream): String {
 }
 
 /**
+* Parse a light to a Point light
+ */
+fun parseLight(inFile: InputStream, scene: Scene): pointLight {
+    expectSymbol(inFile, "(")
+    val col = parseColor(inFile, scene)
+    expectSymbol(inFile, ",")
+    val radius = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    expectSymbol(inFile, "[")
+    val lightX = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val lightY = expectNumber(inFile, scene)
+    expectSymbol(inFile, ",")
+    val lightZ = expectNumber(inFile, scene)
+    expectSymbol(inFile, "]")
+    expectSymbol(inFile, ")")
+
+    return pointLight(Point(lightX, lightY, lightZ), col, radius)
+}
+
+/**
  * Parse a color to a Color type, the format in the file should be <r, g, b>
  */
 fun parseColor(inFile: InputStream, scene: Scene): Color {
@@ -622,6 +645,10 @@ fun parseScene(inFile: InputStream): Scene {
         else if (what.keyword == keywordEnum.SPHERE){
             what_where = inFile.location
             parseSphere(inFile, scene)?.let { scene.world.AddShape(it) }
+        }
+        else if (what.keyword == keywordEnum.LIGHT){
+            what_where = inFile.location
+            parseLight(inFile, scene)?.let { scene.world.AddLights(it) }
         }
 
         else if (what.keyword == keywordEnum.PLANE){

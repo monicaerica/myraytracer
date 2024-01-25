@@ -120,3 +120,15 @@ fun GGXDistribution(n: Normal, m: Vec, alpha: Float): Float {
     val num: Float = chiGGX(NdotM) * alpha2
     return num / (PI.toFloat() * den * den)
 }
+
+fun Clamp(x: Float): Float{
+    return x / (1.0f + x)
+}
+
+fun GGXPartialGeometry(omega: Vec, n: Normal, m: Vec, alpha: Float){
+    val omegaDotm2: Float = Clamp(m.Dot(omega))
+    val chi: Float = chiGGX(omegaDotm2 / (Clamp(n.Dot(omega))))
+    omegaDotm2 = omegaDotm2 * omegaDotm2
+    val tan2: Float = (1.0f - omegaDotm2) / omegaDotm2
+    return (chi * 2) / (1.0f + sqrt(1.0F + alpha * alpha * tan2))
+}

@@ -1,6 +1,10 @@
 import javax.lang.model.type.UnionType
 import kotlin.math.abs
 import kotlin.math.sqrt
+import kotlin.math.atan
+import kotlin.math.cos
+
+import kotlin.math.sin
 import kotlin.collections.union
 
 data class Vec(
@@ -179,4 +183,13 @@ fun randomUnitVector(pcg: PCG): Vec {
 fun randomOnEmisphere(pcg: PCG, normal: Normal): Vec {
     var rnd: Vec = randomUnitVector(pcg)
     return if (dot(rnd, normal.ToVec())> 0.0f) rnd else -rnd
+}
+
+fun sampleGGXVector(pcg: PCG, alpha: Float): Vec {
+    val u1: Float = pcg.RandomFloat()
+    val u2: Float = pcg.RandomFloat()
+    val theta: Float = atan((alpha * sqrt(u1)) / (1 - u1))
+    val phi: Float = 2.0f * PI.toFloat() * u2
+    return Vec(sin(theta) * cos(phi), sin(theta) * sin(phi), cos(theta))
+
 }

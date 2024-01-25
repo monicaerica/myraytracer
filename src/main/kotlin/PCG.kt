@@ -50,4 +50,5 @@ data class PCG(val init_state : ULong = 42u, val init_seq : ULong = 54u,
     fun RandomFloat(min: Float, max: Float): Float {
         return min + (max - min) * RandomFloat()
     }
+
 }

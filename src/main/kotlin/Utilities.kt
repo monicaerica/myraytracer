@@ -1,5 +1,5 @@
 import kotlin.math.abs
-
+import kotlin.math.*
 fun IsClose(first: Float, second: Float, epsilon: Float = 1e-4f): Boolean{
     var bool: Boolean
     if (abs(first - second) < epsilon){
@@ -104,10 +104,19 @@ val ID3 = Array(3) { i ->
     }
 }
 
-fun chiGGX(x: float): Float {
-    var chi = 1.0F
+fun chiGGX(x: Float): Float {
+    var chi:Float = 1.0F
     if (x <= 0.0f){
         chi = 0.0F
     }
     return chi
+}
+
+fun GGXDistribution(n: Normal, m: Vec, alpha: Float): Float {
+    val NdotM: Float = n.Dot(m)
+    val alpha2: = alpha * alpha
+    val NdotM2: Float = NdotM * NdotM
+    val den:Float = NdotM2 * (alpha2 + (1 - NdotM2))
+    val num: Float = chiGGX(NdotM) * alpha2
+    return num / (PI.toFloat() * den * den)
 }

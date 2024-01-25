@@ -103,3 +103,11 @@ val ID3 = Array(3) { i ->
         }
     }
 }
+
+fun chiGGX(x: float): Float {
+    var chi = 1.0F
+    if (x <= 0.0f){
+        chi = 0.0F
+    }
+    return chi
+}

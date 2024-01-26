@@ -1,0 +1,33 @@
+material plane_material(diffuse(checkered(<1, 1, 1>, <1, 0, 0>, 1)), uniform(<0.0, 0.0, 0.0>))
+material check_material(diffuse(checkered(<0, 0, 1>, <1, 0, 0>, 10)), uniform(<0.0, 0.0, 0.0>))
+
+material big_sphere(diffuse(uniform(<0, 0, 0>)), uniform(<10.1, 10.1, 10.1>))
+material light_sphere_g(metal(uniform(<0., 10., 0.>), 2), uniform(<0., 10., 0.>))
+material light_sphere_w(metal(uniform(<10., 10., 10.>), 2), uniform(<10., 10., 10.>))
+material light_sphere_r(metal(uniform(<10., 0., 0.>), 2), uniform(<10., 0., 0.>))
+material tri_mat(metal(uniform(<0.5, 0.5, 0.5>), 100), uniform(<1., 1., 1.>))
+
+
+sphere(big_sphere, translation([0, 0, 0])*scaling([50, 50, 50]))
+
+sphere(light_sphere_g,translation([-5, 0, -4])*scaling([1, 1, 1]))
+sphere(light_sphere_g, translation([-5, 0, -2])*scaling([1, 1, 1]))
+
+sphere(light_sphere_w, translation([-5, 0, 0])*scaling([1, 1, 1]))
+sphere(light_sphere_w, translation([-5, 0, 2])*scaling([1, 1, 1]))
+
+sphere(light_sphere_r, translation([-5, 0, 4])*scaling([1, 1, 1]))
+sphere(light_sphere_r, translation([-5, 0, 6])*scaling([1, 1, 1]))	
+
+
+sphere(check_material, translation([-6, 5, 0])*scaling([0.5, 0.5, 0.5]))
+sphere(check_material, translation([-2, -2, 0])*scaling([2, 2, 2]))
+
+
+triangle(tri_mat, <<-15, -15, -5>, <-15, 15, -5>, <-10, 0, 10>>, scaling([1, 1, 1]))
+triangle(tri_mat, <<-15, -15, -5>, <15, -15, -5>, <-10, 0, 10>>, scaling([1, 1, 1]))
+
+plane(plane_material,translation([0, 0, -5]))
+
+
+camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9) 	

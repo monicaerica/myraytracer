@@ -1,0 +1,35 @@
+material plane_material(diffuse(checkered(<1, 1, 1>, <1, 0, 0>, 1)), uniform(<0.0, 0.0, 0.0>))
+
+material sky_material(diffuse(uniform(<	67.8, 84.7, 90.2>)), uniform(<	1, 2, 1>))
+
+material spec_sphere(specular(uniform(<0.8,0.2,0>)), uniform(<0,0,0>))
+material tri_mat(metal(uniform(<0.5, 0.5, 0.5>), 0.03), uniform(<0., 0., 0.>))
+material light(diffuse(uniform(<0,0,0>)), uniform(<10, 10, 10>))
+
+plane(plane_material, translation([0, 0, -10]))
+
+sphere(sky_material, scaling([50,50,50]))
+sphere(spec_sphere, translation([-15, 3, -10])*scaling([5,5,5]))
+	
+material mat_0 (diffuse(uniform(<0.1,0.2,0.5>)), uniform(<0,0,0>))
+sphere(mat_0, translation([-17.4, -6.5, -9.0])*scaling([3.0,3.0,3.0]))
+material mat_1 (diffuse(uniform(<0.4,0.4,0.2>)), uniform(<0,0,0>))
+sphere(mat_1, translation([-20.2, 8.3, -3.6])*scaling([1.8,1.8,1.8]))
+material mat_2 (diffuse(uniform(<1.0,0.4,0.8>)), uniform(<0,0,0>))
+sphere(mat_2, translation([-21.1, 10.0, 11.6])*scaling([3.1,3.1,3.1]))
+material mat_3 (diffuse(uniform(<0.8,1.0,0.1>)), uniform(<0,0,0>))
+sphere(mat_3, translation([-20.3, 13.9, -13.2])*scaling([2.2,2.2,2.2]))
+material mat_4 (diffuse(uniform(<0.1,0.3,0.9>)), uniform(<0,0,0>))
+sphere(mat_4, translation([-13.4, -9.5, 8.5])*scaling([2.0,2.0,2.0]))
+material mat_5 (diffuse(uniform(<0.0,0.5,0.3>)), uniform(<0,0,0>))
+sphere(mat_5, translation([-11.0, -1.4, 13.1])*scaling([3.3,3.3,3.3]))
+material mat_6 (diffuse(uniform(<0.7,0.3,0.3>)), uniform(<0,0,0>))
+sphere(mat_6, translation([-16.6, -9.2, -1.3])*scaling([3.7,3.7,3.7]))
+material mat_7 (diffuse(uniform(<0.9,0.5,0.1>)), uniform(<0,0,0>))
+sphere(mat_7, translation([-10.6, -12.9, 6.5])*scaling([2.4,2.4,2.4]))
+material mat_8 (diffuse(uniform(<0.4,0.4,1.0>)), uniform(<0,0,0>))
+sphere(mat_8, translation([-23.4, -8.0, -3.6])*scaling([1.2,1.2,1.2]))
+material mat_9 (diffuse(uniform(<0.7,0.8,0.3>)), uniform(<0,0,0>))
+sphere(mat_9, translation([-11.8, 11.2, -0.4])*scaling([1.9,1.9,1.9]))
+
+camera(perspective, rotationz(225)*translation([-3, 0, 0]), 1.0, 0.9) 	

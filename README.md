@@ -198,6 +198,14 @@ And the output
 
 <img src="https://github.com/monicaerica/myraytracer/assets/54890365/9afb16f8-c650-4e9d-820f-378d9b7efb7e" width="200" style="float: right;">
 
+### Scene 3
+
+To test the code a more complex object was rendered by using triangles generated from a PLY file using a python code. The model that was choosen for this test is Blender's mascot Suzanne. The input file is not reproduced here because of its length but can be found in the *utils* durectory together with the other scenes and the PLY to input python script. NOte that the script itself only produces a list of triangles properly formatted but without a material and other parts of the scene.
+
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/dd6f8f27-bee0-4024-9103-477654d1e200" width="200" style="float: right;">
+
+
+
 ## Running The Code
 
 The code is run via the command-line, in order to run it you require an input file as the ones in the examples above. To get a quick documentation about the different parameters you can pass the command you can run:

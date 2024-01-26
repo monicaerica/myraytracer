@@ -202,7 +202,8 @@ And the output
 
 To test the code a more complex object was rendered by using triangles generated from a PLY file using a python code. The model that was choosen for this test is Blender's mascot Suzanne. The input file is not reproduced here because of its length but can be found in the *utils* durectory together with the other scenes and the PLY to input python script. NOte that the script itself only produces a list of triangles properly formatted but without a material and other parts of the scene.
 
-<img src="https://github.com/monicaerica/myraytracer/assets/54890365/dd6f8f27-bee0-4024-9103-477654d1e200" width="200" style="float: right;">
+<img src="https://github.com/monicaerica/myraytracer/assets/54890365/6e0db801-fcaf-4618-a9f4-132660269bb5" width="300" style="float: right;">
+
 
 
 
